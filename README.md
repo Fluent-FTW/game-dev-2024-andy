@@ -1,5 +1,4 @@
-
-        <title> I'm Andy Kyte! 
+ I'm Andy Kyte! 
    
 
 https://fluent-ftw.github.io/game-dev-2024-andy/public/index.html
