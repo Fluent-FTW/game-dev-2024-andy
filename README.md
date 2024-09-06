@@ -1,9 +1,6 @@
-<html>
-    <head>
-        <title> I'm Andy Kyte! </title>
-    </head>
 
-
+        <title> I'm Andy Kyte! 
+   
 
 https://fluent-ftw.github.io/game-dev-2024-andy/public/index.html
 
