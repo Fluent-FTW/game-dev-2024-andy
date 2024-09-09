@@ -9,7 +9,7 @@
             display: block;
             margin: 0 auto;
         }
-        button {
+        button, input {
             display: block;
             margin: 20px auto;
         }
@@ -19,6 +19,7 @@
     <h1>Webcam Screenshot</h1>
     <video id="webcam" autoplay playsinline width="640" height="480"></video>
     <canvas id="canvas" width="640" height="480" style="display:none;"></canvas>
+    <input type="text" id="filename" placeholder="Enter file name">
     <button id="screenshot-button">Take Screenshot</button>
 
     <script>
@@ -26,6 +27,7 @@
         const canvas = document.getElementById('canvas');
         const context = canvas.getContext('2d');
         const button = document.getElementById('screenshot-button');
+        const filenameInput = document.getElementById('filename');
 
         // Access the webcam
         navigator.mediaDevices.getUserMedia({ video: true })
@@ -38,11 +40,12 @@
 
         // Take a screenshot
         button.addEventListener('click', () => {
+            const filename = filenameInput.value || 'screenshot';
             context.drawImage(video, 0, 0, canvas.width, canvas.height);
             const dataURL = canvas.toDataURL('image/png');
             const link = document.createElement('a');
             link.href = dataURL;
-            link.download = 'screenshot.png';
+            link.download = `${filename}.png`;
             link.click();
         });
     </script>
