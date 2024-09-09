@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Webcam Screenshot</title>
+    <style>
+        video, canvas {
+            display: block;
+            margin: 0 auto;
+        }
+        button {
+            display: block;
+            margin: 20px auto;
+        }
+    </style>
+</head>
+<body>
+    <h1>Webcam Screenshot</h1>
+    <video id="webcam" autoplay playsinline width="640" height="480"></video>
+    <canvas id="canvas" width="640" height="480" style="display:none;"></canvas>
+    <button id="screenshot-button">Take Screenshot</button>
+
+    <script>
+        const video = document.getElementById('webcam');
+        const canvas = document.getElementById('canvas');
+        const context = canvas.getContext('2d');
+        const button = document.getElementById('screenshot-button');
+
+        // Access the webcam
+        navigator.mediaDevices.getUserMedia({ video: true })
+            .then(stream => {
+                video.srcObject = stream;
+            })
+            .catch(error => {
+                console.error('Error accessing webcam:', error);
+            });
+
+        // Take a screenshot
+        button.addEventListener('click', () => {
+            context.drawImage(video, 0, 0, canvas.width, canvas.height);
+            const dataURL = canvas.toDataURL('image/png');
+            const link = document.createElement('a');
+            link.href = dataURL;
+            link.download = 'screenshot.png';
+            link.click();
+        });
+    </script>
+</body>
+</html>
