@@ -40,10 +40,12 @@
         .instruction {
             font-size: 1.2em;
             margin-top: 20px;
+            display: inline-block;
         }
         .arrow {
             font-size: 2em;
-            margin-top: -10px;
+            display: inline-block;
+            margin-left: 10px;
         }
     </style>
 </head>
@@ -52,9 +54,9 @@
     <video id="webcam" autoplay playsinline width="640" height="480"></video>
     <canvas id="canvas" width="640" height="480" style="display:none;"></canvas>
     <input type="text" id="filename" placeholder="Enter file name">
-    <button id="screenshot-button">Take Screenshot</button>
     <div class="instruction">Click this button</div>
-    <div class="arrow">⬇️</div>
+    <div class="arrow">➡️</div>
+    <button id="screenshot-button">Take Screenshot</button>
 
     <script>
         const video = document.getElementById('webcam');
