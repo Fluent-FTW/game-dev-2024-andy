@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Webcam Screenshot</title>
+    <title>Andy's Webcam Screenshot site!</title>
     <style>
         body {
             font-family: 'Arial', sans-serif;
@@ -37,6 +37,14 @@
             background-color: #feb47b;
             color: #fff;
         }
+        .instruction {
+            font-size: 1.2em;
+            margin-top: 20px;
+        }
+        .arrow {
+            font-size: 2em;
+            margin-top: -10px;
+        }
     </style>
 </head>
 <body>
@@ -45,6 +53,8 @@
     <canvas id="canvas" width="640" height="480" style="display:none;"></canvas>
     <input type="text" id="filename" placeholder="Enter file name">
     <button id="screenshot-button">Take Screenshot</button>
+    <div class="instruction">Click this button</div>
+    <div class="arrow">⬇️</div>
 
     <script>
         const video = document.getElementById('webcam');
