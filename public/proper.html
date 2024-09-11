@@ -2,16 +2,31 @@
 <html>
 <head> 
       <title> MonkeyMan</title>
+<style>
+.video-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh; /* This makes the container take up the full height of the viewport */
+}
+
+.video-container iframe {
+    max-width: 100%;
+    height: auto;
+}
+
+</style>
+
 </head>
 <body> 
   <h1 align=center style="color:blue;"> This should be blue crodie! </h1>
       <p align=center style="color:red;"> This should underneath the blue in the colour red! </p>
       
       <!-- YouTube video embed -->
-    <center>
-            <object data="https://www.youtube.com/embed/yUvkWxIX62U" width="560" height= "315"></object>
-    </center>
-        
-    </div>
+  <div class="video-container">
+    <iframe width="560" height="315" src="https://www.youtube.com/watch?v=yUvkWxIX62U" 
+          frameborder="0" allowfullscreen></iframe>
+  </div>
+    
 </body>
 </html>
