@@ -30,10 +30,23 @@
       background-color: blue;
       color: white;
     }
+
+    /* Style for the checkbox container */
+    .checkbox-container {
+      display: flex;
+      flex-wrap: wrap;
+      width: 50%;
+    }
+
+    .checkbox-column {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
   </style>
   <script>
-    function onlyOne(checkbox) {
-      var checkboxes = document.getElementsByName('preference');
+    function onlyOne(checkbox, groupName) {
+      var checkboxes = document.getElementsByName(groupName);
       checkboxes.forEach((item) => {
         if (item !== checkbox) item.checked = false;
       });
@@ -58,23 +71,28 @@
   <input type="text" id="hobby" name="hobby"><br><br>
 
   <p>Do you prefer:</p>
-  <input type="checkbox" id="cats" name="preference" value="cats" onclick="onlyOne(this)">
-  <label for="cats">Cats</label><br>
-  
-  <input type="checkbox" id="dogs" name="preference" value="dogs" onclick="onlyOne(this)">
-  <label for="dogs">Dogs</label><br>
-  
-  <input type="checkbox" id="skiing" name="preference" value="skiing" onclick="onlyOne(this)">
-  <label for="skiing">Skiing</label><br>
-  
-  <input type="checkbox" id="snowboarding" name="preference" value="snowboarding" onclick="onlyOne(this)">
-  <label for="snowboarding">Snowboarding</label><br>
-  
-  <input type="checkbox" id="stayIn" name="preference" value="stayIn" onclick="onlyOne(this)">
-  <label for="stayIn">Stay in and cook</label><br>
-  
-  <input type="checkbox" id="goOut" name="preference" value="goOut" onclick="onlyOne(this)">
-  <label for="goOut">Go out for dinner</label><br><br>
+  <div class="checkbox-container">
+    <div class="checkbox-column">
+      <input type="checkbox" id="cats" name="group1" value="cats" onclick="onlyOne(this, 'group1')">
+      <label for="cats">Cats</label><br>
+      
+      <input type="checkbox" id="skiing" name="group2" value="skiing" onclick="onlyOne(this, 'group2')">
+      <label for="skiing">Skiing</label><br>
+      
+      <input type="checkbox" id="stayIn" name="group3" value="stayIn" onclick="onlyOne(this, 'group3')">
+      <label for="stayIn">Stay in and cook</label><br>
+    </div>
+    <div class="checkbox-column">
+      <input type="checkbox" id="dogs" name="group1" value="dogs" onclick="onlyOne(this, 'group1')">
+      <label for="dogs">Dogs</label><br>
+      
+      <input type="checkbox" id="snowboarding" name="group2" value="snowboarding" onclick="onlyOne(this, 'group2')">
+      <label for="snowboarding">Snowboarding</label><br>
+      
+      <input type="checkbox" id="goOut" name="group3" value="goOut" onclick="onlyOne(this, 'group3')">
+      <label for="goOut">Go out for dinner</label><br>
+    </div>
+  </div><br>
 
   <input type="submit" value="Submit">
   <input type="reset" value="Reset">
