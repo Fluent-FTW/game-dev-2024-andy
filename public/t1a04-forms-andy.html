@@ -1,36 +1,44 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title> Club Signup Form </title>
-<style>
-  /* Style for the submit button */
-  input[type="submit"] {
-    background-color: white;
-    border: 2px solid black;
-    padding: 10px 20px;
-    cursor: pointer;
-  }
+  <title>Club Signup Form</title>
+  <style>
+    /* Style for the submit button */
+    input[type="submit"] {
+      background-color: white;
+      border: 2px solid black;
+      padding: 10px 20px;
+      cursor: pointer;
+    }
 
-  /* Hover effect for the submit button */
-  input[type="submit"]:hover {
-    background-color: green;
-    color: white;
-  }
+    /* Hover effect for the submit button */
+    input[type="submit"]:hover {
+      background-color: green;
+      color: white;
+    }
 
-  /* Style for the reset button */
-  input[type="reset"] {
-    background-color: white;
-    border: 2px solid black;
-    padding: 10px 20px;
-    cursor: pointer;
-  }
+    /* Style for the reset button */
+    input[type="reset"] {
+      background-color: white;
+      border: 2px solid black;
+      padding: 10px 20px;
+      cursor: pointer;
+    }
 
-  /* Hover effect for the reset button */
-  input[type="reset"]:hover {
-    background-color: blue;
-    color: white;
-  }
-</style>
+    /* Hover effect for the reset button */
+    input[type="reset"]:hover {
+      background-color: blue;
+      color: white;
+    }
+  </style>
+  <script>
+    function onlyOne(checkbox) {
+      var checkboxes = document.getElementsByName('preference');
+      checkboxes.forEach((item) => {
+        if (item !== checkbox) item.checked = false;
+      });
+    }
+  </script>
 </head>
 <body>
 
@@ -50,22 +58,22 @@
   <input type="text" id="hobby" name="hobby"><br><br>
 
   <p>Do you prefer:</p>
-  <input type="checkbox" id="cats" name="preference" value="cats">
+  <input type="checkbox" id="cats" name="preference" value="cats" onclick="onlyOne(this)">
   <label for="cats">Cats</label><br>
   
-  <input type="checkbox" id="dogs" name="preference" value="dogs">
+  <input type="checkbox" id="dogs" name="preference" value="dogs" onclick="onlyOne(this)">
   <label for="dogs">Dogs</label><br>
   
-  <input type="checkbox" id="skiing" name="preference" value="skiing">
+  <input type="checkbox" id="skiing" name="preference" value="skiing" onclick="onlyOne(this)">
   <label for="skiing">Skiing</label><br>
   
-  <input type="checkbox" id="snowboarding" name="preference" value="snowboarding">
+  <input type="checkbox" id="snowboarding" name="preference" value="snowboarding" onclick="onlyOne(this)">
   <label for="snowboarding">Snowboarding</label><br>
   
-  <input type="checkbox" id="stayIn" name="preference" value="stayIn">
+  <input type="checkbox" id="stayIn" name="preference" value="stayIn" onclick="onlyOne(this)">
   <label for="stayIn">Stay in and cook</label><br>
   
-  <input type="checkbox" id="goOut" name="preference" value="goOut">
+  <input type="checkbox" id="goOut" name="preference" value="goOut" onclick="onlyOne(this)">
   <label for="goOut">Go out for dinner</label><br><br>
 
   <input type="submit" value="Submit">
