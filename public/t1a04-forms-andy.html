@@ -43,6 +43,39 @@
       display: flex;
       flex-direction: column;
     }
+
+    /* Style for the custom radio buttons */
+    .custom-radio {
+      display: inline-block;
+      width: 20px;
+      height: 20px;
+      border: 2px solid black;
+      border-radius: 50%;
+      position: relative;
+      cursor: pointer;
+    }
+
+    .custom-radio input {
+      display: none;
+    }
+
+    .custom-radio::after {
+      content: '';
+      width: 12px;
+      height: 12px;
+      background-color: black;
+      border-radius: 50%;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      opacity: 0;
+      transition: opacity 0.2s;
+    }
+
+    .custom-radio input:checked + .custom-radio::after {
+      opacity: 1;
+    }
   </style>
 </head>
 <body>
@@ -65,48 +98,72 @@
   <p>Do you prefer:</p>
   <div class="checkbox-container">
     <div class="checkbox-column">
-      <input type="checkbox" id="cats" name="group1" value="cats" onclick="onlyOne(this, 'group1')">
-      <label for="cats">Cats</label><br>
+      <label>
+        <input type="radio" name="group1" value="cats">
+        <span class="custom-radio"></span> Cats
+      </label><br>
       
-      <input type="checkbox" id="skiing" name="group2" value="skiing" onclick="onlyOne(this, 'group2')">
-      <label for="skiing">Skiing</label><br>
+      <label>
+        <input type="radio" name="group2" value="skiing">
+        <span class="custom-radio"></span> Skiing
+      </label><br>
       
-      <input type="checkbox" id="stayIn" name="group3" value="stayIn" onclick="onlyOne(this, 'group3')">
-      <label for="stayIn">Stay in and cook</label><br>
+      <label>
+        <input type="radio" name="group3" value="stayIn">
+        <span class="custom-radio"></span> Stay in and cook
+      </label><br>
     </div>
     <div class="checkbox-column">
-      <input type="checkbox" id="dogs" name="group1" value="dogs" onclick="onlyOne(this, 'group1')">
-      <label for="dogs">Dogs</label><br>
+      <label>
+        <input type="radio" name="group1" value="dogs">
+        <span class="custom-radio"></span> Dogs
+      </label><br>
       
-      <input type="checkbox" id="snowboarding" name="group2" value="snowboarding" onclick="onlyOne(this, 'group2')">
-      <label for="snowboarding">Snowboarding</label><br>
+      <label>
+        <input type="radio" name="group2" value="snowboarding">
+        <span class="custom-radio"></span> Snowboarding
+      </label><br>
       
-      <input type="checkbox" id="goOut" name="group3" value="goOut" onclick="onlyOne(this, 'group3')">
-      <label for="goOut">Go out for dinner</label><br>
+      <label>
+        <input type="radio" name="group3" value="goOut">
+        <span class="custom-radio"></span> Go out for dinner
+      </label><br>
     </div>
   </div><br>
 
   <p>Select all that apply to you:</p>
   <div class="checkbox-container">
     <div class="checkbox-column">
-      <input type="checkbox" id="reading" name="preferences" value="reading">
-      <label for="reading">Reading</label><br>
+      <label>
+        <input type="checkbox" name="preferences" value="reading">
+        <span class="custom-radio"></span> Reading
+      </label><br>
       
-      <input type="checkbox" id="traveling" name="preferences" value="traveling">
-      <label for="traveling">Traveling</label><br>
+      <label>
+        <input type="checkbox" name="preferences" value="traveling">
+        <span class="custom-radio"></span> Traveling
+      </label><br>
       
-      <input type="checkbox" id="cooking" name="preferences" value="cooking">
-      <label for="cooking">Cooking</label><br>
+      <label>
+        <input type="checkbox" name="preferences" value="cooking">
+        <span class="custom-radio"></span> Cooking
+      </label><br>
     </div>
     <div class="checkbox-column">
-      <input type="checkbox" id="sports" name="preferences" value="sports">
-      <label for="sports">Sports</label><br>
+      <label>
+        <input type="checkbox" name="preferences" value="sports">
+        <span class="custom-radio"></span> Sports
+      </label><br>
       
-      <input type="checkbox" id="music" name="preferences" value="music">
-      <label for="music">Music</label><br>
+      <label>
+        <input type="checkbox" name="preferences" value="music">
+        <span class="custom-radio"></span> Music
+      </label><br>
       
-      <input type="checkbox" id="gaming" name="preferences" value="gaming">
-      <label for="gaming">Gaming</label><br>
+      <label>
+        <input type="checkbox" name="preferences" value="gaming">
+        <span class="custom-radio"></span> Gaming
+      </label><br>
     </div>
   </div><br>
 
