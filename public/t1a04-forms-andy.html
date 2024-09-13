@@ -44,14 +44,6 @@
       flex-direction: column;
     }
   </style>
-  <script>
-    function onlyOne(checkbox, groupName) {
-      var checkboxes = document.getElementsByName(groupName);
-      checkboxes.forEach((item) => {
-        if (item !== checkbox) item.checked = false;
-      });
-    }
-  </script>
 </head>
 <body>
 
@@ -91,6 +83,30 @@
       
       <input type="checkbox" id="goOut" name="group3" value="goOut" onclick="onlyOne(this, 'group3')">
       <label for="goOut">Go out for dinner</label><br>
+    </div>
+  </div><br>
+
+  <p>Select all that apply to you:</p>
+  <div class="checkbox-container">
+    <div class="checkbox-column">
+      <input type="checkbox" id="reading" name="preferences" value="reading">
+      <label for="reading">Reading</label><br>
+      
+      <input type="checkbox" id="traveling" name="preferences" value="traveling">
+      <label for="traveling">Traveling</label><br>
+      
+      <input type="checkbox" id="cooking" name="preferences" value="cooking">
+      <label for="cooking">Cooking</label><br>
+    </div>
+    <div class="checkbox-column">
+      <input type="checkbox" id="sports" name="preferences" value="sports">
+      <label for="sports">Sports</label><br>
+      
+      <input type="checkbox" id="music" name="preferences" value="music">
+      <label for="music">Music</label><br>
+      
+      <input type="checkbox" id="gaming" name="preferences" value="gaming">
+      <label for="gaming">Gaming</label><br>
     </div>
   </div><br>
 
