@@ -1,0 +1,11 @@
+<h1 align=center>t1a06-in-out-andy.html</h1>
+
+Input:<input type=text id="FirstName" value="Andy">
+<input type=button value="show on page" onclick="{
+    //This is a comment
+  document.getElementById('myDiv01').innerHTML = 'Your name is ' +
+    document.getElemtntById('myFirstName').value
+
+}">
+
+<div id="myDiv01:>...</div>
