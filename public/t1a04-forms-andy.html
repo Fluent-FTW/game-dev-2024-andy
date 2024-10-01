@@ -12,7 +12,7 @@
             justify-content: center;
             align-items: center;
             height: 100vh;
-            overflow: hidden; /* Prevents scrolling */
+            overflow: auto; /* Allows scrolling */
         }
         h1 {
             text-align: center;
@@ -49,6 +49,7 @@
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
             width: 90%; /* Adjusted width to fit within the viewport */
             max-width: 400px; /* Maximum width to prevent it from being too wide */
+            max-height: 90vh; /* Maximum height to fit within the viewport */
             overflow-y: auto; /* Allows scrolling within the form if content overflows */
         }
         .submit-btn {
@@ -117,5 +118,3 @@
     </div>
 </body>
 </html>
-
-This should ensure that your form fits within the viewport and doesn't overlap with other elements. Let me know if this works for you! 🎉
