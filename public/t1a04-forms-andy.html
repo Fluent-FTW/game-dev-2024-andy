@@ -2,7 +2,8 @@
 <html>
 <head>
     <title>Forms are FIRE</title>
-   <style>  body {
+    <style>
+        body {
             font-family: Arial, sans-serif;
             background-color: #f0f8ff;
             margin: 0;
@@ -12,6 +13,34 @@
             align-items: center;
             height: 100vh;
         }
+        h1 {
+            text-align: center;
+            color: #333333;
+        }
+        h3 {
+            color: #333333;
+        }
+        input[type="text"],
+        input[type="email"],
+        input[type="time"],
+        input[type="file"],
+        select,
+        textarea {
+            width: 100%;
+            padding: 10px;
+            margin: 5px 0 20px 0;
+            display: inline-block;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        input[type="radio"],
+        input[type="checkbox"] {
+            margin-right: 10px;
+        }
+        textarea {
+            resize: vertical;
+        }
         .form-container {
             background-color: #ffffff;
             padding: 20px;
@@ -19,98 +48,69 @@
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
             width: 400px;
         }
-        .form-container h1 {
-            text-align: center;
-            color: #333333;
-        }
-        .form-container h3 {
-            color: #333333;
-        }
-        .form-group {
-            margin-bottom: 15px;
-        }
-        .form-group input,
-        .form-group select,
-        .form-group textarea {
-            width: 100%;
-            padding: 10px;
-            border: 1px solid #cccccc;
-            border-radius: 5px;
-        }
-        .form-group input[type="radio"],
-        .form-group input[type="checkbox"] {
-            width: auto;
-        }
-        .form-group input[type="file"] {
-            padding: 3px;
-        }
-        .form-group textarea {
-            resize: vertical;
-        }
         .submit-btn {
-            display: block;
             width: 100%;
-            padding: 10px;
             background-color: #4CAF50;
-            color: #ffffff;
+            color: white;
+            padding: 14px 20px;
+            margin: 8px 0;
             border: none;
-            border-radius: 5px;
+            border-radius: 4px;
             cursor: pointer;
-            font-size: 16px;
         }
         .submit-btn:hover {
             background-color: #45a049;
         }
-   
-   </style>
+    </style>
 </head>
 <body>
-    <h1> Birthday RSVP form </h1>
+    <div class="form-container">
+        <h1> Birthday RSVP form </h1>
         
-    <h3> Name </h3>
-    
-    <input type="text" name="name" placeholder="enter your name">
-    
-    <h3>Email Address</h3>
-    
-    <input type="email" name="email" placeholder="Enter your email">
+        <h3> Name </h3>
+        <input type="text" name="name" placeholder="enter your name">
+        
+        <h3>Email Address</h3>
+        <input type="email" name="email" placeholder="Enter your email">
 
-    <h3> Age Group </h3>
-    <select name="age-group">
-  <option value="under-18">Under 18</option>
-  <option value="18-25">18-25</option>
-  <option value="26-35">26-35</option>
-  <option value="36-45">36-45</option>
-  <option value="46-60">46-60</option>
-  <option value="60-plus">60+</option>
-</select>
+        <h3> Age Group </h3>
+        <select name="age-group">
+            <option value="under-18">Under 18</option>
+            <option value="18-25">18-25</option>
+            <option value="26-35">26-35</option>
+            <option value="36-45">36-45</option>
+            <option value="46-60">46-60</option>
+            <option value="60-plus">60+</option>
+        </select>
 
-    <h3> Will you be attending? </h3>
-    <input type="radio" name="attendance" value="yes"> Yes
-<input type="radio" name="attendance" value="no"> No
+        <h3> Will you be attending? </h3>
+        <input type="radio" name="attendance" value="yes"> Yes
+        <input type="radio" name="attendance" value="no"> No
 
-    <h3> Enter diet restrictions </h3>
-    <input type="checkbox" name="diet" value="vegetarian"> Vegetarian
-<input type="checkbox" name="diet" value="vegan"> Vegan
-<input type="checkbox" name="diet" value="gluten-free"> Gluten-Free
-<input type="checkbox" name="diet" value="none"> None
+        <h3> Enter diet restrictions </h3>
+        <input type="checkbox" name="diet" value="vegetarian"> Vegetarian
+        <input type="checkbox" name="diet" value="vegan"> Vegan
+        <input type="checkbox" name="diet" value="gluten-free"> Gluten-Free
+        <input type="checkbox" name="diet" value="none"> None
 
-    <h3> Preferred celebration time </h3>
-    
-    <input type="time" name="party-time">
+        <h3> Preferred celebration time </h3>
+        <input type="time" name="party-time">
 
-    <h3> Favourite party activity </h3>
-    <textarea name="favorite-activity" rows="4" cols="50" placeholder="Tell us your favorite party activity"></textarea>
+        <h3> Favourite party activity </h3>
+        <textarea name="favorite-activity" rows="4" cols="50" placeholder="Tell us your favorite party activity"></textarea>
 
-    <h3> Upload a fun photo from the last 2 days </h3>
-    <input type="file" name="fun-photo">
+        <h3> Upload a fun photo from the last 2 days </h3>
+        <input type="file" name="fun-photo">
 
-<h3> How did you hear about the party</h3>
-    <select name="referral">
-  <option value="friend">Friend</option>
-  <option value="social-media">Social Media</option>
-  <option value="email">Email</option>
-  <option value="other">Other</option>
-</select>
+        <h3> How did you hear about the party</h3>
+        <select name="referral">
+            <option value="friend">Friend</option>
+            <option value="social-media">Social Media</option>
+            <option value="email">Email</option>
+            <option value="other">Other</option>
+        </select>
+
+        <button type="submit" class="submit-btn">Submit</button>
+    </div>
 </body>
 </html>
