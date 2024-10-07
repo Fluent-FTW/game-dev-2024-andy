@@ -15,5 +15,22 @@ Input:<input type=text id="myLastName" value="Last name here">
 
 }">
 
+Input:<input type=text id="myMiddleName" value="Middle name here">
+<input type=button value="show on page" onclick="{
+    document.getElementById('myDiv03').innerHTML = 'Your middle name is ' +
+        document.getElementById('myMiddleName').value
+}">
+
+Input:<input type=text id="myAge" value="Age here">
+<input type=button value="show on page" onclick="{
+    document.getElementById('myDiv03').innerHTML = 'Your age is ' +
+        document.getElementById('myAge').value
+
+}">
+        
+    
+
 <div id="myDiv01">...</div>
 <div id="myDiv02">...</div>
+<div id="myDiv03">...</div>
+
