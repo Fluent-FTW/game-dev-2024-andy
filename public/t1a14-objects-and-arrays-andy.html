@@ -18,4 +18,30 @@ Show your research about objects and arrays in the textarea here<br>
 
 </textarea><br><br>
 
+
+
 Make 2 buttons and a div. The first button labelled "array with Object in it" and the 2nd button labelled "Object with Array in it"<br><br>
+
+<input type=button value="Array with Object in it" onClick="showArrayWithObject()">
+<input type=button value="Object with Array in it" onClick="showObjectWithArray()">
+<div id="myDiv01"></div>
+
+<script> 
+
+  function showArrayWithObject() {
+       let myArray = [
+    { name: 'Bob', age: 28 }, //Object inside array
+  { name: 'Charlie', age: 32}
+  ];
+      document.getElementById('myDiv01').innerText = JSON.stringify(myObject, null, 2);
+
+    function showObjectWithArray() {
+      let myObject = {
+  name: 'Alice',
+  hobbies: ['reading', 'coding', 'hiking'], //Array inside object
+  age: 25
+  };
+      document.getElementById('myDiv01').innerText = JSON.stringify(myArray, null, 2);
+
+
+</script>
