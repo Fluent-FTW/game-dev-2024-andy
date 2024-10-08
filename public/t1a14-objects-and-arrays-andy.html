@@ -29,19 +29,19 @@ Make 2 buttons and a div. The first button labelled "array with Object in it" an
 <script> 
 
   function showArrayWithObject() {
-       let myObject = [
+       let myArray = [
     { name: 'Bob', age: 28 }, //Object inside array
   { name: 'Charlie', age: 32}
-  ]};
+  ];
       document.getElementById('myDiv01').innerText = JSON.stringify(myObject, null, 2);
 
     function showObjectWithArray() {
-      let myArray = {
+      let myObject = {
   name: 'Alice',
   hobbies: ['reading', 'coding', 'hiking'], //Array inside object
   age: 25
-  };}
+  };
       document.getElementById('myDiv01').innerText = JSON.stringify(myArray, null, 2);
-
+    }
 
 </script>
