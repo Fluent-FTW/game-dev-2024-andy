@@ -1,6 +1,16 @@
 
 <h1 align=center>t1a15-events-fred.html</h1>
 
+<body onMouseMove="{
+  document.getElementById('myDiv01').innerHTML = 
+  `x:${event.clientX}, y:${event.clientY}`
+
+  }"
+  onKeyDown="{
+  document.getElementById('myDiv01').innerHTML = 
+`key:${event.key}`
+  }">
+
 Get rid of the alerts and have 8 events on this page <br>
 
 <b onTouch="{alert('onTouch??'}">Input:</b>
