@@ -20,7 +20,22 @@ Input:<input type=text id="myIn02" value="7"> <br>
 
 <input type=button value="Multiply" onclick="{
  let myX = parseFloat(document.getElementById('myIn01').value);
- let myY = parseFloat(document.getElementById('myIn01').value);
+ let myY = parseFloat(document.getElementById('myIn02').value);
  let myTotal = myX * myY;
  document.getElementById('myDiv01').innerHTML - 'Your answer is ' + myTotal;
  }">
+
+<input type=button value="Divide" onclick="{
+ let myX = parseFloat(document.getElementById('myIn01').value);
+ let myY = parseFloat(document.getElementById('myIn02').value);
+ let myTotal = myX / myY;
+ document.getElementById('myDiv01').innerHTML = 'Your answer is ' + myTotal;
+}">
+
+<input type=button value="combine" onclick="{
+ let myX = parseFloat(document.getElementById('myIn01').value);
+ let myY = parseFloat(document.getElementById('myIn02').value);
+ let myTotal = myX myY;
+ document.getElementById('myDiv01').innerHTML = 'Your answer is ' + myTotal;
+}">
+ 
