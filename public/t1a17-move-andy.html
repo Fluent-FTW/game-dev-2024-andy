@@ -2,6 +2,8 @@
 <script>
   //global variables
   let myClock02;
+
+  
 </script>
 <input type="button" id="myButton01" value="Image Right" onclick="{
     document.getElementById('myImage01').style.left = parseInt(document.getElementById('myImage01').style.left) + 20 + 'px';
@@ -41,6 +43,10 @@ document.getElementById('myButton04').click();
 }, 30);
 }">
 
+<input type="button" value="Stop Movement" onclick="{
+  clearInterval(myClock02);
+}">
+
 <img id="myImage01" style="position:relative; width:100px; height:80px; top:0px; left:0px;" src="https://corgilicious.com/wp-content/uploads/2014/12/big-corgi-smile1.jpg">
 
 
@@ -48,6 +54,6 @@ document.getElementById('myButton04').click();
 
 
 
-top for up and down. higher number = lower on the screen
 
-left for left and right higher number = further right on the screen
+
+//left for left and right higher number = further right on the screen
