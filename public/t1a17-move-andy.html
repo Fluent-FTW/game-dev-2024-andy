@@ -13,7 +13,7 @@
 <m>
   <input type="button" id="myButton01" value="Image Right" onclick="{
     document.getElementById('myImage01').style.left = parseInt(document.getElementById('myImage01').style.left) + 20 + 'px';
-  }"><br><br>
+  }">
   <input type="button" id="myButton02" value="Image Left" onclick="{
     document.getElementById('myImage01').style.left = parseInt(document.getElementById('myImage01').style.left) - 20 + 'px';
   }">
@@ -31,7 +31,7 @@
     myClock02 = setInterval(function() {
       document.getElementById('myButton01').click();
     }, 30); 
-  }"><br><br>
+  }">
   <input type="button" value="Auto Move Left" onclick="{
     clearInterval(myClock02);
     myClock02 = setInterval(function() {
