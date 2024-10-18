@@ -9,10 +9,25 @@
 </script>
 
 
-<input type=button id="myButton02" value="Image Right" onclick="{
+<input type=button id="myButton01" value="Image Right" onclick="{
   document.getElementById('myImage01').style.left = 
-  parseInt(document.getElementById('myImage01').style.left) + 10 + 'px'
+  parseInt(document.getElementById('myImage01').style.left) + 20 + 'px'
   }"><br><br>
+
+<input type=button id="myButton02" value="Image Left" onclick="{
+  document.getElementById('myImage01').style.left = 
+    parseInt(document.getElementById('myImage01').style.left) - 20 + 'px'
+}">
+
+    <input type=button id="myButton03" value="Image down" onclick="{
+      document.getElementById('myImage01').style.top = 
+        parseInt(document.getElementById('myImage01').style.top) + 20 + 'px'
+    }">
+
+            <input type=button id="myButton03" value="Image up" onclick="{
+      document.getElementById('myImage01').style.top = 
+        parseInt(document.getElementById('myImage01').style.top) - 20 + 'px'
+            }">
 
   <input type=button value="Auto Move Right" onclick="{
     document.getElementById('myImage01').style.left = 0
