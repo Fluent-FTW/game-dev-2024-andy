@@ -1,59 +1,59 @@
-<h1 align=center>t1a17-move-andy</h1>
+<h1 align="center">t1a17-move-andy</h1>
 <script>
-  //global variables
+  // global variables
   let myClock02;
-
-  
 </script>
-<input type="button" id="myButton01" value="Image Right" onclick="{
-    document.getElementById('myImage01').style.left = parseInt(document.getElementById('myImage01').style.left) + 20 + 'px';
-}"><br><br>
-<input type="button" id="myButton02" value="Image Left" onclick="{
-    document.getElementById('myImage01').style.left = parseInt(document.getElementById('myImage01').style.left) - 20 + 'px';
-}">
-<input type="button" id="myButton03" value="Image Down" onclick="{
-    document.getElementById('myImage01').style.top = parseInt(document.getElementById('myImage01').style.top) + 20 + 'px';
-}">
-<input type="button" id="myButton04" value="Image Up" onclick="{
-    document.getElementById('myImage01').style.top = parseInt(document.getElementById('myImage01').style.top) - 20 + 'px';
-}">
-<input type="button" value="Auto Move Right" onclick="{
-    clearInterval(myClock02);
-    myClock02 = setInterval(function() {
-        document.getElementById('myButton01').click();
-    }, 30);
-    // activate click every 30 ms (milliseconds)
-}"><br><br>
-<input type="button" value="Auto Move Left" onclick="{
-    clearInterval(myClock02);
-    myClock02 = setInterval(function() {
-        document.getElementById('myButton02').click();
-    }, 30);
-}">
-<input type="button" value="Auto Move Down" onclick="{
-    clearInterval(myClock02);
-    myClock02 = setInterval(function() {
-        document.getElementById('myButton03').click();
-    }, 30);
-}">
-<input type="button" value="Auto Move Up" onclick="{
-  clearInterval(myClock02);
-myClock02 = setInterval(function() {
-document.getElementById('myButton04').click();
-}, 30);
-}">
+<style>
+  a, m, e {
+    display: block;
+    margin-bottom: 10px;
+  }
+</style>
 
-<input type="button" value="Stop Movement" onclick="{
-  clearInterval(myClock02);
-}">
+<m>
+  <input type="button" id="myButton01" value="Image Right" onclick="{
+    document.getElementById('myImage01').style.left = parseInt(document.getElementById('myImage01').style.left) + 20 + 'px';
+  }"><br><br>
+  <input type="button" id="myButton02" value="Image Left" onclick="{
+    document.getElementById('myImage01').style.left = parseInt(document.getElementById('myImage01').style.left) - 20 + 'px';
+  }">
+  <input type="button" id="myButton03" value="Image Down" onclick="{
+    document.getElementById('myImage01').style.top = parseInt(document.getElementById('myImage01').style.top) + 20 + 'px';
+  }">
+  <input type="button" id="myButton04" value="Image Up" onclick="{
+    document.getElementById('myImage01').style.top = parseInt(document.getElementById('myImage01').style.top) - 20 + 'px';
+  }">
+</m>
+
+<a>
+  <input type="button" value="Auto Move Right" onclick="{
+    clearInterval(myClock02);
+    myClock02 = setInterval(function() {
+      document.getElementById('myButton01').click();
+    }, 30); 
+  }"><br><br>
+  <input type="button" value="Auto Move Left" onclick="{
+    clearInterval(myClock02);
+    myClock02 = setInterval(function() {
+      document.getElementById('myButton02').click();
+    }, 30);
+  }">
+  <input type="button" value="Auto Move Down" onclick="{
+    clearInterval(myClock02);
+    myClock02 = setInterval(function() {
+      document.getElementById('myButton03').click();
+    }, 30);
+  }">
+  <input type="button" value="Auto Move Up" onclick="{
+    clearInterval(myClock02);
+    myClock02 = setInterval(function() {
+      document.getElementById('myButton04').click();
+    }, 30);
+  }">
+</a>
+
+<e>
+  <input type="button" value="EMERGENCY STOP" onclick="clearInterval(myClock02);">
+</e>
 
 <img id="myImage01" style="position:relative; width:100px; height:80px; top:0px; left:0px;" src="https://corgilicious.com/wp-content/uploads/2014/12/big-corgi-smile1.jpg">
-
-
-
-
-
-
-
-
-//left for left and right higher number = further right on the screen
