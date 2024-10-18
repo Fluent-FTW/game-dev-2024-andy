@@ -24,22 +24,31 @@
         parseInt(document.getElementById('myImage01').style.top) + 20 + 'px'
     }">
 
-            <input type=button id="myButton03" value="Image up" onclick="{
+            <input type=button id="myButton04" value="Image up" onclick="{
       document.getElementById('myImage01').style.top = 
         parseInt(document.getElementById('myImage01').style.top) - 20 + 'px'
             }">
 
   <input type=button value="Auto Move Right" onclick="{
-    document.getElementById('myImage01').style.left = 0
+    document.getElementById('myImage01').style.left =
     clearInterval(myClock02)
     myClock02 = setInterval(function(){
-    document.getElementById('myButton02').click()
+    document.getElementById('myButton01').click()
     }, 30)   // activate click every 30 ms (milliseconds)
 
-    }"><br><br>
+  }"><br><br>
+
+<input type=button value=Auto Move Left" onclick="{
+document.getElementById('myIimage01').style.left = 
+  clearInterval(myClock02)
+  myClock = setInterval(function(){
+    document.getElementById('myButton02').click()
+  }," 30)
+
+    
 
     <img id="myImage01" style="position:relative; width:100px; height:80px; top:0px;
-      left:0px;" src="myImage01.pg">
+      left:0px;" src="https://corgilicious.com/wp-content/uploads/2014/12/big-corgi-smile1.jpg">
 
 
 top for up and down. higher number = lower on the screen
