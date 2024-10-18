@@ -8,21 +8,21 @@
        this.myAge = passAge;
      }
      myShow(){
-       document.getElementById('myDiv01').innerHTML = 'Hello ' this.myName+'<br>'
+       document.getElementById('myDiv01').innerHTML = 'Hello ' + this.myName+'<br>';
      }
    } //end class myAnimal
 
   class myCat extends myAnimal {
 
-      myshow(){
+      myShow(){
         document.getElementById('myDiv01').innerHTML = this.myName + ' is a great cat <br>'
       }
   } // end extended class my Cat
 </script>
 
 <input type=button value="Example Class Set and Show Class Animal" onClick="{
-  myDog = new myAnimal(Snicker',5)
-  myDog.myShow()
+  myDog = new myAnimal('Snicker',5);
+  myDog.myShow();
 
   }"><br><br>
   <input type=text id="myText01" value="may be useful later"><br>
