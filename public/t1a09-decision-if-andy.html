@@ -1,25 +1,17 @@
-<h1 align=center>t1a09-decision-if-andy.html</h1>
+    <h1 align="center">t1a09-decision-if-andy.html</h1>
+
+Input:<input type="text" id="myText1" value="andy">\
+Input:<input type="number" id="myNum1" value="14">
+<div id="myDiv01">...</div><br>
 
 
-Input:<input type=text id="myText1" value="andy">
-Input:<input type=number id="myNum1" value="14">
-<div id="myDiv01">...</div>
+  <input type="button" value="Is Andy" onclick="
+    let myIn1 = document.getElementById('myText1').value;
+        document.getElementById('myDiv01').innerHTML = '<br>';
+    if (myIn1 == 'Andy') {
+        document.getElementById('myDiv01').innerHTML = 'Hi Andy';
+        }
+    ">
 
-<input type=button value="Is Andy" onclick="{
-  let myIn1 = document.getElementById('myDiv01').innerHTML = '<br>
-  if(myIn1 == 'Andy'){
-  document.getElementById('myDiv01').innerHTML = 'Hi Andy'
-  }
-}"><br>
-
-<input type=button value="is Andy else" onclick="{
-  let myIn1 = document.getElementById('myText1').value
-  document.getElementById('myDiv01').innerHTML = '<br>'
-  if (myIn1 == 'Andy'){
-    document.getElementById('myDiv01').innerHTML = 'Hi Andy'
-  }    else  {
-      document.getElementById('myDiv01').innerHTML = "was expecting Andy >:
-}"
-<br>
-
+  
 You make 8 buttons showing decisions and complex decisions including not !, AND && OR ||
