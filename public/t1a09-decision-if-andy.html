@@ -20,8 +20,60 @@ Input:<input type="number" id="myNum1" value="14">
         let myAge = parseInt(document.getElementById('myNum1').value);
         document.getElementById('myDiv01').innerHTML = '<br>';
         if (myAge == 14) {
-            document.getElementById('myNum1').innerHTML = ' Is 14';
+            document.getElementById('myDiv01').innerHTML = ' Is 14';
         }
     }">
-  
+
+<input type="button" value="Is Above 14" onclick="{
+    let myAge = parseInt(document.getElementById('myNum1').value);
+    document.getElementById('myDiv01').innerHTML = '<br>';
+    if (myAge > 14) {
+        document.getElementById('myDiv01').innerHTML = ' Older than 14';
+    }
+}">
+
+<input type="button" value="Is Not 14" onclick="{
+    let myAge = parseInt(document.getElementById('myNum1').value);
+    document.getElementById('myDiv01').innerHTML = '<br>';
+    if (myAge != 14) {
+        document.getElementById('myDiv01').innerHTML = 'Is not 14';
+    }
+}">
+
+<input type="button" value="Is Andy and Not Above 14" onclick="{
+    let myIn1 = document.getElementById('myText1').value;
+    let myAge = parseInt(document.getElementById('myNum1').value);
+    if (myIn1 == 'Andy' && myAge <= 14) {
+        document.getElementById('myDiv01').innerHTML = 'Andy and Not Above 14';
+    }
+}">
+
+<input type="button" value="Is Not Andy or Is Above 14" onclick="{
+    let myIn1 = document.getElementById('myText1').value;
+    let myAge = parseInt(document.getElementById('myNum1').value);
+    if (myIn1 != 'Andy' || myAge > 14) {
+        document.getElementById('myDiv01').innerHTML = 'Either Not Andy or Above 14';
+    }
+}">
+
+<input type="button" value="Is Andy and 14" onclick="{
+    let myIn1 = document.getElementById('myText1').value;
+    let myAge = parseInt(document.getElementById('myNum1').value);
+    if (myIn1 == 'Andy' && myAge == 14) {
+        document.getElementById('myDiv01').innerHTML = 'Andy and 14';
+    }
+}">
+
+<input type="buttoon" value="Type either YES or NO" onclick="{
+    let myIn1 = document.getElementById('myText1').value;
+    document.getElementById('myDiv01').innerHTML = '<br>';
+    if (myIn1 == Yes) {
+        document.getElementById('myDiv01').innerHTML = 'You are a monkey';
+    }
+    if (myIn1 == No) {
+        document.getElementById('myDiv01').innerHTML = 'You are not a monkey';
+    }
+}">
+    
+    
 You make 8 buttons showing decisions and complex decisions including not !, AND && OR ||
