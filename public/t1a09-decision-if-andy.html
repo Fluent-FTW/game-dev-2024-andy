@@ -22,23 +22,17 @@ Input:<input type="number" id="myNum1" value="14">
         if (myAge == 14) {
             document.getElementById('myDiv01').innerHTML = ' Is 14';
         }
+     else if (myAge > 14) {
+        document.getElementById('myDiv01').innerHTML = ' is older than 14';
+    }
+    else if (myAge < 14) {
+        document.getElementById('myDiv01').innerHTML = ' is younger than 14';
+    }
+
+        
+        
     }">
 
-<input type="button" value="Is Above 14" onclick="{
-    let myAge = parseInt(document.getElementById('myNum1').value);
-    document.getElementById('myDiv01').innerHTML = '<br>';
-    if (myAge > 14) {
-        document.getElementById('myDiv01').innerHTML = ' Older than 14';
-    }
-}">
-
-<input type="button" value="Is Not 14" onclick="{
-    let myAge = parseInt(document.getElementById('myNum1').value);
-    document.getElementById('myDiv01').innerHTML = '<br>';
-    if (myAge != 14) {
-        document.getElementById('myDiv01').innerHTML = 'Is not 14';
-    }
-}">
 
 <input type="button" value="Is Andy and Not Above 14" onclick="{
     let myIn1 = document.getElementById('myText1').value;
