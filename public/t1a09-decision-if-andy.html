@@ -11,7 +11,7 @@ Input:<input type="number" id="myNum1" value="14">
     if  (myIn1 == 'Andy') {
         document.getElementById('myDiv01').innerHTML = 'Hi Andy';
         }
-     if (myIn1 != 'Andy') {
+     else if (myIn1 != 'Andy') {
          document.getElementById('myDiv01').innerHTML = 'You are not Andy';
      }
   }">
@@ -64,13 +64,13 @@ Input:<input type="number" id="myNum1" value="14">
     }
 }">
 
-<input type="button" value="Type either YES or NO" onclick="{
+<input type="button" value="Type either 'YES' or 'NO'" onclick="{
     let myIn1 = document.getElementById('myText1').value;
     document.getElementById('myDiv01').innerHTML = '<br>';
     if (myIn1 == Yes) {
         document.getElementById('myDiv01').innerHTML = 'You are a monkey';
     }
-    if (myIn1 == No) {
+    else if (myIn1 == No) {
         document.getElementById('myDiv01').innerHTML = 'You are not a monkey';
     }
 }">
