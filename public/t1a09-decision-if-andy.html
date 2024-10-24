@@ -1,4 +1,9 @@
-
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Decision if Andy</title>
+</head>
+<body>
     <h1 align="center">t1a09-decision-if-andy.html</h1>
     Input: <input type="text" id="myText1" value="Andy">
     Input: <input type="number" id="myNum1" value="14"><br>
@@ -30,15 +35,20 @@
 
     <script>
         // Combined check
-        //GOT COMBINED CHECK FROM COPILOT, EVERYTHING ELSE IS MY CODE
+        //GOT COMBINEDCHECK FROM COPILOT, EVERYTHING ELSE IS MY CODE
         function combinedCheck() {
             let myIn1 = document.getElementById('myText1').value;
             let myAge = parseInt(document.getElementById('myNum1').value);
             document.getElementById('myDiv01').innerHTML = '<br>';
-            if (myIn1 != 'Andy' || myAge > 14) {
-                document.getElementById('myDiv01').innerHTML = 'Either Not Andy or Above 14';
-            } else if (myIn1 == 'Andy' && myAge == 14) {
+
+            if (myIn1 == 'Andy' && myAge == 14) {
                 document.getElementById('myDiv01').innerHTML = 'Andy and 14';
+            } else if (myIn1 != 'Andy' || myAge > 14) {
+                document.getElementById('myDiv01').innerHTML = 'Either Not Andy or Above 14';
+            } else {
+                document.getElementById('myDiv01').innerHTML = 'Andy and younger than 14';
             }
         }
-    
+    </script>
+</body>
+</html>
