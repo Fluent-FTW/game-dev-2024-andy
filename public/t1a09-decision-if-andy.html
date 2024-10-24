@@ -3,6 +3,21 @@
 Input:<input type="text" id="myText1" value="Andy">
 Input:<input type="number" id="myNum1" value="14">
 <div id="myDiv01">...</div><br>
+    <script>
+        // Combined check
+        function combinedCheck() {
+            let myIn1 = document.getElementById('myText1').value;
+            let myAge = parseInt(document.getElementById('myNum1').value);
+            document.getElementById('myDiv01').innerHTML = '<br>';
+            if (myIn1 != 'Andy' || myAge > 14) {
+                document.getElementById('myDiv01').innerHTML = 'Either Not Andy or Above 14';
+            } else if (myIn1 == 'Andy' && myAge == 14) {
+                document.getElementById('myDiv01').innerHTML = 'Andy and 14';
+            }
+        }
+        //all of script tag is CoPilot
+    </script>
+
 
 
   <input type="button" value="Is Andy" onclick="{
