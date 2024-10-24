@@ -1,8 +1,33 @@
-    <h1 align="center">t1a09-decision-if-andy.html</h1>
+<h1 align="center">t1a09-decision-if-andy.html</h1>
+    Input: <input type="text" id="myText1" value="Andy">
+    Input: <input type="number" id="myNum1" value="14"><br>
+    <div id="myDiv01">...</div><br>
 
-Input:<input type="text" id="myText1" value="Andy">
-Input:<input type="number" id="myNum1" value="14">
-<div id="myDiv01">...</div><br>
+    <input type="button" value="Is Andy" onclick="
+        let myIn1 = document.getElementById('myText1').value;
+        document.getElementById('myDiv01').innerHTML = '<br>';
+        if (myIn1 == 'Andy') {
+            document.getElementById('myDiv01').innerHTML = 'Hi Andy';
+        } 
+        else {
+            document.getElementById('myDiv01').innerHTML = 'You are not Andy';
+        
+        }">
+
+    <input type="button" value="Is 14" onclick="
+        let myAge = parseInt(document.getElementById('myNum1').value);
+        document.getElementById('myDiv01').innerHTML = '<br>';
+        if (myAge == 14) {
+            document.getElementById('myDiv01').innerHTML = 'Is 14';
+        } else if (myAge > 14) {
+            document.getElementById('myDiv01').innerHTML = 'Is older than 14';
+        } else {
+            document.getElementById('myDiv01').innerHTML = 'Is younger than 14';
+        }
+    ">
+
+    <input type="button" value="Check Both" onclick="combinedCheck()">
+
     <script>
         // Combined check
         function combinedCheck() {
@@ -15,40 +40,4 @@ Input:<input type="number" id="myNum1" value="14">
                 document.getElementById('myDiv01').innerHTML = 'Andy and 14';
             }
         }
-        //all of script tag is CoPilot
-    </script>
-
-
-
-  <input type="button" value="Is Andy" onclick="{
-    let myIn1 = document.getElementById('myText1').value;
-        document.getElementById('myDiv01').innerHTML = '<br>';
-    if  (myIn1 == 'Andy') {
-        document.getElementById('myDiv01').innerHTML = 'Hi Andy';
-        }
-     else if (myIn1 != 'Andy') {
-         document.getElementById('myDiv01').innerHTML = 'You are not Andy';
-     }
-  }">
-
-    <input type="button" value="Is 14" onclick="{
-        let myAge = parseInt(document.getElementById('myNum1').value);
-        document.getElementById('myDiv01').innerHTML = '<br>';
-        if (myAge == 14) {
-            document.getElementById('myDiv01').innerHTML = ' Is 14';
-        }
-     else if (myAge > 14) {
-        document.getElementById('myDiv01').innerHTML = ' is older than 14';
-    }
-    else if (myAge < 14) {
-        document.getElementById('myDiv01').innerHTML = ' is younger than 14';
-    }
-  else if (myIn1 != 'Andy' || myAge > 14) {
-        document.getElementById('myDiv01').innerHTML = 'Either Not Andy or Above 14';
-    }
-    else if (myIn1 == 'Andy' && myAge == 14) {
-        document.getElementById('myDiv01').innerHTML = 'Andy and 14';
-    }
-    }">
-  
-
+    
