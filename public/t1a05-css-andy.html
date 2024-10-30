@@ -3,22 +3,52 @@
   <head> 
     <title> Andy CSS  </title>
     <style> 
-    body  {
+      body {
         text-align: center;
-   background-color: 4682b4;
-        }
-      h1 { color: Red;
-         font-size: 50px;
-          border: 6px solid black;
-         }
-      p { color: green; }
-      p1 { color: green; }
-      </style>
+        background: linear-gradient(to bottom, #4682b4, #b0e0e6);
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 20px;
+      }
+      h1 { 
+        color: Red;
+        font-size: 50px;
+        border: 6px solid black;
+        padding: 10px;
+        border-radius: 10px;
+        box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.5);
+      }
+      p { 
+        color: green; 
+        font-size: 20px; 
+        margin: 10px 0;
+        transition: color 0.3s;
+      }
+      p:hover {
+        color: darkgreen;
+      }
+      .extra-paragraph {
+        color: green; 
+        font-size: 18px; 
+        margin: 10px 0;
+      }
+      footer {
+        margin-top: 50px;
+        font-size: 16px;
+        color: white;
+        background-color: rgba(0, 0, 0, 0.7);
+        padding: 10px;
+        border-radius: 5px;
+      }
+    </style>
   </head>
 <body> 
   <h1> This should be on the top middle of the webpage</h1>
   <p> This should be just underneath the top middle h1 heading</p>
-  <p1> And this should be unerneath the one underneath h1</p1>
-  </body>
-
+  <p class="extra-paragraph"> And this should be underneath the one underneath h1</p>
+  
+  <footer>
+    <p>Worked on, October 31st, 2024</p>
+  </footer>
+</body>
 </html>
