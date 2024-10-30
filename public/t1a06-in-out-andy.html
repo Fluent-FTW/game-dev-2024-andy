@@ -33,13 +33,25 @@ Input:<input type=text id="myFavPet" value="Favourite pet here">
     document.getElementById('myDiv05').innerHTML = 'Your favourite pet is ' +
         document.getElementById('myFavPet').value
 }">
-    
+
+<input type="button" value="Is Andy" onclick="
+        let myIn1 = document.getElementById('myText1').value;
+        document.getElementById('myDiv06').innerHTML = '<br>';
+        if (myIn1 == 'Andy') {
+            document.getElementById('myDiv06').innerHTML = 'Hi Andy';
+        } else {
+            document.getElementById('myDiv06').innerHTML = 'You are not Andy';
+        }
+    }">
+<input type="button" value="Show Weiner" onclick="{
+    document.getElementById('myDiv07').innerHTML = '<img width="700" src="https://www.thefarmersdog.com/digest/wp-content/uploads/2021/07/shutterstock_1856255107-2000x1333.jpg">';
 
 <div id="myDiv01">...</div>
 <div id="myDiv02">...</div>
 <div id="myDiv03">...</div>
 <div id="myDiv04">...</div>
 <div id="myDiv05">...</div>
-
+<div id="myDiv06">...</div>
+<div id="myDiv06">...</div>
 
 
