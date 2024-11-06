@@ -1,39 +1,74 @@
 <h1 align=center>t2a20-spy-andy.html</h1>
 <textarea id="myArea01" rows=4 cols=70>Hello how are you</textarea><br>
 
-<input type=button value="encrypt" onclick="{
-<h1 align=center>t2a20-spy-andy.html</h1>
-<textarea id="myArea01" rows=4 cols=70>Hello how are you</textarea><br>
-
-<input type=button value="encrypt" onclick="{
-  let myTemp = ''
-  myString = document.getElementById('myArea01').value.toLowerCase().split('')
-  for (let myLoop=0;  myLoop < myString.length; myLoop++){
-  myTemp = myString[myLoop]
-  if (myString[myLoop] == 'e') {myTemp = 'f'}
-  if (myString[myLoop] == 'h') {myTemp = 'i'}
-  myString[myLoop] = myTemp
-          }
-  document.getElementById('myArea02').value = myString.join()
-  }"><br><br>
+<input type=button value="Encrypt" onclick="{
+  let myTemp = '';
+  let myString = document.getElementById('myArea01').value.toLowerCase().split('');
+  for (let myLoop = 0; myLoop < myString.length; myLoop++) {
+    if (myString[myLoop] == 'a') { myTemp += 'b'; }
+    else if (myString[myLoop] == 'b') { myTemp += 'c'; }
+    else if (myString[myLoop] == 'c') { myTemp += 'd'; }
+    else if (myString[myLoop] == 'd') { myTemp += 'e'; }
+    else if (myString[myLoop] == 'e') { myTemp += 'f'; }
+    else if (myString[myLoop] == 'f') { myTemp += 'g'; }
+    else if (myString[myLoop] == 'g') { myTemp += 'h'; }
+    else if (myString[myLoop] == 'h') { myTemp += 'i'; }
+    else if (myString[myLoop] == 'i') { myTemp += 'j'; }
+    else if (myString[myLoop] == 'j') { myTemp += 'k'; }
+    else if (myString[myLoop] == 'k') { myTemp += 'l'; }
+    else if (myString[myLoop] == 'l') { myTemp += 'm'; }
+    else if (myString[myLoop] == 'm') { myTemp += 'n'; }
+    else if (myString[myLoop] == 'n') { myTemp += 'o'; }
+    else if (myString[myLoop] == 'o') { myTemp += 'p'; }
+    else if (myString[myLoop] == 'p') { myTemp += 'q'; }
+    else if (myString[myLoop] == 'q') { myTemp += 'r'; }
+    else if (myString[myLoop] == 'r') { myTemp += 's'; }
+    else if (myString[myLoop] == 's') { myTemp += 't'; }
+    else if (myString[myLoop] == 't') { myTemp += 'u'; }
+    else if (myString[myLoop] == 'u') { myTemp += 'v'; }
+    else if (myString[myLoop] == 'v') { myTemp += 'w'; }
+    else if (myString[myLoop] == 'w') { myTemp += 'x'; }
+    else if (myString[myLoop] == 'x') { myTemp += 'y'; }
+    else if (myString[myLoop] == 'y') { myTemp += 'z'; }
+    else if (myString[myLoop] == 'z') { myTemp += 'z'; }
+    else { myTemp += myString[myLoop]; }
+  }
+  document.getElementById('myArea02').value = myTemp;
+}">
+<br><br>
 
 <textarea id="myArea02" rows=4 cols=70></textarea><br>
 
-<input type=button value="decrypt" onclick="{
-  <h1 align=center>t2a20-spy-andy.html</h1>
-<textarea id="myArea01" rows=4 cols=70>Hello how are you</textarea><br>
-
-<input type=button value="encrypt" onclick="{
-  let myTemp = ''
-  myString = document.getElementById('myArea01').value.toLowerCase().split('')
-  for (let myLoop=0;  myLoop < myString.length; myLoop++){
-  myTemp = myString[myLoop]
-  if (myString[myLoop] == 'e') {myTemp = 'f'}
-  if (myString[myLoop] == 'h') {myTemp = 'i'}
-  myString[myLoop] = myTemp
-          }
-  document.getElementById('myArea02').value = myString.join()
-  }"><br><br>
-
-
-<textarea id="myArea03" rows=4 cols=70></textarea><br>
+<input type=button value="Decrypt" onclick="{
+  let myTemp = '';
+  let myString = document.getElementById('myArea02').value.toLowerCase().split('');
+  for (let myLoop = 0; myLoop < myString.length; myLoop++) {
+    if (myString[myLoop] == 'b') { myTemp += 'a'; }
+ else if (myString[myLoop] == 'c') { myTemp += 'b'; }
+    else if (myString[myLoop] == 'd') { myTemp += 'c'; }
+    else if (myString[myLoop] == 'e') { myTemp += 'd'; }
+    else if (myString[myLoop] == 'f') { myTemp += 'e'; }
+    else if (myString[myLoop] == 'g') { myTemp += 'f'; }
+    else if (myString[myLoop] == 'h') { myTemp += 'g'; }
+    else if (myString[myLoop] == 'i') { myTemp += 'h'; }
+    else if (myString[myLoop] == 'j') { myTemp += 'i'; }
+    else if (myString[myLoop] == 'k') { myTemp += 'j'; }
+    else if (myString[myLoop] == 'l') { myTemp += 'k'; }
+    else if (myString[myLoop] == 'm') { myTemp += 'l'; }
+    else if (myString[myLoop] == 'n') { myTemp += 'm'; }
+    else if (myString[myLoop] == 'o') { myTemp += 'n'; }
+    else if (myString[myLoop] == 'p') { myTemp += 'o'; }
+    else if (myString[myLoop] == 'q') { myTemp += 'p'; }
+    else if (myString[myLoop] == 'r') { myTemp += 'q'; }
+    else if (myString[myLoop] == 's') { myTemp += 'r'; }
+    else if (myString[myLoop] == 't') { myTemp += 's'; }
+    else if (myString[myLoop] == 'u') { myTemp += 't'; }
+    else if (myString[myLoop] == 'v') { myTemp += 'u'; }
+    else if (myString[myLoop] == 'w') { myTemp += 'v'; }
+    else if (myString[myLoop] == 'x') { myTemp += 'w'; }
+    else if (myString[myLoop] == 'y') { myTemp += 'x'; }
+    else if (myString[myLoop] == 'z') { myTemp += 'y'; }
+    else { myTemp += myString[myLoop]; } // For other characters like spaces and punctuation
+}
+  document.getElementById('myArea02').value =myTemp;
+}">
