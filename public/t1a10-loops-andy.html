@@ -28,5 +28,30 @@ Max loops: <input id="myNum01" type=number value="4" ><br>
   }">
 |
 
+Base Number: <input id="baseInput" type="Number" value=5><br>
+Exponent: <input id="exponentInput" type="Number" value=3><br>
+
+<input type=button value="Calculate Power" onclick="CalculatePower()">
+
+<div id="resultDiv"></div>
+
+<script>
+
+  function CalculatePower() {
+    document.getElementById('resultDiv').innerHTML = '';
+
+    let Base = parseInt(document.getElementById('baseInput').value);
+    let exponent = parseInt(document.getElementById('ExponentInput').value;
+
+
+    let result =1;
+
+    for (let i = 0; i < exponent; i++) {
+      result *=base;
+
+      document.getElementById('resultDiv').innerHTMl = base + ' to the power of ' + exponent + ' is: ' + result;
+}
+</script>
+  
 
   <div id="myDiv01">...</div>
