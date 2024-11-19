@@ -23,4 +23,22 @@
   document.getElementById('myDiv01').innerHTML += 'eyeColor:' + myPerson.eyeColor + ' <br> '
   }">
 
+<input type=button value="My Fire new Fiesta" onclick="{
+
+  let myCar ={
+    'horsePower' : '120',
+    'weight' : '2578',
+    'fuelEcon' : '4.9L/100km',
+    'Engine' : '1.6-liter inline-4',
+    'Seating' : '4Seater'
+      'Type' : 'Hatchback',
+    }
+  document.getElementById('myDiv01').innerHTML = '<br>myCar Object has properties: <br>'
+    document.getElementById('myDiv01').innerHTML += 'horsePower: ' + myCar.horsePower + '<br>'
+      document.getElementById('myDiv01').innerHTML += 'weight: ' + myCar.weight + '<br>'
+        document.getElementById('myDiv01').innerHTML += 'fuelEcon: ' + myCar.fuelEcon + '<br>'
+          document.getElementById('myDiv01').innerHTML += 'Engine: ' + myCar.Engine + '<br>'
+            document.getElementById('myDiv01').innerHTML += 'Seating: ' +myCar.Seating + '<br>'
+              document.getElementById('myDiv01').innerHTML += 'Type: ' myCar.Type + '<br>'
+  }">
   <div id="myDiv01">...</div>
