@@ -7,7 +7,7 @@
 
   Nothing: <input type=text id="myText01" value="useless at the moment"><br>
 
-<input type=button value="example Object Set and Show" onClick="{
+<input type=button value="example Object Set and Show" onclick="{
 
     let myPerson ={
   'firstName' : 'John',
@@ -17,10 +17,10 @@
   }
 
    document.getElementById('myDiv01').innerHTML = '<br>myPerson Object has properties: <br>'
-  document.getElementById('myDiv01').innerHTML += 'firstName: ' + myPerson.firstName + '<br>'
-  document.getElementById('myDiv01').innerHTML += 'lastName: ' + myPerson.lastName + ' <br> '
-  document.getElementById('myDiv01').innerHTML += 'age: ' + myPerson.age + ' <br> '
-  document.getElementById('myDiv01').innerHTML += 'eyeColor:' + myPerson.eyeColor + ' <br> '
+      document.getElementById('myDiv01').innerHTML += 'firstName: ' + myPerson.firstName + '<br>'
+      document.getElementById('myDiv01').innerHTML += 'lastName: ' + myPerson.lastName + ' <br> '
+      document.getElementById('myDiv01').innerHTML += 'age: ' + myPerson.age + ' <br> '
+      document.getElementById('myDiv01').innerHTML += 'eyeColor:' + myPerson.eyeColor + ' <br> '
   }">
 
 <input type=button value="My Fire new Fiesta" onclick="{
@@ -36,12 +36,12 @@
     }
   document.getElementById('myDiv02').innerHTML = '<br>myCar Object has properties: <br>'
     document.getElementById('myDiv02').innerHTML += 'horsePower: ' + myCar.horsePower + '<br>'
-      document.getElementById('myDiv02').innerHTML += 'weight: ' + myCar.weight + '<br>'
-        document.getElementById('myDiv02').innerHTML += 'fuelEcon: ' + myCar.fuelEcon + '<br>'
-          document.getElementById('myDiv02').innerHTML += 'Engine: ' + myCar.Engine + '<br>'
-            document.getElementById('myDiv02').innerHTML += 'Seating: ' + myCar.Seating + '<br>'
-              document.getElementById('myDiv02').innerHTML += 'Type: ' + myCar.Type + '<br>'
-                document.getElementById('myDiv02').innerHTML += 'Year: ' + myCar.year + '<br>'
+    document.getElementById('myDiv02').innerHTML += 'weight: ' + myCar.weight + '<br>'
+    document.getElementById('myDiv02').innerHTML += 'fuelEcon: ' + myCar.fuelEcon + '<br>'
+    document.getElementById('myDiv02').innerHTML += 'Engine: ' + myCar.Engine + '<br>'
+    document.getElementById('myDiv02').innerHTML += 'Seating: ' + myCar.Seating + '<br>'
+    document.getElementById('myDiv02').innerHTML += 'Type: ' + myCar.Type + '<br>'
+    document.getElementById('myDiv02').innerHTML += 'Year: ' + myCar.year + '<br>'
   }">
   <div id="myDiv01">...</div>
   <div id="myDiv02">...</div>
