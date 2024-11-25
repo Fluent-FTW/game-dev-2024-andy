@@ -1,44 +1,44 @@
-  <h1 align="center">Display JSON Data</h1>
+<h1 align="center">Display JSON Data</h1>
 
-  <script>
-    // Function to fetch JSON data and display it in the div
-    async function fetchData(url) {
-      try {
-        const response = await fetch(url);
-        if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
-        const data = await response.json();
-        // Display the fetched JSON data in the div
-        document.getElementById('myDiv01').innerText = JSON.stringify(data, null, 2); // Pretty-printed JSON
-      } catch (error) {
-        
-        document.getElementById('myDiv01').innerText = `Error: ${error.message}`;
-      }
+<script>
+  // Function to fetch JSON data and display it in the div
+  async function fetchData(url) {
+    try {
+      const response = await fetch(url);
+      if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+      const data = await response.json();
+      // Display the fetched JSON data in the div
+      document.getElementById('myDiv01').innerText = JSON.stringify(data, null, 2); // Pretty-printed JSON
+    } catch (error) {
+      document.getElementById('myDiv01').innerText = `Error: ${error.message}`;
     }
+  }
 
-    // Function to show JSON when called
-    function myShowJSON(url) {
-      fetchData(url); // Call fetchData with the selected URL
-    }
-  </script>
+  // Function to show JSON when called
+  function myShowJSON(url) {
+    // Update the text input to reflect the selected URL
+    document.getElementById('myText1').value = url;
+    fetchData(url); // Call fetchData with the selected URL
+  }
+</script>
 
-  <textarea cols="70" rows="5">
+<textarea cols="70" rows="5">
 JSON is a data format similar to JavaScript objects. However, JSON is text-based and follows strict syntax rules:
 - Properties and values are wrapped in double quotes ("").
 - Objects are delimited with curly brackets ({}) and arrays with square brackets ([]).
 - It is typically used for data exchange between systems.
-  </textarea>
-  <br><br>
+</textarea>
+<br><br>
 
-  <label for="myText1">Enter a JSON-returning URL:</label>
-  <input type="text" id="myText1" value="https://randomfox.ca/floof/">
-  <input type="button" value="Show JSON" onclick="fetchData(document.getElementById('myText1').value)">
-  <br><br>
+<label for="myText1">Enter a JSON-returning URL:</label>
+<input type="text" id="myText1" value="https://randomfox.ca/floof/">
+<input type="button" value="Show JSON" onclick="fetchData(document.getElementById('myText1').value)">
+<br><br>
 
-  
-  <select size="1" onchange="myShowJSON(this.value)">
+<select size="1" onchange="myShowJSON(this.value)">
   <option value="https://randomfox.ca/floof/">Random Fox</option>
   <option value="https://dog.ceo/api/breeds/image/random">Dog CEO</option>
 </select>
-  <br><br>
+<br><br>
 
-  <div id="myDiv01">...</div>
+<div id="myDiv01">...</div>
