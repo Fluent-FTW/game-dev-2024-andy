@@ -45,6 +45,12 @@
         img.style.left = (currentLeft + 10) + 'px';
       }"><br><br>
   
+    <input type=button id="myButton04" value="Image Left" onclick="{
+        let img = document.getElementById('myImage01');
+        let currentRight = parseInt(img.style.left || '0', 10);
+        img.style.left = (currentLeft + 10) + 'px';
+      }"><br><br>
+  
 
     <input type=button value="Auto Move Right" onclick="{
       clearInterval(myClock02)
@@ -56,7 +62,7 @@
       clearInterval(myClock02)
         myClock02 = setInterval(function(){
           document.getElementById('myButton01').click()
-        }. 30)
+        }, 30)
     }">
     <img id="myImage01" style="position:relative; width:100px; height: 80px; top:0px;
       left:0px;" src="myImage01.jpg">
