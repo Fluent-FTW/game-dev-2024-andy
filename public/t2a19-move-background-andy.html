@@ -1,5 +1,5 @@
-<bod id="myBody" style="background-repeat:repeat; background-size: 80%"
-  background="myBackground.jpg">
+<body id="myBody" style="background-repeat:repeat; background-size: 80%"
+  background="https://www.bing.com/images/blob?bcid=s-7wf3oqZsoHsg">
   <script>
     let myGlobalX = 0
     let myClock01
@@ -10,12 +10,18 @@
   <h1 align=center>t2a19-move=background-andy.html</h1>
 
   <input id="myButton01" type=button value="background move left" onclick="{
-    myTemp = '100px 0px'
     myGlobalX -= 5
-    myTemp = myGlobalX + 'px 0px '
+    myTemp = myGlobalX + 'px 0px'
     document.getElementById('myBody').style.backgroundPosition =myTemp
+    
     }">
 
+  <input id="myButton02" type=button value="Background Move Right" onclick="{
+    myGlobalX += 5
+      myTemp = myGlobalX + 'px 0px'
+        document.getElementById('myBody').style.backgroundPosition =myTemp
+  }">
+  
     <input type=button value="Auto Background Left Faster" onclick="{
       clearInterval(myClock01)
       mySpeed01 -= 30
@@ -33,10 +39,16 @@
         document.getElementById('myButton01').click()
       }, mySpeed01)
       }">
-      <input type=button id="myButton02" value="Image Right" onclick="{
-        document.getElementById('myImage01').style.left =
-          parseInt(document.getElementById('myImage01').style.left) + 10 + 'px'
+      <input type=button id="myButton03" value="Image Right" onclick="{
+        let img = document.getElementById('myImage01');
+        let currentLeft = parseInt(img.style.left || '0', 10);
+        img.style.left = (currentLeft + 10) + 'px';
       }"><br><br>
+  <input type=button id="myButton04" value="Image Right" onclick="{
+    let img = document.getElementById('myImage01');
+    let currentRight = parseInt(img.style.right || '0', 10);
+    img.style.left = (currentRight - 10) + 'px';
+  }"><br><br>
 
     <input type=button value="Auto Move Right" onclick="{
       clearInterval(myClock02)
@@ -44,7 +56,11 @@
         document.getElementById('myButton02').click()
       }, 30)
     }">
+    <input type=button value="Auto Move Left" onclick="{
+      clearInterval(myClock02)
+        myClock02 = setInterval(function(){
+          document.getElementById('myButton01').click()
+        }. 30)
+    }">
     <img id="myImage01" style="position:relative; width:100px; height: 80px; top:0px;
       left:0px;" src="myImage01.jpg">
-        
-        
