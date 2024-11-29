@@ -1,22 +1,22 @@
 <h1 align="center">Display JSON Data</h1>
 
 <script>
-  // Function to fetch JSON data and display it in the div
+  // Function to get JSON data and display it in the div
   async function fetchData(url) {
     try {
       const response = await fetch(url);
       if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
       const data = await response.json();
-      // Display the fetched JSON data in the div
+      // Displays the JSON data that was gotten in the div
       document.getElementById('myDiv01').innerText = JSON.stringify(data, null, 2); // Pretty-printed JSON
     } catch (error) {
       document.getElementById('myDiv01').innerText = `Error: ${error.message}`;
     }
   }
 
-  // Function to show JSON when called
+  // Function to show JSON stuff when button is clicked
   function myShowJSON(url) {
-    // Update the text input to reflect the selected URL
+    // Update the text input to display the correct JSON
     document.getElementById('myText1').value = url;
     fetchData(url); // Call fetchData with the selected URL
   }
