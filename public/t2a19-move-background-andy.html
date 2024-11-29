@@ -50,7 +50,18 @@ e<body id="myBody" style="background-repeat:repeat; background-size: 80%"
         let currentLeft = parseInt(img.style.left || '0', 10);
         img.style.left = (currentLeft - 10) + 'px';
       }"><br><br>
-  
+
+  <input type=button id="myButton05" value="Image down" onclick="{
+    let img = document.getElementById('myImage01');
+    let currentLeft = parseInt(img.style.top || '0' , 10);
+    img.style.top = (currentTop + 10) + 'px';
+  }"><br><br>
+
+  <input type=button id="myButton06" value="Image up" onclick="{
+    let img = document.getElementById('myImage01');
+    let currentLeft = parseInt(img.style.top || '0', 10);
+    img.stye.left = (currentTop - 10) + 'px';
+  }"><br><br>
 
     <input type=button value="Auto Move Right" onclick="{
       clearInterval(myClock02)
