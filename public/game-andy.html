@@ -20,7 +20,20 @@ Version 0.0.1<br>
      // or do the following
       document.getElementById('myImg01').style.left = parseInt(document.getElementById('myImg01').style.left) + 7
       myCheckHit()
+      myCheckWin()
    }
+
+   if (myKey =='a') {
+      document.getElementById('myImg01').style.left = parseInt(document.getElementById('myImg01').style.left) - 7
+      myCheckHit()
+      myCheckWin()
+
+   }
+
+   if (myKey =='w') {
+      document.getElementById('myImg01').style.left = parseInt(document.getElementById('myImg01').style.top + 
+                                                               THIS IS YOUR NEXT SPOT TO WORK ON. MAKE IT SO YOU ARE JUMPING AND STUFF AND NOT JUST MOVING UP IN PIXELS.
+   
 
 
    // put your other keydowns here.
@@ -62,8 +75,15 @@ function myCheckHit(){
    if ( myHitOther('myImg01','myImg02') ){
        alert('you lose')  
        document.getElementById('myImg01').style.left = '20px'
-       location = 't2a13-keydown.html'  // go to your next level
+       location = 't2a13-keydown.html'  // go to same level since you lost you loser
    }
+
+   function myCheckWin(){
+      if ( myHitOther('myImg01', 'myImg03'){
+         alert('you win')
+         document.getElementById('mtImg01).style.left = '20px'
+           location = 't2a13-keydown.html'  // go to your next level
+      }
 
 
    // more if statements here like the above
