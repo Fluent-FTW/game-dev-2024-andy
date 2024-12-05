@@ -1,44 +1,28 @@
-w
 Version 0.0.1<br>
 
+<body id="myBody" style="background-repeat: no-repeat; background-size: 100%" background="https://cdn.wallpapersafari.com/55/17/3NeORi.png" 
+onkeydown="{
 
-<body id="myBody" style="background-repeat: no-repeat; background-size: 100%" background="https://cdn.wallpapersafari.com/55/17/3NeORi.png" onkeydown="{
-
-   let myKey = event.key
-   //  let myKey = String.toLowerCase(event.key)
-   document.getElementById('myDiv01').innerHTML = myKey
+   let myKey = event.key;
+   document.getElementById('myDiv01').innerHTML = myKey;
    if (myKey == 'd') {
-
-
-     // either uncomment
-     // clearInterval(myInterval)
-     // myInterval = setInterval(function(){
-     //    document.getElementById('myImg01').style.left = parseInt(document.getElementById('myImg01').style.left) + 3
-     //    myCheckHit()
-     // } ,20)
-
-     // or do the following
-      document.getElementById('myImg01').style.left = parseInt(document.getElementById('myImg01').style.left) + 7
-      myCheckHit()
-      myCheckWin()
+      document.getElementById('myImg01').style.left = 
+         parseInt(document.getElementById('myImg01').style.left) + 7 + 'px';
+      myCheckHit();
+      myCheckWin();
    }
 
-   if (myKey =='a') {
-      document.getElementById('myImg01').style.left = parseInt(document.getElementById('myImg01').style.left) - 7
-      myCheckHit()
-      myCheckWin()
-
+   if (myKey == 'a') {
+      document.getElementById('myImg01').style.left = 
+         parseInt(document.getElementById('myImg01').style.left) - 7 + 'px';
+      myCheckHit();
+      myCheckWin();
    }
 
-   if (myKey =='w') {
-      document.getElementById('myImg01').style.top = parseInt(document.getElementById('myImg01').style.top + 
-                                                               THIS IS YOUR NEXT SPOT TO WORK ON. MAKE IT SO YOU ARE JUMPING AND STUFF AND NOT JUST MOVING UP IN PIXELS.
-   
-
-
-   // put your other keydowns here.
-
-
+   if (myKey == 'w')
+      myJump();
+      myCheckHit();
+      myCheckWin();
 
 }">
 
@@ -47,62 +31,80 @@ Version 0.0.1<br>
 
 <script>
 
-   // global variables here
-   let myGlobalX = 0
-   let myClock
-   let myInterval=0;
+   // Global variables here
+   let myGlobalX = 0;
+   let myClock;
+   let myInterval = 0;
+   let isJumping = false; // Prevent multiple jumps
 
-   // global functions here
-function myHitOther(my1,my2){
-   left1   = parseInt(document.getElementById(my1).style.left)
-   right1  = left1 + parseInt(document.getElementById(my1).style.width)
-   top1    = parseInt(document.getElementById(my1).style.top)   
-   bottom1 = top1   + parseInt(document.getElementById(my1).style.height)
-   left2   = parseInt(document.getElementById(my2).style.left)
-   right2  = left2 + parseInt(document.getElementById(my2).style.width)
-   top2    = parseInt(document.getElementById(my2).style.top)   
-   bottom2 = top2   + parseInt(document.getElementById(my2).style.height)
-   if ((right1  >=  left2  ) &&      	   
-       (bottom1 >=  top2   ) &&
-       (left1   <=  right2 ) &&
-       (top1    <=  bottom2) ){
-       return true
+   // Global functions here
+   function myHitOther(my1, my2) {
+      let left1 = parseInt(document.getElementById(my1).style.left);
+      let right1 = left1 + parseInt(document.getElementById(my1).style.width);
+      let top1 = parseInt(document.getElementById(my1).style.top);   
+      let bottom1 = top1 + parseInt(document.getElementById(my1).style.height);
+      let left2 = parseInt(document.getElementById(my2).style.left);
+      let right2 = left2 + parseInt(document.getElementById(my2).style.width);
+      let top2 = parseInt(document.getElementById(my2).style.top);   
+      let bottom2 = top2 + parseInt(document.getElementById(my2).style.height);
+      return (
+         right1 >= left2 &&
+         bottom1 >= top2 &&
+         left1 <= right2 &&
+         top1 <= bottom2
+      );
    }
-}
 
-
-function myCheckHit() {
-   if ( myHitOther('myImg01','myImg02') ){
-       alert('you lose')  
-       document.getElementById('myImg01').style.left = '20px';
-       location = 't2a13-keydown.html'  // go to same level since you lost you loser
-   } }
+   function myCheckHit() {
+      if (myHitOther('myImg01', 'myImg02')) {
+         alert('you lose');  
+         document.getElementById('myImg01').style.left = '20px';
+         location = 't2a13-keydown.html';  // Reload same level
+      }
+   }
 
    function myCheckWin() {
-      if ( myHitOther('myImg01', 'myImg03') ){
-         alert('you win')
+      if (myHitOther('myImg01', 'myImg03')) {
+         alert('you win');
          document.getElementById('myImg01').style.left = '20px';
-           location = 't2a13-keydown.html'  // go to your next level
-      } }
+         location = 't2a13-keydown.html';  // Go to next level
+      }
+   }
 
-
-   // more if statements here like the above
-
-
-
-}  // end of myCheckHit()
-
+   function myJump() {
+      if (isJumping) return; // Prevent jump spam
+      isJumping = true;
+      let myImg = document.getElementById('myImg01');
+      let startPos = parseInt(myImg.style.top);
+      let jumpHeight = 100;  // Max height for the jump
+      let jumpSpeed = 10;    // Speed of each frame during jump
+      let upInterval = setInterval(() => {
+         if (parseInt(myImg.style.top) > startPos - jumpHeight) {
+            myImg.style.top = parseInt(myImg.style.top) - 5 + 'px';
+         } else {
+            clearInterval(upInterval);
+            let downInterval = setInterval(() => {
+               if (parseInt(myImg.style.top) < startPos) {
+                  myImg.style.top = parseInt(myImg.style.top) + 5 + 'px';
+               } else {
+                  clearInterval(downInterval);
+                  isJumping = false;
+               }
+            }, jumpSpeed);
+         }
+      }, jumpSpeed);
+   }
 
 </script>
 
-<img id="myImg01" style="position:absolute; width:100px; height:80px; top:0px; left:50px;"  src="myImage01.jpg">
-<img id="myImg02" style="position:absolute; width:100px; height:80px; top:0px; left:250px;" src="myImage02.jpg">
-
+<img id="myImg01" style="position:absolute; width:100px; height:80px; top:200px; left:50px;" src="myImage01.jpg">
+<img id="myImg02" style="position:absolute; width:100px; height:80px; top:200px; left:250px;" src="myImage02.jpg">
+<img id="myImg03" style="position:absolute; width:100px; height:80px; top:200px; left:400px;" src="myImage03.jpg">
 
 <input type=button value="Image Right Fast Button" onTouchStart="{this.click(); event.preventDefault();}" onclick="{
-  document.getElementById('myImg01').style.left = parseInt(document.getElementById('myImg01').style.left) + 10 + 'px'
-  myCheckHit()     // checks for all collisions
+  document.getElementById('myImg01').style.left = 
+     parseInt(document.getElementById('myImg01').style.left) + 10 + 'px';
+  myCheckHit();     // Check for all collisions
 }"><br><br>
-
 
 <div id="myDiv01" style="color:yellow">..</div>
