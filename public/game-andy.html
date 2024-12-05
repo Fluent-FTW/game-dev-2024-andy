@@ -59,7 +59,7 @@ onkeydown="{
       if (myHitOther('myImg01', 'myImg02')) {
          alert('you lose');  
          document.getElementById('myImg01').style.left = '20px';
-         location = 't2a13-keydown.html';  // Reload same level
+         location = 'https://fluent-ftw.github.io/game-dev-2024-andy/public/game-andy.html';  // Reload same level
       }
    }
 
@@ -76,7 +76,7 @@ onkeydown="{
       isJumping = true;
       let myImg = document.getElementById('myImg01');
       let startPos = parseInt(myImg.style.top);
-      let jumpHeight = 100;  // Max height for the jump
+      let jumpHeight = 130;  // Max height for the jump
       let jumpSpeed = 10;    // Speed of each frame during jump
       let upInterval = setInterval(() => {
          if (parseInt(myImg.style.top) > startPos - jumpHeight) {
