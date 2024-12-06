@@ -6,7 +6,7 @@ onkeydown="{
    let myKey = event.key;
    document.getElementById('myDiv01').innerHTML = myKey;
    if (myKey == 'd') {
-      document.getElementById('myImg01').style.left = 
+      document.getElementById('MainCharacterRight').style.left = 
          parseInt(document.getElementById('myImg01').style.left) + 7 + 'px';
       myCheckHit();
       myCheckWin();
@@ -74,7 +74,7 @@ onkeydown="{
    function myJump() {
       if (isJumping) return; // Prevent jump spam
       isJumping = true;
-      let myImg = document.getElementById('myImg01');
+      let myImg = document.getElementById('MainCharacterJump');
       let startPos = parseInt(myImg.style.top);
       let jumpHeight = 130;  // Max height for the jump
       let jumpSpeed = 10;    // Speed of each frame during jump
