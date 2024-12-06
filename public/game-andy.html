@@ -1,28 +1,30 @@
-Version 0.0.1<br>
-
 <body id="myBody" style="background-repeat: no-repeat; background-size: 100%" background="https://cdn.wallpapersafari.com/55/17/3NeORi.png" 
 onkeydown="{
 
    let myKey = event.key;
    document.getElementById('myDiv01').innerHTML = myKey;
    if (myKey == 'd') {
-      document.getElementById('MainCharacterRight').style.left = 
+      setCharacter('Right'); // Update character image
+      document.getElementById('myImg01').style.left = 
          parseInt(document.getElementById('myImg01').style.left) + 7 + 'px';
       myCheckHit();
       myCheckWin();
    }
 
    if (myKey == 'a') {
+      setCharacter('Left'); // Update character image
       document.getElementById('myImg01').style.left = 
          parseInt(document.getElementById('myImg01').style.left) - 7 + 'px';
       myCheckHit();
       myCheckWin();
    }
 
-   if (myKey == 'w')
+   if (myKey == 'w') {
+      setCharacter('Jump'); // Update character image
       myJump();
       myCheckHit();
       myCheckWin();
+   }
 
 }">
 
@@ -30,14 +32,16 @@ onkeydown="{
 <br><br><br><br>
 
 <script>
-
    // Global variables here
    let myGlobalX = 0;
-   let myClock;
-   let myInterval = 0;
    let isJumping = false; // Prevent multiple jumps
 
-   // Global functions here
+   // Update the visible character image
+   function setCharacter(action) {
+      const myImg = document.getElementById('myImg01');
+      myImg.src = `MainCharacter${action}.png`; // Update the source dynamically
+   }
+
    function myHitOther(my1, my2) {
       let left1 = parseInt(document.getElementById(my1).style.left);
       let right1 = left1 + parseInt(document.getElementById(my1).style.width);
@@ -74,7 +78,7 @@ onkeydown="{
    function myJump() {
       if (isJumping) return; // Prevent jump spam
       isJumping = true;
-      let myImg = document.getElementById('MainCharacterJump');
+      let myImg = document.getElementById('myImg01');
       let startPos = parseInt(myImg.style.top);
       let jumpHeight = 130;  // Max height for the jump
       let jumpSpeed = 10;    // Speed of each frame during jump
@@ -89,6 +93,7 @@ onkeydown="{
                } else {
                   clearInterval(downInterval);
                   isJumping = false;
+                  setCharacter('Right'); // Reset to default after jump
                }
             }, jumpSpeed);
          }
@@ -97,9 +102,7 @@ onkeydown="{
 
 </script>
 
-<img id="myImg01" style="position:absolute; width:100px; height:80px; top:200px; left:50px;" src="MainCharacterLeft.png">
-<img id="MainCharacterRight" style="position:absolute; width:100px; height:80px; top:200px; left:50px;" src="MainCharacterRight.png">
-<img id="MainCharacterJump" style="position:absolute; width:100px; height:80px; top:200px; left:50px;" src="MainCharacterJump.png">  
+<img id="myImg01" style="position:absolute; width:100px; height:80px; top:200px; left:50px;" src="MainCharacterRight.png">
 <img id="myImg02" style="position:absolute; width:100px; height:80px; top:200px; left:250px;" src="myImage02.jpg">
 <img id="myImg03" style="position:absolute; width:100px; height:80px; top:200px; left:400px;" src="myImage03.jpg">
 
