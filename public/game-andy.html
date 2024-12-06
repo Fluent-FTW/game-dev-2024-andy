@@ -1,10 +1,3 @@
-Version 0.0.1<br>
-
-<body id="myBody" style="background-repeat: no-repeat; background-size: 100%" background="https://cdn.wallpapersafari.com/55/17/3NeORi.png">
-
-<h1 align=center>Andy Final Game</h1>
-<br><br><br><br>
-
 <script>
    // Global variables
    let isJumping = false; // Prevent multiple jumps
@@ -14,19 +7,25 @@ Version 0.0.1<br>
    let gravity = 5; // Gravity effect during jump
    let isFalling = false;
 
+   // Track key presses
    window.addEventListener("keydown", (e) => {
-      keyState[e.key] = true; // Track key press
+      keyState[e.key] = true;
       if (e.key === "w" && !isJumping) {
-         myJump(); // Start jump
+         myJump();
       }
    });
 
    window.addEventListener("keyup", (e) => {
-      keyState[e.key] = false; // Track key release
+      keyState[e.key] = false;
    });
 
+   // Main game loop
    function gameLoop() {
       const myImg = document.getElementById("myImg01");
+
+      // Ensure `style.left` and `style.top` have valid initial values
+      if (!myImg.style.left) myImg.style.left = "50px";
+      if (!myImg.style.top) myImg.style.top = "200px";
 
       // Handle horizontal movement
       if (keyState["d"]) {
@@ -42,15 +41,17 @@ Version 0.0.1<br>
       myCheckHit();
       myCheckWin();
 
-      // Continue the loop
+      // Keep the loop running
       requestAnimationFrame(gameLoop);
    }
 
+   // Update the character's sprite
    function setCharacter(action) {
       const myImg = document.getElementById("myImg01");
       myImg.src = `MainCharacter${action}.png`;
    }
 
+   // Jump function
    function myJump() {
       isJumping = true;
       isFalling = false;
@@ -83,6 +84,7 @@ Version 0.0.1<br>
       jumpUp();
    }
 
+   // Collision detection
    function myHitOther(my1, my2) {
       let left1 = parseInt(document.getElementById(my1).style.left);
       let right1 = left1 + parseInt(document.getElementById(my1).style.width);
@@ -119,9 +121,3 @@ Version 0.0.1<br>
    // Start the game loop
    gameLoop();
 </script>
-
-<img id="myImg01" style="position:absolute; width:100px; height:80px; top:200px; left:50px;" src="MainCharacterRight.png">
-<img id="myImg02" style="position:absolute; width:100px; height:80px; top:200px; left:250px;" src="myImage02.jpg">
-<img id="myImg03" style="position:absolute; width:100px; height:80px; top:200px; left:400px;" src="myImage03.jpg">
-
-<div id="myDiv01" style="color:yellow">..</div>
