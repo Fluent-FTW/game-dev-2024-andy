@@ -1,145 +1,99 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Andy Final Game</title>
-    <style>
-        body {
-            background-repeat: no-repeat;
-            background-size: 100%;
-            background-image: url('https://cdn.wallpapersafari.com/55/17/3NeORi.png');
-        }
-        #myImg01 {
-            position: absolute;
-            width: 100px;
-            height: 80px;
-            top: 200px;
-            left: 50px;
-        }
-    </style>
-</head>
-<body id="myBody" onkeydown="handleKeyDown(event)" onkeyup="handleKeyUp(event)">
 
-<h1 align="center">Andy Final Game</h1>
+Version 0.0.1<br>
+
+
+<body id="myBody" style="background-repeat:repeat; background-size: 80%" background="myBackground01.jpg"     onkeydown="{
+
+   let myKey = event.key
+   //  let myKey = String.toLowerCase(event.key)
+   document.getElementById('myDiv01').innerHTML = myKey
+   if (myKey == 'd') {
+
+
+     // either uncomment
+     // clearInterval(myInterval)
+     // myInterval = setInterval(function(){
+     //    document.getElementById('myImg01').style.left = parseInt(document.getElementById('myImg01').style.left) + 3
+     //    myCheckHit()
+     // } ,20)
+
+     // or do the following
+      document.getElementById('myImg01').style.left = parseInt(document.getElementById('myImg01').style.left) + 7
+      myCheckHit()
+   }
+
+
+   // put your other keydowns here.
+
+
+
+}">
+
+<h1 align=center>t4a01-game-template-with-wasd-by-fred</h1>
 <br><br><br><br>
 
-<img id="myImg01" src="MainCharacterRight.png">
-<img id="myImg02" style="position:absolute; width:100px; height:80px; top:200px; left:250px;" src="myImage02.jpg">
-<img id="myImg03" style="position:absolute; width:100px; height:80px; top:200px; left:400px;" src="myImage03.jpg">
-
-<div id="myDiv01" style="color:yellow">..</div>
-
 <script>
-    // Global variables
-    let isJumping = false; // Prevent multiple jumps
-    let keyState = {}; // Track pressed keys
-    let characterSpeed = 3; // Movement speed for smooth transitions
-    let jumpHeight = 130; // Max height for the jump
-    let gravity = 5; // Gravity effect during jump
 
-    function handleKeyDown(event) {
-        keyState[event.key] = true; // Track key press
-        if (event.key === "w" && !isJumping) {
-            myJump(); // Start jump
-        }
-    }
+   // global variables here
+   let myGlobalX = 0
+   let myClock
+   let myInterval=0;
 
-    function handleKeyUp(event) {
-        keyState[event.key] = false; // Track key release
-    }
+   // global functions here
+function myHitOther(my1,my2){
+   left1   = parseInt(document.getElementById(my1).style.left)
+   right1  = left1 + parseInt(document.getElementById(my1).style.width)
+   top1    = parseInt(document.getElementById(my1).style.top)   
+   bottom1 = top1   + parseInt(document.getElementById(my1).style.height)
+   left2   = parseInt(document.getElementById(my2).style.left)
+   right2  = left2 + parseInt(document.getElementById(my2).style.width)
+   top2    = parseInt(document.getElementById(my2).style.top)   
+   bottom2 = top2   + parseInt(document.getElementById(my2).style.height)
+   if ((right1  >=  left2  ) &&      	   
+       (bottom1 >=  top2   ) &&
+       (left1   <=  right2 ) &&
+       (top1    <=  bottom2) ){
+       return true
+   }
+}
 
-    function gameLoop() {
-        const myImg = document.getElementById("myImg01");
 
-        // Handle horizontal movement
-        if (keyState["d"]) {
-            setCharacter("Right");
-            myImg.style.left = (parseInt(myImg.style.left) || 0) + characterSpeed + "px";
-        }
-        if (keyState["a"]) {
-            setCharacter("Left");
-            myImg.style.left = (parseInt(myImg.style.left) || 0) - characterSpeed + "px";
-        }
+function myCheckHit(){
+   if ( myHitOther('myImg01','myImg02') ){
+       alert('you lose')  
+       document.getElementById('myImg01').style.left = '20px'
+       location = 't2a13-keydown.html'  // go to your next level
+   }
 
-        // Check collisions
-        myCheckHit();
-        myCheckWin();
 
-        // Continue the loop
-        requestAnimationFrame(gameLoop);
-    }
+   // more if statements here like the above
 
-    function setCharacter(action) {
-        const myImg = document.getElementById("myImg01");
-        myImg.src = `MainCharacter${action}.png`; // Update the source dynamically
-    }
 
-    function myJump() {
-        if (isJumping) return; // Prevent jump spam
-        isJumping = true;
-        const myImg = document.getElementById("myImg01");
-        const startPos = parseInt(myImg.style.top);
-        let currentHeight = 0;
 
-        function jumpUp() {
-            if (currentHeight < jumpHeight) {
-                currentHeight += gravity;
-                myImg.style.top = startPos - currentHeight + "px";
-                requestAnimationFrame(jumpUp);
-            } else {
-                jumpDown();
-            }
-        }
+}  // end of myCheckHit()
 
-        function jumpDown() {
-            if (currentHeight > 0) {
-                currentHeight -= gravity;
-                myImg.style.top = startPos - currentHeight + "px";
-                requestAnimationFrame(jumpDown);
-            } else {
-                isJumping = false;
-                setCharacter("Right"); // Reset to default after jump
-            }
-        }
 
-        jumpUp();
-    }
-
-    function myHitOther(my1, my2) {
-        const rect1 = document.getElementById(my1).getBoundingClientRect();
-        const rect2 = document.getElementById(my2).getBoundingClientRect();
-        return (
-            rect1.right >= rect2.left &&
-            rect1.left <= rect2.right &&
-            rect1.bottom >= rect2.top &&
-            rect1.top <= rect2.bottom
-        );
-    }
-
-    function myCheckHit() {
-        if (myHitOther('myImg01', 'myImg02')) {
-            alert('You lose! Click "space" to restart.');
-            document.getElementById('myImg01').style.left = '50px'; // Reset position
-            document.getElementById('myImg01').style.top = '200px'; // Reset position
-            // Optionally, you can reload the page or reset the game state here
-            // location.reload(); // Uncomment to reload the page
-        }
-    }
-
-    function myCheckWin() {
-        if (myHitOther('myImg01', 'myImg03')) {
-            alert('You win!');
-            document.getElementById('myImg01').style.left = '50px'; // Reset position
-            document.getElementById('myImg01').style.top = '200px'; // Reset position
-            // Optionally, you can navigate to the next level or reset the game state here
-            // location.href = 'nextLevel.html'; // Uncomment to go to the next level
-        }
-    }
-
-    // Start the game loop
-    gameLoop();
 </script>
 
-</body>
-</html>
+<img id="myImg01" style="position:absolute; width:100px; height:80px; top:0px; left:50px;"  src="myImage01.jpg">
+<img id="myImg02" style="position:absolute; width:100px; height:80px; top:0px; left:250px;" src="myImage02.jpg">
+
+<input type=button value="Auto Background Left" onclick="{
+  clearInterval(myClock)
+  let myTemp = '100px 0px'
+  myClock = setInterval(function(){
+      myGlobalX -= 5
+      myTemp =  myGlobalX + 'px 0px'
+      document.getElementById('myBody').style.backgroundPosition = myTemp
+  }, 100)
+    
+}">
+
+
+<input type=button value="Image Right Fast Button" onTouchStart="{this.click(); event.preventDefault();}" onclick="{
+  document.getElementById('myImg01').style.left = parseInt(document.getElementById('myImg01').style.left) + 10 + 'px'
+  myCheckHit()     // checks for all collisions
+}"><br><br>
+
+
+<div id="myDiv01" style="color:yellow">..</div>
