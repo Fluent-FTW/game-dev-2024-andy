@@ -76,35 +76,38 @@
     }
 
     function myJump() {
-        if (isJumping) return; // Prevent jump spam
-        isJumping = true;
-        const myImg = document.getElementById("myImg01");
-        const startPos = parseInt(myImg.style.top);
-        let currentHeight = 0;
+    if (isJumping) return; // Prevent jump spam
+    isJumping = true;
+    const myImg = document.getElementById("myImg01");
+    const startPos = parseInt(myImg.style.top);
+    let currentHeight = 0;
 
-        function jumpUp() {
-            if (currentHeight < jumpHeight) {
-                currentHeight += gravity;
-                myImg.style.top = startPos - currentHeight + "px";
-                requestAnimationFrame(jumpUp);
-            } else {
-                jumpDown();
-            }
+    // Set the character image to the jumping sprite
+    myImg.src = 'MainCharacterJump.png'; // Change to the jump image
+
+    function jumpUp() {
+        if (currentHeight < jumpHeight) {
+            currentHeight += gravity;
+            myImg.style.top = startPos - currentHeight + "px";
+            requestAnimationFrame(jumpUp);
+        } else {
+            jumpDown();
         }
-
-        function jumpDown() {
-            if (currentHeight > 0) {
-                currentHeight -= gravity;
-                myImg.style.top = startPos - currentHeight + "px";
-                requestAnimationFrame(jumpDown);
-            } else {
-                isJumping = false;
-                setCharacter("Right"); // Reset to default after jump
-            }
-        }
-
-        jumpUp();
     }
+
+    function jumpDown() {
+        if (currentHeight > 0) {
+            currentHeight -= gravity;
+            myImg.style.top = startPos - currentHeight + "px";
+            requestAnimationFrame(jumpDown);
+        } else {
+            isJumping = false;
+            setCharacter("Right"); // Reset to default after jump
+        }
+    }
+
+    jumpUp();
+}
 
     function myHitOther(my1, my2) {
         const rect1 = document.getElementById(my1).getBoundingClientRect();
