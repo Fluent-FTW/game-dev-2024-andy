@@ -45,7 +45,7 @@
 
     function myJump() {
       isJumping = true;
-      const myImg = document.getElementById("myImg01");
+      const myImg = document.getElementById("myImg03");
       const startPos = parseInt(myImg.style.top);
       let currentHeight = 0;
       const jumpHeight = 130;
@@ -76,14 +76,14 @@
 
     function myCheckHit() {
       if (myHitOther("myImg01", "myImg02")) {
-        alert("You lose! Click 'OK' to restart.");
+        alert("You lose! Click 'Space' to restart");
         location.reload();
       }
     }
 
     function myCheckWin() {
       if (myHitOther("myImg01", "myImg03")) {
-        alert("You win! Click 'OK' to proceed.");
+        alert("You win! Click 'Space' to proceed.");
         location = "t2a13-keydown.html";
       }
     }
@@ -101,8 +101,8 @@
   </script>
 
   <img id="myImg01" style="position: absolute; width: 100px; height: 80px; top: 200px; left: 50px;" src="MainCharacterRight.png">
-  <img id="myImg02" style="position: absolute; width: 100px; height: 80px; top: 200px; left: 250px;" src="myImage02.jpg">
-  <img id="myImg03" style="position: absolute; width: 100px; height: 80px; top: 200px; left: 400px;" src="myImage03.jpg">
+  <img id="myImg02" style="position: absolute; width: 100px; height: 80px; top: 200px; left: 250px;" src="MainCharacterLeft.png">
+  <img id="myImg03" style="position: absolute; width: 100px; height: 80px; top: 200px; left: 400px;" src="MainCharacterJump.png">
 
   <input type="button" value="Image Right Fast Button" onclick="
     document.getElementById('myImg01').style.left = 
