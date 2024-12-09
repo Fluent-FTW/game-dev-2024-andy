@@ -3,6 +3,7 @@
   style="background-repeat: no-repeat; background-size: 100%; background: url('https://cdn.wallpapersafari.com/55/17/3NeORi.png');"
   onkeydown="handleKeyDown(event)"
   onkeyup="handleKeyUp(event)"
+  tabindex="0"  <!-- Added tabindex to make the body focusable -->
 >
   <h1 align="center">Andy Final Game</h1>
   <br><br><br><br>
@@ -11,18 +12,25 @@
     let characterSpeed = 10; // Speed of movement
     let isJumping = false;  // Prevent multiple jumps
 
+    // Initialize the position of the character
+    window.onload = function() {
+      const myImg = document.getElementById("myImg01");
+      myImg.style.left = "50px"; // Set initial left position
+      myImg.style.top = "200px"; // Set initial top position
+    };
+
     function handleKeyDown(event) {
       const key = event.key;
       const myImg = document.getElementById("myImg01");
 
       if (key === "d") { // Move Right
         setCharacter("Right");
-        myImg.style.left = parseInt(myImg.style.left) + characterSpeed + "px";
+        myImg.style.left = (parseInt(myImg.style.left) || 0) + characterSpeed + "px";
         myCheckHit();
         myCheckWin();
       } else if (key === "a") { // Move Left
         setCharacter("Left");
-        myImg.style.left = parseInt(myImg.style.left) - characterSpeed + "px";
+        myImg.style.left = (parseInt(myImg.style.left) || 0) - characterSpeed + "px";
         myCheckHit();
         myCheckWin();
       } else if (key === "w" && !isJumping) { // Jump
@@ -34,7 +42,11 @@
     function handleKeyUp(event) {
       const key = event.key;
       if (key === "w") {
-        setCharacter("Right"); // Reset to default after jump
+        // Reset to default after jump
+        const myImg = document.getElementById("myImg01");
+        if (!isJumping) {
+          setCharacter("Right"); // Set to right if not jumping
+        }
       }
     }
 
@@ -45,7 +57,7 @@
 
     function myJump() {
       isJumping = true;
-      const myImg = document.getElementById("myImg03");
+      const myImg = document.getElementById("myImg01");
       const startPos = parseInt(myImg.style.top);
       let currentHeight = 0;
       const jumpHeight = 130;
@@ -68,6 +80,7 @@
           requestAnimationFrame(jumpDown);
         } else {
           isJumping = false;
+          setCharacter("Right"); // Reset to right after jump
         }
       }
 
