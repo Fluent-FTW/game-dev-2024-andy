@@ -76,7 +76,7 @@
     }
 
     function myJump() {
-    if (isJumping) return; // Prevent jump spam
+    if (isJumping) return; // Prevent multiple jumps
     isJumping = true;
     const myImg = document.getElementById("myImg01");
     const startPos = parseInt(myImg.style.top);
@@ -87,26 +87,29 @@
 
     function jumpUp() {
         if (currentHeight < jumpHeight) {
-            currentHeight += gravity;
-            myImg.style.top = startPos - currentHeight + "px";
-            requestAnimationFrame(jumpUp);
+            currentHeight += gravity; // Move up
+            myImg.style.top = startPos - currentHeight + "px"; // Update position
+            requestAnimationFrame(jumpUp); // Continue the upward movement
         } else {
-            jumpDown();
+            jumpDown(); // Start the downward movement
         }
     }
 
     function jumpDown() {
+        // Set the character image to the falling sprite
+        myImg.src = 'maincharacterfall.png'; // Change to the fall image
+
         if (currentHeight > 0) {
-            currentHeight -= gravity;
-            myImg.style.top = startPos - currentHeight + "px";
-            requestAnimationFrame(jumpDown);
+            currentHeight -= gravity; // Move down
+            myImg.style.top = startPos - currentHeight + "px"; // Update position
+            requestAnimationFrame(jumpDown); // Continue the downward movement
         } else {
-            isJumping = false;
-            setCharacter("Right"); // Reset to default after jump
+            isJumping = false; // Reset jump state
+            setCharacter("Right"); // Reset character image to the right-facing image
         }
     }
 
-    jumpUp();
+    jumpUp(); // Start the jump
 }
 
     function myHitOther(my1, my2) {
