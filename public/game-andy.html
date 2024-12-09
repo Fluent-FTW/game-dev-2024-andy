@@ -1,20 +1,197 @@
-<body>
-   <h1>Game Page</h1>
-   <img id="myImg01" style="position:absolute; width:100px; height:80px; top:200px; left:50px;" src="MainCharacterRight.png">
-   <img id="myImg02" style="position:absolute; width:100px; height:80px; top:200px; left:250px;" src="obstacle.png">
-   <img id="myImg03" style="position:absolute; width:100px; height:80px; top:200px; left:400px;" src="goal.png">
+<body id="myBody" style="background-repeat: no-repeat; background-size: 100%" background="https://cdn.wallpapersafari.com/55/17/3NeORi.png" 
+onkeydown="{
 
-   <script>
-      window.onload = function () {
-         // Confirm element exists
-         const myImg = document.getElementById("myImg01");
-         if (myImg) {
-            console.log("Image loaded successfully.");
-            // Test movement
-            myImg.style.left = "100px";
+   let myKey = event.key;
+   document.getElementById('myDiv01').innerHTML = myKey;
+   if (myKey == 'd') {
+      setCharacter('Right'); // Update character image
+      document.getElementById('myImg01').style.left = 
+         parseInt(document.getElementById('myImg01').style.left) + 7 + 'px';
+      myCheckHit();
+      myCheckWin();
+   }
+Version 0.0.1<br>
+
+   if (myKey == 'a') {
+      setCharacter('Left'); // Update character image
+      document.getElementById('myImg01').style.left = 
+         parseInt(document.getElementById('myImg01').style.left) - 7 + 'px';
+<body id="myBody" style="background-repeat: no-repeat; background-size: 100%" background="https://cdn.wallpapersafari.com/55/17/3NeORi.png">
+
+<h1 align=center>Andy Final Game</h1>
+<br><br><br><br>
+
+<script>
+   // Global variables
+   let isJumping = false; // Prevent multiple jumps
+   let keyState = {}; // Track pressed keys
+   let characterSpeed = 3; // Movement speed for smooth transitions
+   let jumpHeight = 130; // Max height for the jump
+   let gravity = 5; // Gravity effect during jump
+   let isFalling = false;
+
+   window.addEventListener("keydown", (e) => {
+      keyState[e.key] = true; // Track key press
+      if (e.key === "w" && !isJumping) {
+         myJump(); // Start jump
+      }
+   });
+
+   window.addEventListener("keyup", (e) => {
+      keyState[e.key] = false; // Track key release
+   });
+
+   function gameLoop() {
+      const myImg = document.getElementById("myImg01");
+
+      // Handle horizontal movement
+      if (keyState["d"]) {
+         setCharacter("Right");
+         myImg.style.left = parseInt(myImg.style.left) + characterSpeed + "px";
+      }
+      if (keyState["a"]) {
+         setCharacter("Left");
+         myImg.style.left = parseInt(myImg.style.left) - characterSpeed + "px";
+      }
+
+      // Check collisions
+myCheckHit();
+myCheckWin();
+
+      // Continue the loop
+      requestAnimationFrame(gameLoop);
+}
+
+   if (myKey == 'w') {
+      setCharacter('Jump'); // Update character image
+      myJump();
+      myCheckHit();
+      myCheckWin();
+   function setCharacter(action) {
+      const myImg = document.getElementById("myImg01");
+      myImg.src = `MainCharacter${action}.png`;
+}
+
+}">
+   function myJump() {
+      isJumping = true;
+      isFalling = false;
+      const myImg = document.getElementById("myImg01");
+      const startPos = parseInt(myImg.style.top);
+      let currentHeight = 0;
+
+<h1 align=center>Andy Final Game</h1>
+<br><br><br><br>
+      function jumpUp() {
+         if (currentHeight < jumpHeight && !isFalling) {
+            currentHeight += gravity;
+            myImg.style.top = startPos - currentHeight + "px";
+            requestAnimationFrame(jumpUp);
          } else {
-            console.error("Element 'myImg01' not found!");
+            isFalling = true;
+            jumpDown();
          }
-      };
-   </script>
-</body>
+      }
+
+<script>
+   // Global variables here
+   let myGlobalX = 0;
+   let isJumping = false; // Prevent multiple jumps
+      function jumpDown() {
+         if (currentHeight > 0) {
+            currentHeight -= gravity;
+            myImg.style.top = startPos - currentHeight + "px";
+            requestAnimationFrame(jumpDown);
+         } else {
+            isJumping = false;
+            setCharacter("Right"); // Reset to default after jump
+         }
+      }
+
+   // Update the visible character image
+   function setCharacter(action) {
+      const myImg = document.getElementById('myImg01');
+      myImg.src = `MainCharacter${action}.png`; // Update the source dynamically
+      jumpUp();
+}
+
+function myHitOther(my1, my2) {
+let left1 = parseInt(document.getElementById(my1).style.left);
+let right1 = left1 + parseInt(document.getElementById(my1).style.width);
+      let top1 = parseInt(document.getElementById(my1).style.top);   
+      let top1 = parseInt(document.getElementById(my1).style.top);
+let bottom1 = top1 + parseInt(document.getElementById(my1).style.height);
+let left2 = parseInt(document.getElementById(my2).style.left);
+let right2 = left2 + parseInt(document.getElementById(my2).style.width);
+      let top2 = parseInt(document.getElementById(my2).style.top);   
+      let top2 = parseInt(document.getElementById(my2).style.top);
+let bottom2 = top2 + parseInt(document.getElementById(my2).style.height);
+return (
+right1 >= left2 &&
+@@ -60,56 +101,27 @@ <h1 align=center>Andy Final Game</h1>
+}
+
+function myCheckHit() {
+      if (myHitOther('myImg01', 'myImg02')) {
+         alert('you lose! click "space" to restart');  
+         document.getElementById('myImg01').style.left = '20px';
+         location = 'https://fluent-ftw.github.io/game-dev-2024-andy/public/game-andy.html';  // Reload same level
+      if (myHitOther("myImg01", "myImg02")) {
+         alert('You lose! Click "space" to restart.');
+         document.getElementById("myImg01").style.left = "20px";
+         location = "https://fluent-ftw.github.io/game-dev-2024-andy/public/game-andy.html"; // Reload same level
+}
+}
+
+function myCheckWin() {
+      if (myHitOther('myImg01', 'myImg03')) {
+         alert('you win');
+         document.getElementById('myImg01').style.left = '20px';
+         location = 't2a13-keydown.html';  // Go to next level
+      if (myHitOther("myImg01", "myImg03")) {
+         alert("You win!");
+         document.getElementById("myImg01").style.left = "20px";
+         location = "t2a13-keydown.html"; // Go to next level
+}
+}
+
+   function myJump() {
+      if (isJumping) return; // Prevent jump spam
+      isJumping = true;
+      let myImg = document.getElementById('myImg01');
+      let startPos = parseInt(myImg.style.top);
+      let jumpHeight = 130;  // Max height for the jump
+      let jumpSpeed = 10;    // Speed of each frame during jump
+      let upInterval = setInterval(() => {
+         if (parseInt(myImg.style.top) > startPos - jumpHeight) {
+            myImg.style.top = parseInt(myImg.style.top) - 5 + 'px';
+         } else {
+            clearInterval(upInterval);
+            let downInterval = setInterval(() => {
+               if (parseInt(myImg.style.top) < startPos) {
+                  myImg.style.top = parseInt(myImg.style.top) + 5 + 'px';
+               } else {
+                  clearInterval(downInterval);
+                  isJumping = false;
+                  setCharacter('Right'); // Reset to default after jump
+               }
+            }, jumpSpeed);
+         }
+      }, jumpSpeed);
+   }
+
+   // Start the game loop
+   gameLoop();
+</script>
+
+<img id="myImg01" style="position:absolute; width:100px; height:80px; top:200px; left:50px;" src="MainCharacterRight.png">
+<img id="myImg02" style="position:absolute; width:100px; height:80px; top:200px; left:250px;" src="myImage02.jpg">
+<img id="myImg03" style="position:absolute; width:100px; height:80px; top:200px; left:400px;" src="myImage03.jpg">
+
+<input type=button value="Image Right Fast Button" onTouchStart="{this.click(); event.preventDefault();}" onclick="{
+  document.getElementById('myImg01').style.left = 
+     parseInt(document.getElementById('myImg01').style.left) + 10 + 'px';
+  myCheckHit();     // Check for all collisions
+}"><br><br>
+
+<div id="myDiv01" style="color:yellow">..</div>
