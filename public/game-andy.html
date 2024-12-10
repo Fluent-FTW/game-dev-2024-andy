@@ -79,7 +79,7 @@
     if (isJumping) return; // Prevent multiple jumps
     isJumping = true;
     const myImg = document.getElementById("myImg01");
-    const startPos = parseInt(myImg.style.top);
+    const startPos = parseInt(myImg.style.top) || 200; // Default to 200 if not set
     let currentHeight = 0;
 
     // Set the character image to the jumping sprite
@@ -105,7 +105,8 @@
             requestAnimationFrame(jumpDown); // Continue the downward movement
         } else {
             isJumping = false; // Reset jump state
-            setCharacter("Right"); // Reset character image to the right-facing image
+            myImg.src = 'MainCharacterRight.png'; // Reset character image to the right-facing image
+            myImg.style.top = startPos + "px"; // Reset position to the original
         }
     }
 
