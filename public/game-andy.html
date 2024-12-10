@@ -49,92 +49,86 @@
         keyState[event.key] = false; // Track key release
     }
 
-   function gameLoop() {
-    const myImg = document.getElementById("myImg01");
+    function gameLoop() {
+        const myImg = document.getElementById("myImg01");
 
-    // Handle horizontal movement
-    if (!isJumping) {
-        if (keyState["d"]) {
-            setCharacter("Right");
-            myImg.style.left = (parseInt(myImg.style.left) || 0) + characterSpeed + "px";
+        // Handle horizontal movement
+        if (!isJumping) {
+            if (keyState["d"]) {
+                setCharacter("Right");
+                myImg.style.left = (parseInt(myImg.style.left) || 0) + characterSpeed + "px";
+            }
+            if (keyState["a"]) {
+                setCharacter("Left");
+                myImg.style.left = (parseInt(myImg.style.left) || 0) - characterSpeed + "px";
+            }
+        } else {
+            // During a jump, allow horizontal movement
+            if (keyState["d"]) {
+                myImg.style.left = (parseInt(myImg.style.left) || 0) + characterSpeed + "px";
+            }
+            if (keyState["a"]) {
+                myImg.style.left = (parseInt(myImg.style.left) || 0) - characterSpeed + "px";
+            }
         }
-        if (keyState["a"]) {
-            setCharacter("Left");
-            myImg.style.left = (parseInt(myImg.style.left) || 0) - characterSpeed + "px";
-        }
-    } else {
-        // During a jump, ensure movement happens but keep the jump image
-        if (keyState["d"]) {
-            myImg.style.left = (parseInt(myImg.style.left) || 0) + characterSpeed + "px";
-        }
-        if (keyState["a"]) {
-            myImg.style.left = (parseInt(myImg.style.left) || 0) - characterSpeed + "px";
-        }
+
+        // Check collisions
+        myCheckHit();
+        myCheckWin();
+
+        // Continue the loop
+        requestAnimationFrame(gameLoop);
     }
-
-    // Check collisions
-    myCheckHit();
-    myCheckWin();
-
-    // Continue the loop
-    requestAnimationFrame(gameLoop);
-}
-
 
     function setCharacter(action) {
-    const myImg = document.getElementById("myImg01");
-    if (!isJumping) {
-        myImg.src = `MainCharacter${action}.png`; // Only change the sprite if not jumping
-    }
-}
-
-
-function myJump() {
-    if (isJumping) return; // Prevents multiple jumps
-    isJumping = true;
-
-    const myImg = document.getElementById("myImg01");
-    const startPos = parseInt(myImg.style.top) || 200; // Default to 200 if not set
-    let currentHeight = 0;
-
-    // Set the character image to the jumping sprite
-    myImg.src = 'MainCharacterJump.png'; // Change to the jump image
-
-    function jumpUp() {
-        if (currentHeight < jumpHeight) {
-            currentHeight += gravity; // Move up
-            myImg.style.top = (startPos - currentHeight) + "px"; // Update position
-            requestAnimationFrame(jumpUp); // Continue the upward movement
-        } else {
-            jumpDown(); // Start the downward movement
+        const myImg = document.getElementById("myImg01");
+        if (!isJumping) {
+            myImg.src = `MainCharacter${action}.png`; // Only change the sprite if not jumping
         }
     }
 
-    function jumpDown() {
-        // Set the character image to the falling sprite
-        myImg.src = 'MainCharacterFall.png'; // Change to the fall image
+    function myJump() {
+        if (isJumping) return; // Prevent multiple jumps
+        isJumping = true;
 
-        if (currentHeight > 0) {
-            currentHeight -= gravity; // Move down
-            myImg.style.top = (startPos - currentHeight) + "px"; // Update position
-            requestAnimationFrame(jumpDown); // Continue the downward movement
-        } else {
-            isJumping = false; // Reset jump state
-            myImg.src = 'MainCharacterRight.png'; // Reset character image to the default right-facing image
-            myImg.style.top = startPos + "px"; // Reset position to the original
+        const myImg = document.getElementById("myImg01");
+        const startPos = parseInt(myImg.style.top) || 200; // Default to 200 if not set
+        let currentHeight = 0; // Track how high the character has jumped
+
+        // Change to jump sprite
+        myImg.src = 'MainCharacterJump.png';
+
+        function jumpUp() {
+            if (currentHeight < jumpHeight) {
+                currentHeight += gravity; // Ascend
+                myImg.style.top = (startPos - currentHeight) + "px"; // Update position
+                requestAnimationFrame(jumpUp);
+            } else {
+                jumpDown(); // Start descending after reaching max height
+            }
         }
-    }
 
-    jumpUp(); // Start the jump
-}
+        function jumpDown() {
+            if (currentHeight > 0) {
+                currentHeight -= gravity; // Descend
+                myImg.style.top = (startPos - currentHeight) + "px"; // Update position
+                requestAnimationFrame(jumpDown);
+            } else {
+                // Reset jump state after landing
+                isJumping = false;
+                myImg.src = 'MainCharacterRight.png'; // Default sprite
+                myImg.style.top = startPos + "px"; // Ensure position reset
+            }
+        }
+
+        jumpUp(); // Begin upward motion
+    }
 
     function myCheckHit() {
         if (myHitOther('myImg01', 'myImg02')) {
             alert('You lose! Click "space" to restart.');
             document.getElementById('myImg01').style.left = '50px'; // Reset position
             document.getElementById('myImg01').style.top = '200px'; // Reset position
-            // Optionally, you can reload the page or reset the game state here
-            // location.reload(); // Uncomment to reload the page
         }
     }
 
@@ -143,12 +137,9 @@ function myJump() {
             alert('You win!');
             document.getElementById('myImg01').style.left = '50px'; // Reset position
             document.getElementById('myImg01').style.top = '200px'; // Reset position
-            // Optionally, you can navigate to the next level or reset the game state here
-            // location.href = 'nextLevel.html'; // Uncomment to go to the next level
         }
     }
 
-    // Start the game loop
     gameLoop();
 </script>
 
