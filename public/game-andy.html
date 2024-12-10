@@ -75,20 +75,23 @@
         myImg.src = `MainCharacter${action}.png`; // Update the source dynamically
     }
 
-    function myJump() {
+function myJump() {
     if (isJumping) return; // Prevent multiple jumps
     isJumping = true;
+
     const myImg = document.getElementById("myImg01");
     const startPos = parseInt(myImg.style.top) || 200; // Default to 200 if not set
     let currentHeight = 0;
 
     // Set the character image to the jumping sprite
     myImg.src = 'MainCharacterJump.png'; // Change to the jump image
+    console.log("Jumping started");
 
     function jumpUp() {
         if (currentHeight < jumpHeight) {
             currentHeight += gravity; // Move up
-            myImg.style.top = startPos - currentHeight + "px"; // Update position
+            myImg.style.top = (startPos - currentHeight) + "px"; // Update position
+            console.log("Jumping up: ", myImg.style.top);
             requestAnimationFrame(jumpUp); // Continue the upward movement
         } else {
             jumpDown(); // Start the downward movement
@@ -98,31 +101,24 @@
     function jumpDown() {
         // Set the character image to the falling sprite
         myImg.src = 'MainCharacterFall.png'; // Change to the fall image
+        console.log("Jumping down");
 
         if (currentHeight > 0) {
             currentHeight -= gravity; // Move down
-            myImg.style.top = startPos - currentHeight + "px"; // Update position
+            myImg.style.top = (startPos - currentHeight) + "px"; // Update position
+            console.log("Falling down: ", myImg.style.top);
             requestAnimationFrame(jumpDown); // Continue the downward movement
         } else {
             isJumping = false; // Reset jump state
             myImg.src = 'MainCharacterRight.png'; // Reset character image to the right-facing image
             myImg.style.top = startPos + "px"; // Reset position to the original
+            console.log("Jump finished");
         }
     }
 
     jumpUp(); // Start the jump
 }
 
-    function myHitOther(my1, my2) {
-        const rect1 = document.getElementById(my1).getBoundingClientRect();
-        const rect2 = document.getElementById(my2).getBoundingClientRect();
-        return (
-            rect1.right >= rect2.left &&
-            rect1.left <= rect2.right &&
-            rect1.bottom >= rect2.top &&
-            rect1.top <= rect2.bottom
-        );
-    }
 
     function myCheckHit() {
         if (myHitOther('myImg01', 'myImg02')) {
