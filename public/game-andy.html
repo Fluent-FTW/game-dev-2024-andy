@@ -49,10 +49,11 @@
         keyState[event.key] = false; // Track key release
     }
 
-    function gameLoop() {
-        const myImg = document.getElementById("myImg01");
+   function gameLoop() {
+    const myImg = document.getElementById("myImg01");
 
-        // Handle horizontal movement
+    // Handle horizontal movement
+    if (!isJumping) {
         if (keyState["d"]) {
             setCharacter("Right");
             myImg.style.left = (parseInt(myImg.style.left) || 0) + characterSpeed + "px";
@@ -61,14 +62,24 @@
             setCharacter("Left");
             myImg.style.left = (parseInt(myImg.style.left) || 0) - characterSpeed + "px";
         }
-
-        // Check collisions
-        myCheckHit();
-        myCheckWin();
-
-        // Continue the loop
-        requestAnimationFrame(gameLoop);
+    } else {
+        // During a jump, ensure movement happens but keep the jump image
+        if (keyState["d"]) {
+            myImg.style.left = (parseInt(myImg.style.left) || 0) + characterSpeed + "px";
+        }
+        if (keyState["a"]) {
+            myImg.style.left = (parseInt(myImg.style.left) || 0) - characterSpeed + "px";
+        }
     }
+
+    // Check collisions
+    myCheckHit();
+    myCheckWin();
+
+    // Continue the loop
+    requestAnimationFrame(gameLoop);
+}
+
 
     function setCharacter(action) {
         const myImg = document.getElementById("myImg01");
@@ -76,7 +87,7 @@
     }
 
 function myJump() {
-    if (isJumping) return; // Prevent multiple jumps
+    if (isJumping) return; // Prevents multiple jumps
     isJumping = true;
 
     const myImg = document.getElementById("myImg01");
