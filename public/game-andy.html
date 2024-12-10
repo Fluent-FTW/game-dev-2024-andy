@@ -111,6 +111,7 @@
         function jumpDown() {
             if (currentHeight > 0) {
                 currentHeight -= gravity; // Descend
+                myImg.src = 'mainCharacterFall.png';
                 myImg.style.top = (startPos - currentHeight) + "px"; // Update position
                 requestAnimationFrame(jumpDown);
             } else {
