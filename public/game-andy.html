@@ -82,9 +82,12 @@
 
 
     function setCharacter(action) {
-        const myImg = document.getElementById("myImg01");
-        myImg.src = `MainCharacter${action}.png`; // Update the source dynamically
+    const myImg = document.getElementById("myImg01");
+    if (!isJumping) {
+        myImg.src = `MainCharacter${action}.png`; // Only change the sprite if not jumping
     }
+}
+
 
 function myJump() {
     if (isJumping) return; // Prevents multiple jumps
