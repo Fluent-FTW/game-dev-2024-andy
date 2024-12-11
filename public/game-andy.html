@@ -49,36 +49,37 @@
         keyState[event.key] = false; // Track key release
     }
 
-    function gameLoop() {
-        const myImg = document.getElementById("myImg01");
+function gameLoop() {
+    const myImg = document.getElementById("myImg01");
 
-        // Handle horizontal movement
-        if (!isJumping) {
-            if (keyState["d"]) {
-                setCharacter("Right");
-                myImg.style.left = (parseInt(myImg.style.left) || 0) + characterSpeed + "px";
-            }
-            if (keyState["a"]) {
-                setCharacter("Left");
-                myImg.style.left = (parseInt(myImg.style.left) || 0) - characterSpeed + "px";
-            }
-        } else {
-            // During a jump, allow horizontal movement
-            if (keyState["d"]) {
-                myImg.style.left = (parseInt(myImg.style.left) || 0) + characterSpeed + "px";
-            }
-            if (keyState["a"]) {
-                myImg.style.left = (parseInt(myImg.style.left) || 0) - characterSpeed + "px";
-            }
+    // Handle horizontal movement
+    if (!isJumping) {
+        if (keyState["d"]) {
+            setCharacter("Right");
+            myImg.style.left = (parseInt(myImg.style.left, 10) || 0) + characterSpeed + "px";
         }
-
-        // Check collisions
-        myCheckHit();
-        myCheckWin();
-
-        // Continue the loop
-        requestAnimationFrame(gameLoop);
+        if (keyState["a"]) {
+            setCharacter("Left");
+            myImg.style.left = (parseInt(myImg.style.left, 10) || 0) - characterSpeed + "px";
+        }
+    } else {
+        // During a jump, allow horizontal movement
+        if (keyState["d"]) {
+            myImg.style.left = (parseInt(myImg.style.left, 10) || 0) + characterSpeed + "px";
+        }
+        if (keyState["a"]) {
+            myImg.style.left = (parseInt(myImg.style.left, 10) || 0) - characterSpeed + "px";
+        }
     }
+
+    // Check collisions
+    myCheckHit();
+    myCheckWin();
+
+    // Continue the loop
+    requestAnimationFrame(gameLoop);
+}
+
 
     function setCharacter(action) {
         const myImg = document.getElementById("myImg01");
@@ -111,7 +112,7 @@
         function jumpDown() {
             if (currentHeight > 0) {
                 currentHeight -= gravity; // Descend
-                myImg.src = 'mainCharacterFall.png';
+                myImg.src = 'MainCharacterFall.png';
                 myImg.style.top = (startPos - currentHeight) + "px"; // Update position
                 requestAnimationFrame(jumpDown);
             } else {
