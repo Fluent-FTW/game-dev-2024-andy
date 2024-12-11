@@ -15,7 +15,7 @@
             width: 100px;
             height: 80px;
             top: 200px;
-            left: 50px;
+            left: 150px;
         }
     </style>
 </head>
@@ -24,7 +24,7 @@
 <h1 align="center">Andy Final Game</h1>
 <br><br><br><br>
 
-<img id="myImg01" style="position:absolute; width:100px; height:80px; top:200px; left:250px;" src="MainCharacterRight.png">
+<img id="myImg01" src="MainCharacterRight.png">
 <img id="myImg02" style="position:absolute; width:100px; height:80px; top:200px; left:250px;" src="myImage02.jpg">
 <img id="myImg03" style="position:absolute; width:100px; height:80px; top:200px; left:400px;" src="myImage03.jpg">
 
@@ -34,60 +34,61 @@
     // Global variables
     let isJumping = false; // Prevent multiple jumps
     let keyState = {}; // Track pressed keys
-    let characterSpeed = 3; // Movement speed for smooth transitions
-    let jumpHeight = 130; // Max height for the jump
-    let gravity = 5; // Gravity effect during jump
+    const characterSpeed = 3; // Movement speed for smooth transitions
+    const jumpHeight = 130; // Max height for the jump
+    const gravity = 5; // Gravity effect during jump
 
-function handleKeyDown(event) {
-    keyState[event.key] = true; // Track key press
-    console.log("Key Down:", event.key, keyState); // Debugging: Log pressed key
-    if (event.key === "w" && !isJumping) {
-        myJump(); // Start jump
-    }
-}
-
-function handleKeyUp(event) {
-    keyState[event.key] = false; // Track key release
-    console.log("Key Up:", event.key, keyState); // Debugging: Log released key
-}
-function gameLoop() {
-    console.log("Game Loop Running"); // Debugging: Ensure the loop is active
-    const myImg = document.getElementById("myImg01");
-
-    // Handle horizontal movement
-    if (!isJumping) {
-        if (keyState["d"]) {
-            console.log("Moving Right"); // Debugging: Detect 'd' key press
-            setCharacter("Right");
-            myImg.style.left = (parseInt(myImg.style.left, 10) || 0) + characterSpeed + "px";
-        }
-        if (keyState["a"]) {
-            console.log("Moving Left"); // Debugging: Detect 'a' key press
-            setCharacter("Left");
-            myImg.style.left = (parseInt(myImg.style.left, 10) || 0) - characterSpeed + "px";
+    function handleKeyDown(event) {
+        keyState[event.key] = true; // Track key press
+        if (event.key === "w" && !isJumping) {
+            myJump(); // Start jump
         }
     }
 
-    // Continue the loop
-    requestAnimationFrame(gameLoop);
-}
+    function handleKeyUp(event) {
+        keyState[event.key] = false; // Track key release
+    }
 
+    function gameLoop() {
+        const myImg = document.getElementById("myImg01");
+
+        // Handle horizontal movement
+        if (!isJumping) {
+            if (keyState["d"]) {
+                setCharacter("Right");
+                myImg.style.left = (parseInt(myImg.style.left, 10) || 0) + characterSpeed + "px";
+            }
+            if (keyState["a"]) {
+                setCharacter("Left");
+                myImg.style.left = (parseInt(myImg.style.left, 10) || 0) - characterSpeed + "px";
+            }
+        } else {
+            // Allow horizontal movement during jump
+            if (keyState["d"]) {
+                myImg.style.left = (parseInt(myImg.style.left, 10) || 0) + characterSpeed + "px";
+            }
+            if (keyState["a"]) {
+                myImg.style.left = (parseInt(myImg.style.left, 10) || 0) - characterSpeed + "px";
+            }
+        }
+
+        // Continue the loop
+        requestAnimationFrame(gameLoop);
+    }
 
     function setCharacter(action) {
-    const myImg = document.getElementById("myImg01");
-    if (!isJumping) {
-        const newSrc = `MainCharacter${action}.png`;
-        console.log("Changing sprite to:", newSrc); // Debugging: Log new image source
-        myImg.src = newSrc; // Change the sprite
+        const myImg = document.getElementById("myImg01");
+        if (!isJumping) {
+            myImg.src = `MainCharacter${action}.png`; // Change the sprite
+        }
     }
-}
 
     function myJump() {
         if (isJumping) return; // Prevent multiple jumps
         isJumping = true;
 
         const myImg = document.getElementById("myImg01");
-        const startPos = parseInt(myImg.style.top) || 200; // Default to 200 if not set
+        const startPos = parseInt(myImg.style.top, 10) || 200; // Default to 200 if not set
         let currentHeight = 0; // Track how high the character has jumped
 
         // Change to jump sprite
@@ -120,22 +121,7 @@ function gameLoop() {
         jumpUp(); // Begin upward motion
     }
 
-    function myCheckHit() {
-        if (myHitOther('myImg01', 'myImg02')) {
-            alert('You lose! Click "space" to restart.');
-            document.getElementById('myImg01').style.left = '50px'; // Reset position
-            document.getElementById('myImg01').style.top = '200px'; // Reset position
-        }
-    }
-
-    function myCheckWin() {
-        if (myHitOther('myImg01', 'myImg03')) {
-            alert('You win!');
-            document.getElementById('myImg01').style.left = '50px'; // Reset position
-            document.getElementById('myImg01').style.top = '200px'; // Reset position
-        }
-    }
-
+    // Start the game loop
     gameLoop();
 </script>
 
