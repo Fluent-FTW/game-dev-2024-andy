@@ -6,36 +6,43 @@
     <title>Andy Final Game</title>
     <style>
         body {
-            background-repeat: no-repeat;
-            background-size: 100%;
-            background-image: url('https://cdn.wallpapersafari.com/55/17/3NeORi.png');
+            margin: 0;
+            overflow: hidden; /* Prevent default scrolling behavior */
+        }
+        #gameContainer {
+            position: relative;
+            width: 100vw;
+            height: 200vh; /* Extend height to add white space below */
+            background: linear-gradient(to bottom, white 50%, #add8e6 50%); /* White space + current background */
         }
         #myImg01 {
             position: absolute;
             width: 100px;
             height: 80px;
-            top: 200px;
+            top: 900px; /* Start below the visible background */
             left: 150px;
         }
     </style>
 </head>
 <body id="myBody" onkeydown="handleKeyDown(event)" onkeyup="handleKeyUp(event)">
 
-<h1 align="center">Andy Final Game</h1>
-<br><br><br><br>
+<div id="gameContainer">
+    <h1 align="center" style="position: absolute; top: 20px; width: 100%; color: black;">Andy Final Game</h1>
 
-<img id="myImg01" style="position:absolute; top:1050px; left:50px;" src="MainCharacterRight.png">
-<img id="myImg02" style="position:absolute; width:100px; height:80px; top:200px; left:250px;" src="myImage02.jpg">
-<img id="myImg03" style="position:absolute; width:100px; height:80px; top:200px; left:400px;" src="myImage03.jpg">
+    <!-- Character -->
+    <img id="myImg01" src="MainCharacterRight.png">
 
-<div id="myDiv01" style="color:yellow">..</div>
+    <!-- Win/Lose Triggers -->
+    <img id="myImg02" style="position:absolute; width:100px; height:80px; top:500px; left:250px;" src="myImage02.jpg">
+    <img id="myImg03" style="position:absolute; width:100px; height:80px; top:50px; left:400px;" src="myImage03.jpg">
+</div>
 
 <script>
     // Global variables
     let isJumping = false; // Prevent multiple jumps
     let keyState = {}; // Track pressed keys
-    const characterSpeed = 3; // Movement speed for smooth transitions
-    const jumpHeight = 130; // Max height for the jump
+    const characterSpeed = 3; // Movement speed
+    const jumpHeight = 130; // Max jump height
     const gravity = 5; // Gravity effect during jump
 
     function handleKeyDown(event) {
@@ -62,14 +69,6 @@
                 setCharacter("Left");
                 myImg.style.left = (parseInt(myImg.style.left, 10) || 0) - characterSpeed + "px";
             }
-        } else {
-            // Allow horizontal movement during jump
-            if (keyState["d"]) {
-                myImg.style.left = (parseInt(myImg.style.left, 10) || 0) + characterSpeed + "px";
-            }
-            if (keyState["a"]) {
-                myImg.style.left = (parseInt(myImg.style.left, 10) || 0) - characterSpeed + "px";
-            }
         }
 
         // Continue the loop
@@ -88,8 +87,8 @@
         isJumping = true;
 
         const myImg = document.getElementById("myImg01");
-        const startPos = parseInt(myImg.style.top, 10) || 200; // Default to 200 if not set
-        let currentHeight = 0; // Track how high the character has jumped
+        const startPos = parseInt(myImg.style.top, 10) || 900; // Starting position
+        let currentHeight = 0; // Track jump height
 
         // Change to jump sprite
         myImg.src = 'MainCharacterJump.png';
@@ -98,9 +97,10 @@
             if (currentHeight < jumpHeight) {
                 currentHeight += gravity; // Ascend
                 myImg.style.top = (startPos - currentHeight) + "px"; // Update position
+                adjustScroll(); // Adjust scroll position
                 requestAnimationFrame(jumpUp);
             } else {
-                jumpDown(); // Start descending after reaching max height
+                jumpDown(); // Start descending
             }
         }
 
@@ -109,16 +109,27 @@
                 currentHeight -= gravity; // Descend
                 myImg.src = 'MainCharacterFall.png';
                 myImg.style.top = (startPos - currentHeight) + "px"; // Update position
+                adjustScroll(); // Adjust scroll position
                 requestAnimationFrame(jumpDown);
             } else {
-                // Reset jump state after landing
-                isJumping = false;
+                isJumping = false; // Reset jump state
                 myImg.src = 'MainCharacterRight.png'; // Default sprite
-                myImg.style.top = startPos + "px"; // Ensure position reset
+                myImg.style.top = startPos + "px"; // Reset position
             }
         }
 
-        jumpUp(); // Begin upward motion
+        jumpUp(); // Start jump motion
+    }
+
+    function adjustScroll() {
+        const myImg = document.getElementById("myImg01");
+        const characterY = parseInt(myImg.style.top, 10); // Get character's vertical position
+        const windowHeight = window.innerHeight;
+
+        // Scroll the window to keep the character centered
+        if (characterY < window.scrollY + windowHeight / 2 || characterY > window.scrollY + windowHeight) {
+            window.scrollTo(0, characterY - windowHeight / 2);
+        }
     }
 
     // Start the game loop
