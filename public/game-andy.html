@@ -104,6 +104,7 @@ function myJump() {
     }
 
     function jumpDown() {
+        myImg.src = 'MainCharacterFall.png'; // Apply fall sprite
         const platformBelow = detectPlatformBelow(); // Check for platform
 
         if (platformBelow !== null) {
@@ -152,16 +153,17 @@ function detectPlatformBelow() {
     return null; // No platform detected
 }
 
-    function adjustScroll() {
-        const myImg = document.getElementById("myImg01");
-        const characterY = parseInt(myImg.style.top, 10); // Get character's vertical position
-        const windowHeight = window.innerHeight;
-
-        // Scroll the window to keep the character centered
-        if (characterY < window.scrollY + windowHeight / 2 || characterY > window.scrollY + windowHeight) {
-            window.scrollTo(0, characterY - windowHeight / 2);
-        }
+function handleKeyDown(event) {
+    keyState[event.key] = true; // Track key press
+    if (event.key === "w" && !isJumping) {
+        myJump(); // Start jump
     }
+}
+
+function handleKeyUp(event) {
+    keyState[event.key] = false; // Track key release
+}
+
 
     // Start the game loop
     gameLoop();
