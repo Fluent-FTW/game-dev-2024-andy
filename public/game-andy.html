@@ -82,44 +82,61 @@
         }
     }
 
-    function myJump() {
-        if (isJumping) return; // Prevent multiple jumps
-        isJumping = true;
+ function gameLoop() {
+    const myImg = document.getElementById("myImg01");
 
-        const myImg = document.getElementById("myImg01");
-        const startPos = parseInt(myImg.style.top, 10) || 900; // Starting position
-        let currentHeight = 0; // Track jump height
-
-        // Change to jump sprite
-        myImg.src = 'MainCharacterJump.png';
-
-        function jumpUp() {
-            if (currentHeight < jumpHeight) {
-                currentHeight += gravity; // Ascend
-                myImg.style.top = (startPos - currentHeight) + "px"; // Update position
-                adjustScroll(); // Adjust scroll position
-                requestAnimationFrame(jumpUp);
-            } else {
-                jumpDown(); // Start descending
-            }
-        }
-
-        function jumpDown() {
-            if (currentHeight > 0) {
-                currentHeight -= gravity; // Descend
-                myImg.src = 'MainCharacterFall.png';
-                myImg.style.top = (startPos - currentHeight) + "px"; // Update position
-                adjustScroll(); // Adjust scroll position
-                requestAnimationFrame(jumpDown);
-            } else {
-                isJumping = false; // Reset jump state
-                myImg.src = 'MainCharacterRight.png'; // Default sprite
-                myImg.style.top = startPos + "px"; // Reset position
-            }
-        }
-
-        jumpUp(); // Start jump motion
+    // Handle horizontal movement
+    if (keyState["d"]) {
+        setCharacter("Right");
+        myImg.style.left = (parseInt(myImg.style.left, 10) || 0) + characterSpeed + "px";
     }
+    if (keyState["a"]) {
+        setCharacter("Left");
+        myImg.style.left = (parseInt(myImg.style.left, 10) || 0) - characterSpeed + "px";
+    }
+
+    // Continue the loop
+    requestAnimationFrame(gameLoop);
+}
+
+function myJump() {
+    if (isJumping) return; // Prevent multiple jumps
+    isJumping = true;
+
+    const myImg = document.getElementById("myImg01");
+    const startPos = parseInt(myImg.style.top, 10) || 900; // Starting position
+    let currentHeight = 0; // Track jump height
+
+    // Change to jump sprite
+    myImg.src = 'MainCharacterJump.png';
+
+    function jumpUp() {
+        if (currentHeight < jumpHeight) {
+            currentHeight += gravity; // Ascend
+            myImg.style.top = (startPos - currentHeight) + "px"; // Update position
+            adjustScroll(); // Adjust scroll position
+            requestAnimationFrame(jumpUp);
+        } else {
+            jumpDown(); // Start descending
+        }
+    }
+
+    function jumpDown() {
+        if (currentHeight > 0) {
+            currentHeight -= gravity; // Descend
+            myImg.src = 'MainCharacterFall.png';
+            myImg.style.top = (startPos - currentHeight) + "px"; // Update position
+            adjustScroll(); // Adjust scroll position
+            requestAnimationFrame(jumpDown);
+        } else {
+            isJumping = false; // Reset jump state
+            myImg.src = 'MainCharacterRight.png'; // Reset sprite
+            myImg.style.top = startPos + "px"; // Reset position
+        }
+    }
+
+    jumpUp(); // Start jump motion
+}
 
     function adjustScroll() {
         const myImg = document.getElementById("myImg01");
