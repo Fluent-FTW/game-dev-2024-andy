@@ -56,24 +56,6 @@
         keyState[event.key] = false; // Track key release
     }
 
-    function gameLoop() {
-        const myImg = document.getElementById("myImg01");
-
-        // Handle horizontal movement
-        if (!isJumping) {
-            if (keyState["d"]) {
-                setCharacter("Right");
-                myImg.style.left = (parseInt(myImg.style.left, 10) || 0) + characterSpeed + "px";
-            }
-            if (keyState["a"]) {
-                setCharacter("Left");
-                myImg.style.left = (parseInt(myImg.style.left, 10) || 0) - characterSpeed + "px";
-            }
-        }
-
-        // Continue the loop
-        requestAnimationFrame(gameLoop);
-    }
 
     function setCharacter(action) {
         const myImg = document.getElementById("myImg01");
@@ -104,7 +86,7 @@ function myJump() {
     isJumping = true;
 
     const myImg = document.getElementById("myImg01");
-    const startPos = parseInt(myImg.style.top, 10) || 900; // Starting position
+    const startPos = parseInt(myImg.style.top, 10) || 1200; // Starting position
     let currentHeight = 0; // Track jump height
 
     // Change to jump sprite
@@ -122,20 +104,52 @@ function myJump() {
     }
 
     function jumpDown() {
-        if (currentHeight > 0) {
+        const platformBelow = detectPlatformBelow(); // Check for platform
+
+        if (platformBelow !== null) {
+            // Land on platform
+            myImg.style.top = platformBelow + "px";
+            isJumping = false; // Reset jump state
+            myImg.src = 'MainCharacterRight.png'; // Reset sprite
+        } else if (currentHeight > 0) {
+            // Continue descending
             currentHeight -= gravity; // Descend
-            myImg.src = 'MainCharacterFall.png';
             myImg.style.top = (startPos - currentHeight) + "px"; // Update position
             adjustScroll(); // Adjust scroll position
             requestAnimationFrame(jumpDown);
         } else {
+            // Land on original ground
+            myImg.style.top = startPos + "px";
             isJumping = false; // Reset jump state
             myImg.src = 'MainCharacterRight.png'; // Reset sprite
-            myImg.style.top = startPos + "px"; // Reset position
         }
     }
 
     jumpUp(); // Start jump motion
+}
+
+function detectPlatformBelow() {
+    const myImg = document.getElementById("myImg01");
+    const myImgBottom = parseInt(myImg.style.top, 10) + myImg.offsetHeight;
+
+    // Loop through all potential platforms
+    const platforms = document.querySelectorAll(".platform");
+    for (let platform of platforms) {
+        const platformTop = parseInt(platform.style.top, 10);
+        const platformLeft = parseInt(platform.style.left, 10);
+        const platformRight = platformLeft + platform.offsetWidth;
+
+        // Check if the character is above the platform and within its horizontal bounds
+        if (
+            myImgBottom >= platformTop &&
+            myImgBottom - gravity <= platformTop && // Ensure descending onto the platform
+            parseInt(myImg.style.left, 10) + myImg.offsetWidth > platformLeft &&
+            parseInt(myImg.style.left, 10) < platformRight
+        ) {
+            return platformTop - myImg.offsetHeight; // Return the landing position
+        }
+    }
+    return null; // No platform detected
 }
 
     function adjustScroll() {
