@@ -84,41 +84,47 @@
     }
 
     // Character jump
-    function myJump() {
-        if (isJumping) return;
-        isJumping = true;
+   function myJump() {
+    if (isJumping) return; // Prevent multiple jumps
+    isJumping = true;
 
-        const myImg = document.getElementById("myImg01");
-        const startPos = parseInt(myImg.style.top, 10) || 400;
-        let currentHeight = 0;
+    const myImg = document.getElementById("myImg01");
+    const startPos = parseInt(myImg.style.top, 10) || 400;
+    let currentHeight = 0;
 
-        myImg.src = 'MainCharacterJump.png';
+    myImg.src = 'MainCharacterJump.png'; // Switch to jumping animation
 
-        function jumpUp() {
-            if (currentHeight < jumpHeight) {
-                currentHeight += gravity;
-                myImg.style.top = (startPos - currentHeight) + "px";
-                requestAnimationFrame(jumpUp);
-            } else {
-                jumpDown();
-            }
+    // Jump up logic
+    function jumpUp() {
+        if (currentHeight < jumpHeight) {
+            currentHeight += gravity; // Go up
+            myImg.style.top = (startPos - currentHeight) + "px";
+            requestAnimationFrame(jumpUp);
+        } else {
+            jumpDown(); // Start falling
         }
-
-        function jumpDown() {
-            if (currentHeight > 0) {
-                currentHeight -= gravity;
-                myImg.style.top = (startPos - currentHeight) + "px";
-                requestAnimationFrame(jumpDown);
-            } else {
-                myImg.style.top = startPos + "px";
-                isJumping = false;
-                myImg.src = 'MainCharacterRight.png';
-            }
-        }
-
-        jumpUp();
     }
 
+    // Jump down logic
+    function jumpDown() {
+        // Switch to falling animation once we start going down
+        if (parseInt(myImg.style.top, 10) < startPos - jumpHeight) {
+            myImg.src = 'MainCharacterFall.png'; // Change to fall sprite when falling
+        }
+        
+        if (parseInt(myImg.style.top, 10) < startPos) { 
+            currentHeight -= gravity; // Go down
+            myImg.style.top = Math.min(startPos, (startPos - currentHeight)) + "px"; // Avoid overshooting
+            requestAnimationFrame(jumpDown);
+        } else {
+            myImg.style.top = startPos + "px"; // Reset to start position
+            isJumping = false;
+            myImg.src = 'MainCharacterRight.png'; // Reset to idle animation
+        }
+    }
+
+    jumpUp(); // Start jump
+}
     // Start the game loop
     gameLoop();
 </script>
