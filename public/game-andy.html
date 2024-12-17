@@ -12,7 +12,7 @@
         #gameContainer {
             position: relative;
             width: 100vw;
-            height: 200vh; 
+            height: 200vh;
             background: linear-gradient(to bottom, white 50%, #add8e6 51%);
         }
         #myImg01 {
@@ -20,7 +20,7 @@
             width: 100px;
             height: 80px;
             top: 400px;
-            left: 150px;
+            left: 150px; /* Ensure valid starting position */
         }
     </style>
 </head>
@@ -30,7 +30,7 @@
     <h1 align="center" style="position: absolute; top: 20px; width: 100%; color: black;">Andy Final Game</h1>
 
     <!-- Character -->
-    <img id="myImg01" src="MainCharacterRight.png" />
+    <img id="myImg01" src="MainCharacterRight.png" style="top: 400px; left: 150px;" />
 
     <!-- Win/Lose Triggers -->
     <img id="myImg02" style="position: absolute; width: 100px; height: 80px; top: 500px; left: 250px;" src="myImage02.jpg" />
@@ -48,6 +48,7 @@
     const jumpHeight = 130;
     const gravity = 5;
 
+    // Key controls
     function handleKeyDown(event) {
         keyState[event.key] = true; // Track key press
         if (event.key === "w" && !isJumping) myJump();
@@ -62,57 +63,61 @@
         if (!isJumping) myImg.src = `MainCharacter${action}.png`; // Change the sprite
     }
 
-  function gameLoop() {
-    const myImg = document.getElementById("myImg01");
+    // Character movement
+    function gameLoop() {
+        const myImg = document.getElementById("myImg01");
 
-    // Horizontal movement
-    if (keyState["d"]) {
-        setCharacter("Right");
-        myImg.style.left = (parseInt(myImg.style.left, 10) + characterSpeed) + "px";
-    }
-    if (keyState["a"]) {
-        setCharacter("Left");
-        myImg.style.left = (parseInt(myImg.style.left, 10) - characterSpeed) + "px";
-    }
+        let currentLeft = parseInt(myImg.style.left, 10) || 0;
 
-    requestAnimationFrame(gameLoop);
-}
-
-function myJump() {
-    if (isJumping) return;
-    isJumping = true;
-
-    const myImg = document.getElementById("myImg01");
-    const startPos = parseInt(myImg.style.top, 10); // Read starting position
-    let currentHeight = 0;
-
-    myImg.src = 'MainCharacterJump.png';
-
-    function jumpUp() {
-        if (currentHeight < jumpHeight) {
-            currentHeight += gravity; // Go up
-            myImg.style.top = (startPos - currentHeight) + "px";
-            requestAnimationFrame(jumpUp);
-        } else {
-            jumpDown();
+        if (keyState["d"]) {
+            setCharacter("Right");
+            currentLeft += characterSpeed;
+            myImg.style.left = currentLeft + "px";
         }
-    }
-
-    function jumpDown() {
-        if (currentHeight > 0) {
-            currentHeight -= gravity; // Fall back down
-            myImg.style.top = (startPos - currentHeight) + "px";
-            requestAnimationFrame(jumpDown);
-        } else {
-            myImg.style.top = startPos + "px"; // Land back
-            isJumping = false;
-            myImg.src = 'MainCharacterRight.png'; // Reset image
+        if (keyState["a"]) {
+            setCharacter("Left");
+            currentLeft -= characterSpeed;
+            myImg.style.left = currentLeft + "px";
         }
+
+        requestAnimationFrame(gameLoop);
     }
 
-    jumpUp();
-}
+    // Character jump
+    function myJump() {
+        if (isJumping) return;
+        isJumping = true;
 
+        const myImg = document.getElementById("myImg01");
+        const startPos = parseInt(myImg.style.top, 10) || 400;
+        let currentHeight = 0;
+
+        myImg.src = 'MainCharacterJump.png';
+
+        function jumpUp() {
+            if (currentHeight < jumpHeight) {
+                currentHeight += gravity;
+                myImg.style.top = (startPos - currentHeight) + "px";
+                requestAnimationFrame(jumpUp);
+            } else {
+                jumpDown();
+            }
+        }
+
+        function jumpDown() {
+            if (currentHeight > 0) {
+                currentHeight -= gravity;
+                myImg.style.top = (startPos - currentHeight) + "px";
+                requestAnimationFrame(jumpDown);
+            } else {
+                myImg.style.top = startPos + "px";
+                isJumping = false;
+                myImg.src = 'MainCharacterRight.png';
+            }
+        }
+
+        jumpUp();
+    }
 
     // Start the game loop
     gameLoop();
