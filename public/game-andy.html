@@ -64,22 +64,25 @@
         }
     }
 
- function gameLoop() {
-    const myImg = document.getElementById("myImg01");
+// Initialize starting position of the character
+const myImg = document.getElementById("myImg01");
+myImg.style.left = "150px"; // Match initial CSS position
+myImg.style.top = "1200px"; // Ensure the starting top value is also set
 
+function gameLoop() {
     // Handle horizontal movement
     if (keyState["d"]) {
         setCharacter("Right");
-        myImg.style.left = (parseInt(myImg.style.left, 10) || 0) + characterSpeed + "px";
+        myImg.style.left = (parseInt(myImg.style.left, 10)) + characterSpeed + "px";
     }
     if (keyState["a"]) {
         setCharacter("Left");
-        myImg.style.left = (parseInt(myImg.style.left, 10) || 0) - characterSpeed + "px";
+        myImg.style.left = (parseInt(myImg.style.left, 10)) - characterSpeed + "px";
     }
 
-    // Continue the loop
     requestAnimationFrame(gameLoop);
 }
+
 
 function myJump() {
     if (isJumping) return; // Prevent multiple jumps
