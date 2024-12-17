@@ -112,33 +112,6 @@ function myJump() {
             requestAnimationFrame(jumpDown);
         }
     }
-
-    jumpUp();
-}
-
-    function jumpDown() {
-        myImg.src = 'MainCharacterFall.png'; // Apply fall sprite
-        const platformBelow = detectPlatformBelow(); // Check for platform
-
-        if (platformBelow !== null) {
-            // Land on platform
-            myImg.style.top = platformBelow + "px";
-            isJumping = false; // Reset jump state
-            myImg.src = 'MainCharacterRight.png'; // Reset sprite
-        } else if (currentHeight > 0) {
-            // Continue descending
-            currentHeight -= gravity; // Descend
-            myImg.style.top = (startPos - currentHeight) + "px"; // Update position
-            adjustScroll(); // Adjust scroll position
-            requestAnimationFrame(jumpDown);
-        } else {
-            // Land on original ground
-            myImg.style.top = startPos + "px";
-            isJumping = false; // Reset jump state
-            myImg.src = 'MainCharacterRight.png'; // Reset sprite
-        }
-    }
-
     jumpUp(); // Start jump motion
 }
 
