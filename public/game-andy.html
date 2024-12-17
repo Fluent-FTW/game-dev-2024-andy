@@ -12,15 +12,18 @@
         #gameContainer {
             position: relative;
             width: 100vw;
-            height: 200vh;
-            background: #add8e6 100%;
+            height: 100vh; /* Adjusted to fit within the screen */
+            background: linear-gradient(to bottom, white 50%, #add8e6 51%);
+            border: 5px solid black; /* Border around the screen */
+            box-sizing: border-box;
+            overflow: hidden; /* Prevents character from going out of bounds */
         }
         #myImg01 {
             position: absolute;
             width: 100px;
             height: 80px;
-            top: 400px;
-            left: 150px; /* Ensure valid starting position */
+            left: 20px; /* Starting from the left */
+            bottom: 0; /* Spawn at the bottom of the screen */
         }
     </style>
 </head>
