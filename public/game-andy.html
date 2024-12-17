@@ -70,38 +70,51 @@ function gameLoop() {
     // Handle horizontal movement
     if (keyState["d"]) {
         setCharacter("Right");
-        myImg.style.left = (parseInt(myImg.style.left, 10)) + characterSpeed + "px";
+        myImg.style.left = (parseInt(myImg.style.left, 10) + characterSpeed) + "px";
     }
     if (keyState["a"]) {
         setCharacter("Left");
-        myImg.style.left = (parseInt(myImg.style.left, 10)) - characterSpeed + "px";
+        myImg.style.left = (parseInt(myImg.style.left, 10) - characterSpeed) + "px";
     }
 
     requestAnimationFrame(gameLoop);
 }
-
 
 function myJump() {
     if (isJumping) return; // Prevent multiple jumps
     isJumping = true;
 
     const myImg = document.getElementById("myImg01");
-    const startPos = parseInt(myImg.style.top, 10) || 1200; // Starting position
-    let currentHeight = 0; // Track jump height
+    const startPos = parseInt(myImg.style.top, 10); // Get current top position
+    let currentHeight = 0;
 
-    // Change to jump sprite
     myImg.src = 'MainCharacterJump.png';
 
     function jumpUp() {
         if (currentHeight < jumpHeight) {
-            currentHeight += gravity; // Ascend
-            myImg.style.top = (startPos - currentHeight) + "px"; // Update position
-            adjustScroll(); // Adjust scroll position
+            currentHeight += gravity; 
+            myImg.style.top = (startPos - currentHeight) + "px"; 
             requestAnimationFrame(jumpUp);
         } else {
-            jumpDown(); // Start descending
+            jumpDown();
         }
     }
+
+    function jumpDown() {
+        currentHeight -= gravity;
+        myImg.style.top = (startPos - currentHeight) + "px";
+
+        if (currentHeight <= 0) {
+            myImg.style.top = startPos + "px"; // Return to original height
+            isJumping = false;
+            myImg.src = 'MainCharacterRight.png'; 
+        } else {
+            requestAnimationFrame(jumpDown);
+        }
+    }
+
+    jumpUp();
+}
 
     function jumpDown() {
         myImg.src = 'MainCharacterFall.png'; // Apply fall sprite
