@@ -62,57 +62,57 @@
         if (!isJumping) myImg.src = `MainCharacter${action}.png`; // Change the sprite
     }
 
-    function gameLoop() {
-        const myImg = document.getElementById("myImg01");
+  function gameLoop() {
+    const myImg = document.getElementById("myImg01");
 
-        // Handle horizontal movement
-        if (keyState["d"]) {
-            setCharacter("Right");
-            myImg.style.left = (parseInt(myImg.style.left, 10) + characterSpeed) + "px";
-        }
-        if (keyState["a"]) {
-            setCharacter("Left");
-            myImg.style.left = (parseInt(myImg.style.left, 10) - characterSpeed) + "px";
-        }
-
-        requestAnimationFrame(gameLoop);
+    // Horizontal movement
+    if (keyState["d"]) {
+        setCharacter("Right");
+        myImg.style.left = (parseInt(myImg.style.left, 10) + characterSpeed) + "px";
+    }
+    if (keyState["a"]) {
+        setCharacter("Left");
+        myImg.style.left = (parseInt(myImg.style.left, 10) - characterSpeed) + "px";
     }
 
-    function myJump() {
-        if (isJumping) return;
-        isJumping = true;
+    requestAnimationFrame(gameLoop);
+}
 
-        const myImg = document.getElementById("myImg01");
-        const startPos = parseInt(myImg.style.top, 10);
-        let currentHeight = 0;
+function myJump() {
+    if (isJumping) return;
+    isJumping = true;
 
-        myImg.src = 'MainCharacterJump.png';
+    const myImg = document.getElementById("myImg01");
+    const startPos = parseInt(myImg.style.top, 10); // Read starting position
+    let currentHeight = 0;
 
-        function jumpUp() {
-            if (currentHeight < jumpHeight) {
-                currentHeight += gravity;
-                myImg.style.top = (startPos - currentHeight) + "px";
-                requestAnimationFrame(jumpUp);
-            } else {
-                jumpDown();
-            }
-        }
+    myImg.src = 'MainCharacterJump.png';
 
-        function jumpDown() {
-            currentHeight -= gravity;
+    function jumpUp() {
+        if (currentHeight < jumpHeight) {
+            currentHeight += gravity; // Go up
             myImg.style.top = (startPos - currentHeight) + "px";
-
-            if (currentHeight <= 0) {
-                myImg.style.top = startPos + "px"; // Land
-                isJumping = false;
-                myImg.src = 'MainCharacterRight.png';
-            } else {
-                requestAnimationFrame(jumpDown);
-            }
+            requestAnimationFrame(jumpUp);
+        } else {
+            jumpDown();
         }
-
-        jumpUp();
     }
+
+    function jumpDown() {
+        if (currentHeight > 0) {
+            currentHeight -= gravity; // Fall back down
+            myImg.style.top = (startPos - currentHeight) + "px";
+            requestAnimationFrame(jumpDown);
+        } else {
+            myImg.style.top = startPos + "px"; // Land back
+            isJumping = false;
+            myImg.src = 'MainCharacterRight.png'; // Reset image
+        }
+    }
+
+    jumpUp();
+}
+
 
     // Start the game loop
     gameLoop();
