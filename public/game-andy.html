@@ -9,19 +9,19 @@
             margin: 0;
             overflow: hidden; /* Prevent default scrolling behavior */
         }
-        #gameContainer {
-            position: relative;
-            width: 100vw;
-            height: 200vh; /* Extend height to add white space below */
-            background: linear-gradient(to bottom, white 50%, #add8e6 50%); /* White space + current background */
-        }
-        #myImg01 {
-            position: absolute;
-            width: 100px;
-            height: 80px;
-            top: 1200px; /* Start below the visible background */
-            left: 150px;
-        }
+            #gameContainer {
+        position: relative;
+        width: 100vw;
+        height: 200vh; 
+        background: linear-gradient(to bottom, white 50%, #add8e6 51%);
+    }
+          #myImg01 {
+        position: absolute;
+        width: 100px;
+        height: 80px;
+        top: 400px; /* Adjust to be within the visible area */
+        left: 150px;
+    }
     </style>
 </head>
 <body id="myBody" onkeydown="handleKeyDown(event)" onkeyup="handleKeyUp(event)">
