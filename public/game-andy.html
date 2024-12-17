@@ -65,11 +65,8 @@
     }
 
 // Initialize starting position of the character
-const myImg = document.getElementById("myImg01");
-myImg.style.left = "150px"; // Match initial CSS position
-myImg.style.top = "1200px"; // Ensure the starting top value is also set
-
 function gameLoop() {
+    const myImg = document.getElementById("myImg01");
     // Handle horizontal movement
     if (keyState["d"]) {
         setCharacter("Right");
