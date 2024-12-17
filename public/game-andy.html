@@ -84,7 +84,7 @@
     }
 
     // Character jump
-   function myJump() {
+  function myJump() {
     if (isJumping) return; // Prevent multiple jumps
     isJumping = true;
 
@@ -107,17 +107,18 @@
 
     // Jump down logic
     function jumpDown() {
-        // Switch to falling animation once we start going down
-        if (parseInt(myImg.style.top, 10) < startPos - jumpHeight) {
-            myImg.src = 'MainCharacterFall.png'; // Change to fall sprite when falling
+        // Switch to falling animation once the character reaches the peak and starts falling
+        if (currentHeight >= jumpHeight && myImg.src.indexOf('Fall.png') === -1) {
+            myImg.src = 'MainCharacterFall.png'; // Change to fall sprite when starting to fall
         }
-        
-        if (parseInt(myImg.style.top, 10) < startPos) { 
+
+        // Fall down by reducing height
+        if (currentHeight > 0) { 
             currentHeight -= gravity; // Go down
-            myImg.style.top = Math.min(startPos, (startPos - currentHeight)) + "px"; // Avoid overshooting
+            myImg.style.top = (startPos - currentHeight) + "px"; 
             requestAnimationFrame(jumpDown);
         } else {
-            myImg.style.top = startPos + "px"; // Reset to start position
+            myImg.style.top = startPos + "px"; // Reset to start position after falling completely
             isJumping = false;
             myImg.src = 'MainCharacterRight.png'; // Reset to idle animation
         }
@@ -125,6 +126,7 @@
 
     jumpUp(); // Start jump
 }
+
     // Start the game loop
     gameLoop();
 </script>
