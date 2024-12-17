@@ -7,156 +7,115 @@
     <style>
         body {
             margin: 0;
-            overflow: hidden; /* Prevent default scrolling behavior */
+            overflow: hidden; /* Prevent scrolling */
         }
-            #gameContainer {
-        position: relative;
-        width: 100vw;
-        height: 200vh; 
-        background: linear-gradient(to bottom, white 50%, #add8e6 51%);
-    }
-          #myImg01 {
-        position: absolute;
-        width: 100px;
-        height: 80px;
-        top: 400px; /* Adjust to be within the visible area */
-        left: 150px;
-    }
+        #gameContainer {
+            position: relative;
+            width: 100vw;
+            height: 200vh; 
+            background: linear-gradient(to bottom, white 50%, #add8e6 51%);
+        }
+        #myImg01 {
+            position: absolute;
+            width: 100px;
+            height: 80px;
+            top: 400px;
+            left: 150px;
+        }
     </style>
 </head>
-<body id="myBody" onkeydown="handleKeyDown(event)" onkeyup="handleKeyUp(event)">
+<body onkeydown="handleKeyDown(event)" onkeyup="handleKeyUp(event)">
 
 <div id="gameContainer">
     <h1 align="center" style="position: absolute; top: 20px; width: 100%; color: black;">Andy Final Game</h1>
 
     <!-- Character -->
-    <img id="myImg01" src="MainCharacterRight.png">
+    <img id="myImg01" src="MainCharacterRight.png" />
 
     <!-- Win/Lose Triggers -->
-    <img id="myImg02" style="position:absolute; width:100px; height:80px; top:500px; left:250px;" src="myImage02.jpg">
-    <img id="myImg03" style="position:absolute; width:100px; height:80px; top:50px; left:400px;" src="myImage03.jpg">
+    <img id="myImg02" style="position: absolute; width: 100px; height: 80px; top: 500px; left: 250px;" src="myImage02.jpg" />
+    <img id="myImg03" style="position: absolute; width: 100px; height: 80px; top: 50px; left: 400px;" src="myImage03.jpg" />
+
+    <!-- Platform -->
+    <div class="platform" style="position: absolute; width: 200px; height: 20px; top: 1200px; left: 300px; background-color: grey;"></div>
 </div>
 
 <script>
     // Global variables
-    let isJumping = false; // Prevent multiple jumps
-    let keyState = {}; // Track pressed keys
-    const characterSpeed = 3; // Movement speed
-    const jumpHeight = 130; // Max jump height
-    const gravity = 5; // Gravity effect during jump
+    let isJumping = false;
+    let keyState = {}; // Track key states
+    const characterSpeed = 3;
+    const jumpHeight = 130;
+    const gravity = 5;
 
     function handleKeyDown(event) {
         keyState[event.key] = true; // Track key press
-        if (event.key === "w" && !isJumping) {
-            myJump(); // Start jump
-        }
+        if (event.key === "w" && !isJumping) myJump();
     }
 
     function handleKeyUp(event) {
         keyState[event.key] = false; // Track key release
     }
 
-
     function setCharacter(action) {
         const myImg = document.getElementById("myImg01");
-        if (!isJumping) {
-            myImg.src = `MainCharacter${action}.png`; // Change the sprite
+        if (!isJumping) myImg.src = `MainCharacter${action}.png`; // Change the sprite
+    }
+
+    function gameLoop() {
+        const myImg = document.getElementById("myImg01");
+
+        // Handle horizontal movement
+        if (keyState["d"]) {
+            setCharacter("Right");
+            myImg.style.left = (parseInt(myImg.style.left, 10) + characterSpeed) + "px";
         }
-    }
-
-// Initialize starting position of the character
-function gameLoop() {
-    const myImg = document.getElementById("myImg01");
-    // Handle horizontal movement
-    if (keyState["d"]) {
-        setCharacter("Right");
-        myImg.style.left = (parseInt(myImg.style.left, 10) + characterSpeed) + "px";
-    }
-    if (keyState["a"]) {
-        setCharacter("Left");
-        myImg.style.left = (parseInt(myImg.style.left, 10) - characterSpeed) + "px";
-    }
-
-    requestAnimationFrame(gameLoop);
-}
-
-function myJump() {
-    if (isJumping) return; // Prevent multiple jumps
-    isJumping = true;
-
-    const myImg = document.getElementById("myImg01");
-    const startPos = parseInt(myImg.style.top, 10); // Get current top position
-    let currentHeight = 0;
-
-    myImg.src = 'MainCharacterJump.png';
-
-    function jumpUp() {
-        if (currentHeight < jumpHeight) {
-            currentHeight += gravity; 
-            myImg.style.top = (startPos - currentHeight) + "px"; 
-            requestAnimationFrame(jumpUp);
-        } else {
-            jumpDown();
+        if (keyState["a"]) {
+            setCharacter("Left");
+            myImg.style.left = (parseInt(myImg.style.left, 10) - characterSpeed) + "px";
         }
+
+        requestAnimationFrame(gameLoop);
     }
 
-    function jumpDown() {
-        currentHeight -= gravity;
-        myImg.style.top = (startPos - currentHeight) + "px";
+    function myJump() {
+        if (isJumping) return;
+        isJumping = true;
 
-        if (currentHeight <= 0) {
-            myImg.style.top = startPos + "px"; // Return to original height
-            isJumping = false;
-            myImg.src = 'MainCharacterRight.png'; 
-        } else {
-            requestAnimationFrame(jumpDown);
+        const myImg = document.getElementById("myImg01");
+        const startPos = parseInt(myImg.style.top, 10);
+        let currentHeight = 0;
+
+        myImg.src = 'MainCharacterJump.png';
+
+        function jumpUp() {
+            if (currentHeight < jumpHeight) {
+                currentHeight += gravity;
+                myImg.style.top = (startPos - currentHeight) + "px";
+                requestAnimationFrame(jumpUp);
+            } else {
+                jumpDown();
+            }
         }
-    }
-    jumpUp(); // Start jump motion
-}
 
-function detectPlatformBelow() {
-    const myImg = document.getElementById("myImg01");
-    const myImgBottom = parseInt(myImg.style.top, 10) + myImg.offsetHeight;
+        function jumpDown() {
+            currentHeight -= gravity;
+            myImg.style.top = (startPos - currentHeight) + "px";
 
-    // Loop through all potential platforms
-    const platforms = document.querySelectorAll(".platform");
-    for (let platform of platforms) {
-        const platformTop = parseInt(platform.style.top, 10);
-        const platformLeft = parseInt(platform.style.left, 10);
-        const platformRight = platformLeft + platform.offsetWidth;
-
-        // Check if the character is above the platform and within its horizontal bounds
-        if (
-            myImgBottom >= platformTop &&
-            myImgBottom - gravity <= platformTop && // Ensure descending onto the platform
-            parseInt(myImg.style.left, 10) + myImg.offsetWidth > platformLeft &&
-            parseInt(myImg.style.left, 10) < platformRight
-        ) {
-            return platformTop - myImg.offsetHeight; // Return the landing position
+            if (currentHeight <= 0) {
+                myImg.style.top = startPos + "px"; // Land
+                isJumping = false;
+                myImg.src = 'MainCharacterRight.png';
+            } else {
+                requestAnimationFrame(jumpDown);
+            }
         }
+
+        jumpUp();
     }
-    return null; // No platform detected
-}
-
-function handleKeyDown(event) {
-    keyState[event.key] = true; // Track key press
-    if (event.key === "w" && !isJumping) {
-        myJump(); // Start jump
-    }
-}
-
-function handleKeyUp(event) {
-    keyState[event.key] = false; // Track key release
-}
-
 
     // Start the game loop
     gameLoop();
 </script>
-    
-<div class="platform" style="position:absolute; width:200px; height:20px; top:1200px; left:300px; background-color:grey;"></div>
-
-    
 </body>
 </html>
