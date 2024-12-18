@@ -13,7 +13,7 @@
         #gameContainer {
             position: relative;
             width: 100vw;
-            height: 100vh; /* Full height of the viewport */
+            height: 100vh;
             background: #add8e6; /* Blue background color inside the game container */
         }
         #myImg01 {
@@ -26,7 +26,7 @@
     </style>
 </head>
 <body onkeydown="handleKeyDown(event)" onkeyup="handleKeyUp(event)">
-
+    
 <div id="gameContainer">
     <h1 align="center" style="position: absolute; top: 20px; width: 100%; color: black;">Andy Final Game</h1>
 
@@ -42,6 +42,12 @@
 </div>
 
 <script>
+    const width = window.innerWidth;
+const height = window.innerHeight;
+
+console.log(`Width: ${width}px`);
+console.log(`Height: ${height}px`);
+    
     // Global variables
     let isJumping = false;
     let keyState = {}; // Track key states
