@@ -20,8 +20,19 @@
             position: absolute;
             width: 100px;
             height: 80px;
-            left: 20px; /* Starting from the left */
+            left: 10px; /* Starting from the left */
             bottom: 0; /* Spawn at the bottom of the screen */
+        }
+        #myImg02, #myImg03 {
+            position: absolute;
+            width: 100px;
+            height: 80px;
+        }
+        .platform {
+            position: absolute;
+            width: 200px;
+            height: 20px;
+            background-color: grey;
         }
     </style>
 </head>
@@ -31,22 +42,22 @@
     <h1 align="center" style="position: absolute; top: 20px; width: 100%; color: black;">Andy Final Game</h1>
 
     <!-- Character -->
-    <img id="myImg01" src="MainCharacterRight.png" style="top: 400px; left: 20px;" />
+    <img id="myImg01" src="MainCharacterRight.png" alt="Main Character" />
 
     <!-- Win/Lose Triggers -->
-    <img id="myImg02" style="position: absolute; width: 100px; height: 80px; top: 500px; left: 250px;" src="myImage02.jpg" />
-    <img id="myImg03" style="position: absolute; width: 100px; height: 80px; top: 50px; left: 400px;" src="myImage03.jpg" />
+    <img id="myImg02" style="top: 500px; left: 250px;" src="myImage02.jpg" alt="Trigger 1" />
+    <img id="myImg03" style="top: 50px; left: 400px;" src="myImage03.jpg" alt="Trigger 2" />
 
     <!-- Platform -->
-    <div class="platform" style="position: absolute; width: 200px; height: 20px; top: 1200px; left: 300px; background-color: grey;"></div>
+    <div class="platform" style="top: 1200px; left: 300px;"></div>
 </div>
 
 <script>
     const width = window.innerWidth;
-const height = window.innerHeight;
+    const height = window.innerHeight;
 
-console.log(`Width: ${width}px`);
-console.log(`Height: ${height}px`);
+    console.log(`Width: ${width}px`);
+    console.log(`Height: ${height}px`);
     
     // Global variables
     let isJumping = false;
@@ -75,7 +86,7 @@ console.log(`Height: ${height}px`);
         const myImg = document.getElementById("myImg01");
         const gameContainer = document.getElementById("gameContainer");
 
-        let currentLeft = parseInt(myImg.style.left, 10) || 0;
+        let currentLeft = parseInt(myImg.style.left, 10) || 10; // Start at left: 10px
         const containerWidth = gameContainer.offsetWidth;
         const characterWidth = myImg.offsetWidth;
 
@@ -105,7 +116,7 @@ console.log(`Height: ${height}px`);
         isJumping = true;
 
         const myImg = document.getElementById("myImg01");
-        const startPos = parseInt(myImg.style.top, 10) || 400;
+        const startPos = parseInt(window.getComputedStyle(myImg).bottom, 10) || 0;
         let currentHeight = 0;
 
         myImg.src = 'MainCharacterJump.png'; // Switch to jumping animation
@@ -114,7 +125,7 @@ console.log(`Height: ${height}px`);
         function jumpUp() {
             if (currentHeight < jumpHeight) {
                 currentHeight += gravity; // Go up
-                myImg.style.top = (startPos - currentHeight) + "px";
+                myImg.style.bottom = (startPos + currentHeight) + "px";
                 requestAnimationFrame(jumpUp);
             } else {
                 jumpDown(); // Start falling
@@ -123,20 +134,14 @@ console.log(`Height: ${height}px`);
 
         // Jump down logic
         function jumpDown() {
-            // Switch to falling animation once the character reaches the peak and starts falling
-            if (currentHeight >= jumpHeight && myImg.src.indexOf('Fall.png') === -1) {
-                myImg.src = 'MainCharacterFall.png'; // Change to fall sprite when starting to fall
-            }
-
-            // Fall down by reducing height
-            if (currentHeight > 0) { 
+            if (currentHeight > 0) {
                 currentHeight -= gravity; // Go down
-                myImg.style.top = (startPos - currentHeight) + "px"; 
+                myImg.style.bottom = (startPos + currentHeight) + "px"; 
                 requestAnimationFrame(jumpDown);
             } else {
-                myImg.style.top = startPos + "px"; // Reset to start position after falling completely
                 isJumping = false;
-                myImg.src = 'MainCharacterRight.png'; // Reset to idle animation
+                myImg.style.bottom = startPos + "px"; // Reset position
+                myImg.src = 'MainCharacterRight.png'; // Reset sprite
             }
         }
 
