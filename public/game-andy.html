@@ -49,6 +49,7 @@
         let keyState = {};
         const characterSpeed = 3;
         const jumpHeight = 130;
+        const jumpSpeed = 6;
         const gravity = 5;
 
         window.onload = () => {
@@ -113,33 +114,32 @@
                 if (isJumping || (!isOnPlatform && parseInt(myImg.style.bottom, 10) === 0)) return;
 
                 isJumping = true;
-                const startPos = parseInt(myImg.style.bottom, 10) || 0;
-                let currentHeight = 0;
+                let jumpVelocity = jumpSpeed;
+                let currentBottom = parseInt(myImg.style.bottom, 10) || 0;
 
                 myImg.src = 'MainCharacterJump.png';
 
-                function jumpUp() {
-                    if (currentHeight < jumpHeight) {
-                        currentHeight += gravity;
-                        myImg.style.bottom = (startPos + currentHeight) + 'px';
-                        requestAnimationFrame(jumpUp);
-                    } else {
-                        jumpDown();
-                    }
-                }
+                function handleJump() {
+                    if (jumpVelocity > 0 || currentBottom > 0) {
+                        if (jumpVelocity > 0) {
+                            // Going up
+                            currentBottom += jumpVelocity;
+                            jumpVelocity -= 1; // Simulate gravity slowing the jump
+                        } else {
+                            // Falling down
+                            currentBottom = Math.max(currentBottom - gravity, 0);
+                        }
 
-                function jumpDown() {
-                    if (currentHeight > 0) {
-                        currentHeight -= gravity;
-                        myImg.style.bottom = (startPos + currentHeight) + 'px';
-                        requestAnimationFrame(jumpDown);
+                        myImg.style.bottom = currentBottom + 'px';
+
+                        requestAnimationFrame(handleJump);
                     } else {
                         isJumping = false;
-                        myImg.src = 'MainCharacterRight.png';
+                        myImg.src = "MainCharacterRight.png";
                     }
                 }
 
-                jumpUp();
+                handleJump();
             }
 
             // Key controls
