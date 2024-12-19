@@ -4,55 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Andy Final Game</title>
-    <style>
-        body {
-            margin: 0;
-            overflow: hidden; /* Prevent scrolling */
-            background-color: #add8e6; /* Blue background color for the whole screen */
-        }
-        #gameContainer {
-            position: relative;
-            width: 100vw;
-            height: 100vh;
-            background: #add8e6; /* Blue background color inside the game container */
-        }
-        #myImg01 {
-            position: absolute;
-            width: 100px;
-            height: 80px;
-            left: 10px; /* Starting from the left */
-            bottom: 0; /* Spawn at the bottom of the screen */
-        }
-        #myImg02, #myImg03 {
-            position: absolute;
-            width: 100px;
-            height: 80px;
-        }
-        .platform {
-            position: absolute;
-            width: 200px;
-            height: 20px;
-            background-color: grey;
-        }
-    </style>
-</head>
-<body onkeydown="handleKeyDown(event)" onkeyup="handleKeyUp(event)">
-    
-<div id="gameContainer">
-    <h1 align="center" style="position: absolute; top: 20px; width: 100%; color: black;">Andy Final Game</h1>
-
-    <!-- Character -->
-    <img id="myImg01" src="MainCharacterRight.png" alt="Main Character" />
-
-    <!-- Win/Lose Triggers -->
-    <img id="myImg02" style="top: 500px; left: 250px;" src="myImage02.jpg" alt="Trigger 1" />
-    <img id="myImg03" style="top: 50px; left: 400px;" src="myImage03.jpg" alt="Trigger 2" />
-
-    <!-- Platform -->
-    <div class="platform" style="bottom: 75px; left: 200px;"></div>
-</div>
-
-<script>
+   <script>
     let isJumping = false;
     let keyState = {};
     const characterSpeed = 3;
@@ -169,6 +121,7 @@
 
     gameLoop();
 </script>
+
 
 </body>
 </html>
