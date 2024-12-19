@@ -53,18 +53,15 @@
 </div>
 
 <script>
-    // Existing global variables
     let isJumping = false;
     let keyState = {};
     const characterSpeed = 3;
     const jumpHeight = 130;
     const gravity = 5;
 
-    // New global variables for collision
     let isOnPlatform = false;
     const platform = document.querySelector('.platform');
 
-    // Updated game loop
     function gameLoop() {
         const myImg = document.getElementById("myImg01");
         const gameContainer = document.getElementById("gameContainer");
@@ -102,12 +99,10 @@
         requestAnimationFrame(gameLoop);
     }
 
-    // Collision detection logic
     function checkPlatformCollision(character, platform) {
         const charRect = character.getBoundingClientRect();
         const platRect = platform.getBoundingClientRect();
 
-        // Determine if character is on top of the platform
         const onTop = 
             charRect.bottom <= platRect.top + 5 &&
             charRect.bottom + gravity >= platRect.top &&
@@ -115,7 +110,6 @@
             charRect.left < platRect.right;
 
         if (onTop) {
-            // Snap character to platform and prevent falling
             const platformTop = window.innerHeight - platRect.top;
             character.style.bottom = `${platformTop}px`;
             isOnPlatform = true;
@@ -124,13 +118,13 @@
         }
     }
 
-    // Jump logic
     function myJump() {
-        if (isJumping || (!isOnPlatform && parseInt(myImg01.style.bottom, 10) === 0)) return;
+        const myImg = document.getElementById("myImg01");
+
+        if (isJumping || (!isOnPlatform && parseInt(myImg.style.bottom, 10) === 0)) return;
 
         isJumping = true;
-        const myImg = document.getElementById("myImg01");
-        const startPos = parseInt(window.getComputedStyle(myImg).bottom, 10) || 0;
+        const startPos = parseInt(myImg.style.bottom, 10) || 0;
         let currentHeight = 0;
 
         myImg.src = 'MainCharacterJump.png';
@@ -152,20 +146,18 @@
                 requestAnimationFrame(jumpDown);
             } else {
                 isJumping = false;
-                myImg.src = 'MainCharacterRight.png'; // Reset sprite
+                myImg.src = 'MainCharacterRight.png';
             }
         }
 
         jumpUp();
     }
 
-    // Update the character sprite
     function setCharacter(action) {
         const myImg = document.getElementById("myImg01");
-        if (!isJumping) myImg.src = `MainCharacter${action}.png`; // Change the sprite
+        if (!isJumping) myImg.src = `MainCharacter${action}.png`;
     }
 
-    // Handle keypress events
     function handleKeyDown(event) {
         keyState[event.key] = true;
         if (event.key === "w") myJump();
@@ -175,10 +167,8 @@
         keyState[event.key] = false;
     }
 
-    // Start the game loop
     gameLoop();
 </script>
 
-</script>
 </body>
 </html>
