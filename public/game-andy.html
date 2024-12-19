@@ -4,47 +4,77 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Andy Final Game</title>
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+            background-color: lightblue;
+        }
+
+        #gameContainer {
+            position: relative;
+            width: 100vw;
+            height: 100vh;
+            background-color: lightblue;
+        }
+
+        #myImg01 {
+            position: absolute;
+            width: 100px;
+            height: 80px;
+            left: 10px;
+            bottom: 0;
+        }
+
+        .platform {
+            position: absolute;
+            bottom: 100px;
+            left: 150px;
+            width: 200px;
+            height: 20px;
+            background-color: grey;
+        }
+    </style>
 </head>
-<body onkeydown="handleKeyDown(event)" onkeyup="handleKeyUp(event)">
-    <div id="gameContainer" style="position: relative; width: 100%; height: 100vh; background-color: lightblue;">
-        <img id="myImg01" src="MainCharacterRight.png" alt="Main Character"
-             style="position: absolute; width: 100px; height: 80px; left: 10px; bottom: 0;">
-        <div class="platform" style="position: absolute; bottom: 100px; left: 150px; width: 200px; height: 20px; background-color: grey;"></div>
+<body>
+    <div id="gameContainer">
+        <img id="myImg01" src="MainCharacterRight.png" alt="Character">
+        <div class="platform"></div>
     </div>
+
     <script>
+        // Global variables
         let isJumping = false;
+        let isOnPlatform = false;
         let keyState = {};
         const characterSpeed = 3;
         const jumpHeight = 130;
         const gravity = 5;
 
-        let platform;
-        let isOnPlatform = false;
-
-        window.onload = function () {
-            const gameContainer = document.getElementById("gameContainer");
+        window.onload = () => {
             const myImg = document.getElementById("myImg01");
-            platform = document.querySelector('.platform');
+            const platform = document.querySelector('.platform');
+            const gameContainer = document.getElementById("gameContainer");
 
             function gameLoop() {
-                let currentLeft = parseInt(myImg.style.left, 10) || 10;
-                let currentBottom = parseInt(myImg.style.bottom, 10) || 0;
+                let currentLeft = parseInt(myImg.style.left) || 10;
+                let currentBottom = parseInt(myImg.style.bottom) || 0;
                 const containerWidth = gameContainer.offsetWidth;
                 const characterWidth = myImg.offsetWidth;
 
-                // Horizontal movement logic
-                if (keyState["d"]) {
-                    setCharacter("Right");
+                // Horizontal movement
+                if (keyState['d']) {
+                    myImg.src = "MainCharacterRight.png";
                     if (currentLeft + characterWidth < containerWidth) {
                         currentLeft += characterSpeed;
-                        myImg.style.left = currentLeft + "px";
+                        myImg.style.left = currentLeft + 'px';
                     }
                 }
-                if (keyState["a"]) {
-                    setCharacter("Left");
+                if (keyState['a']) {
+                    myImg.src = "MainCharacterLeft.png";
                     if (currentLeft > 0) {
                         currentLeft -= characterSpeed;
-                        myImg.style.left = currentLeft + "px";
+                        myImg.style.left = currentLeft + 'px';
                     }
                 }
 
@@ -54,7 +84,7 @@
                 // Apply gravity if not on a platform or jumping
                 if (!isOnPlatform && !isJumping) {
                     currentBottom = Math.max(currentBottom - gravity, 0);
-                    myImg.style.bottom = currentBottom + "px";
+                    myImg.style.bottom = currentBottom + 'px';
                 }
 
                 requestAnimationFrame(gameLoop);
@@ -91,7 +121,7 @@
                 function jumpUp() {
                     if (currentHeight < jumpHeight) {
                         currentHeight += gravity;
-                        myImg.style.bottom = (startPos + currentHeight) + "px";
+                        myImg.style.bottom = (startPos + currentHeight) + 'px';
                         requestAnimationFrame(jumpUp);
                     } else {
                         jumpDown();
@@ -101,7 +131,7 @@
                 function jumpDown() {
                     if (currentHeight > 0) {
                         currentHeight -= gravity;
-                        myImg.style.bottom = (startPos + currentHeight) + "px";
+                        myImg.style.bottom = (startPos + currentHeight) + 'px';
                         requestAnimationFrame(jumpDown);
                     } else {
                         isJumping = false;
@@ -112,19 +142,20 @@
                 jumpUp();
             }
 
-            function setCharacter(action) {
-                if (!isJumping) myImg.src = `MainCharacter${action}.png`;
-            }
-
+            // Key controls
             function handleKeyDown(event) {
                 keyState[event.key] = true;
-                if (event.key === "w") myJump();
+                if (event.key === 'w') myJump();
             }
 
             function handleKeyUp(event) {
                 keyState[event.key] = false;
             }
 
+            document.addEventListener('keydown', handleKeyDown);
+            document.addEventListener('keyup', handleKeyUp);
+
+            // Start the game loop
             gameLoop();
         };
     </script>
