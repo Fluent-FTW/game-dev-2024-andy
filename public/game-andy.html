@@ -49,8 +49,8 @@
         let keyState = {};
         const characterSpeed = 3;
         const jumpHeight = 130;
-        const jumpSpeed = 6;
         const gravity = 5;
+        const jumpSpeed = 12;
 
         window.onload = () => {
             const myImg = document.getElementById("myImg01");
@@ -124,7 +124,7 @@
                         if (jumpVelocity > 0) {
                             // Going up
                             currentBottom += jumpVelocity;
-                            jumpVelocity -= 1; // Simulate gravity slowing the jump
+                            jumpVelocity -= gravity / 2; // Simulate jump deceleration
                         } else {
                             // Falling down
                             currentBottom = Math.max(currentBottom - gravity, 0);
@@ -135,6 +135,7 @@
                         requestAnimationFrame(handleJump);
                     } else {
                         isJumping = false;
+                        isOnPlatform = false;
                         myImg.src = "MainCharacterRight.png";
                     }
                 }
