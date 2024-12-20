@@ -45,10 +45,8 @@
     <script>
         // Global variables
         let isJumping = false;
-        let isOnPlatform = false;
         let keyState = {};
         const characterSpeed = 3;
-        const jumpHeight = 130;
         const gravity = 5;
         const jumpSpeed = 12;
 
@@ -79,64 +77,42 @@
                     }
                 }
 
-                // Check platform collision
-                checkPlatformCollision(myImg, platform);
-
-                // Apply gravity if not on a platform or jumping
-                if (!isOnPlatform && !isJumping) {
+                // Apply gravity if not jumping
+                if (!isJumping) {
                     currentBottom = Math.max(currentBottom - gravity, 0);
                     myImg.style.bottom = currentBottom + 'px';
+
+                    // Prevent sinking below the ground
+                    if (currentBottom === 0) isJumping = false;
                 }
 
                 requestAnimationFrame(gameLoop);
             }
 
-            function checkPlatformCollision(character, platform) {
-                const charRect = character.getBoundingClientRect();
-                const platRect = platform.getBoundingClientRect();
-
-                const onTop =
-                    charRect.bottom <= platRect.top + 5 &&
-                    charRect.bottom + gravity >= platRect.top &&
-                    charRect.right > platRect.left &&
-                    charRect.left < platRect.right;
-
-                if (onTop) {
-                    const platformTop = window.innerHeight - platRect.top;
-                    character.style.bottom = `${platformTop}px`;
-                    isOnPlatform = true;
-                } else {
-                    isOnPlatform = false;
-                }
-            }
-
             function myJump() {
-                if (isJumping || (!isOnPlatform && parseInt(myImg.style.bottom, 10) === 0)) return;
+                if (isJumping) return;
 
                 isJumping = true;
                 let jumpVelocity = jumpSpeed;
-                let currentBottom = parseInt(myImg.style.bottom, 10) || 0;
 
-                myImg.src = 'MainCharacterJump.png';
+                myImg.src = "MainCharacterJump.png"; // Change sprite for jumping
 
                 function handleJump() {
+                    const currentBottom = parseInt(myImg.style.bottom) || 0;
+
                     if (jumpVelocity > 0 || currentBottom > 0) {
                         if (jumpVelocity > 0) {
                             // Going up
-                            currentBottom += jumpVelocity;
+                            myImg.style.bottom = currentBottom + jumpVelocity + 'px';
                             jumpVelocity -= gravity / 2; // Simulate jump deceleration
                         } else {
                             // Falling down
-                            currentBottom = Math.max(currentBottom - gravity, 0);
+                            myImg.style.bottom = Math.max(currentBottom - gravity, 0) + 'px';
                         }
-
-                        myImg.style.bottom = currentBottom + 'px';
-
                         requestAnimationFrame(handleJump);
                     } else {
                         isJumping = false;
-                        isOnPlatform = false;
-                        myImg.src = "MainCharacterRight.png";
+                        myImg.src = "MainCharacterRight.png"; // Reset sprite
                     }
                 }
 
