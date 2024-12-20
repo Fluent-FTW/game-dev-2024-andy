@@ -47,7 +47,7 @@
         let isJumping = false;
         let keyState = {};
         const characterSpeed = 3;
-        const gravity = 5;
+        const gravity = 2; // Reduced for smoother falling
         const jumpSpeed = 12;
 
         window.onload = () => {
@@ -81,9 +81,6 @@
                 if (!isJumping) {
                     currentBottom = Math.max(currentBottom - gravity, 0);
                     myImg.style.bottom = currentBottom + 'px';
-
-                    // Prevent sinking below the ground
-                    if (currentBottom === 0) isJumping = false;
                 }
 
                 requestAnimationFrame(gameLoop);
@@ -100,17 +97,17 @@
                 function handleJump() {
                     const currentBottom = parseInt(myImg.style.bottom) || 0;
 
-                    if (jumpVelocity > 0 || currentBottom > 0) {
-                        if (jumpVelocity > 0) {
-                            // Going up
-                            myImg.style.bottom = currentBottom + jumpVelocity + 'px';
-                            jumpVelocity -= gravity / 2; // Simulate jump deceleration
-                        } else {
-                            // Falling down
-                            myImg.style.bottom = Math.max(currentBottom - gravity, 0) + 'px';
-                        }
+                    if (jumpVelocity > 0) {
+                        // Going up
+                        myImg.style.bottom = currentBottom + jumpVelocity + 'px';
+                        jumpVelocity -= 1; // Gradual deceleration
+                        requestAnimationFrame(handleJump);
+                    } else if (currentBottom > 0) {
+                        // Falling down
+                        myImg.style.bottom = Math.max(currentBottom - gravity, 0) + 'px';
                         requestAnimationFrame(handleJump);
                     } else {
+                        // Landed
                         isJumping = false;
                         myImg.src = "MainCharacterRight.png"; // Reset sprite
                     }
