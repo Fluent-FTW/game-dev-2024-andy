@@ -43,6 +43,7 @@
 
     <script>
         let isJumping = false;
+        let isFalling = false;
         let keyState = {};
         const characterSpeed = 3;
         const gravity = 2;
@@ -51,16 +52,18 @@
         window.onload = () => {
             const myImg = document.getElementById("myImg01");
             const gameContainer = document.getElementById("gameContainer");
+            const platforms = document.querySelectorAll(".platform");
 
             // Initialize position
             myImg.style.left = "10px";
             myImg.style.bottom = "0px";
 
             function myJump() {
-                if (isJumping) return;
+                if (isJumping || isFalling) return;
 
                 isJumping = true;
                 let jumpVelocity = jumpSpeed;
+                myImg.src = "MainCharacterJump.png";
 
                 function handleJump() {
                     let currentBottom = parseFloat(myImg.style.bottom) || 0;
@@ -71,40 +74,74 @@
                         myImg.style.bottom = currentBottom + "px";
                         requestAnimationFrame(handleJump);
                     } else {
-                        // Start falling
                         isJumping = false;
+                        isFalling = true;
+                        myImg.src = "MainCharacterFall.png"; // Start falling animation
+                        handleFall();
                     }
                 }
 
                 handleJump();
             }
 
+            function handleFall() {
+                let currentBottom = parseFloat(myImg.style.bottom) || 0;
+                let isOnPlatform = false;
+
+                // Check for platform collisions
+                for (let platform of platforms) {
+                    const platformRect = platform.getBoundingClientRect();
+                    const characterRect = myImg.getBoundingClientRect();
+
+                    if (
+                        characterRect.right > platformRect.left &&
+                        characterRect.left < platformRect.right &&
+                        currentBottom <= gameContainer.offsetHeight - platformRect.top &&
+                        currentBottom >= gameContainer.offsetHeight - platformRect.top - 5
+                    ) {
+                        isFalling = false;
+                        myImg.src = "MainCharacterRight.png";
+                        isOnPlatform = true;
+                        myImg.style.bottom = 
+                            (gameContainer.offsetHeight - platformRect.top) + "px";
+                        break;
+                    }
+                }
+
+                if (!isOnPlatform) {
+                    if (currentBottom > 0) {
+                        currentBottom -= gravity;
+                        myImg.style.bottom = currentBottom + "px";
+                        requestAnimationFrame(handleFall);
+                    } else {
+                        isFalling = false;
+                        myImg.src = "MainCharacterRight.png";
+                        myImg.style.bottom = "0px";
+                    }
+                }
+            }
+
             function gameLoop() {
                 let currentLeft = parseFloat(myImg.style.left) || 0;
-                let currentBottom = parseFloat(myImg.style.bottom) || 0;
 
                 // Horizontal movement
                 if (keyState['d']) {
+                    if (!isJumping && !isFalling) {
+                        myImg.src = "MainCharacterRight.png";
+                    }
                     if (currentLeft + myImg.offsetWidth < gameContainer.offsetWidth) {
                         currentLeft += characterSpeed;
                         myImg.style.left = currentLeft + 'px';
                     }
                 }
+
                 if (keyState['a']) {
+                    if (!isJumping && !isFalling) {
+                        myImg.src = "MainCharacterLeft.png";
+                    }
                     if (currentLeft > 0) {
                         currentLeft -= characterSpeed;
                         myImg.style.left = currentLeft + 'px';
-                    }
-                }
-
-                // Apply gravity when not jumping
-                if (!isJumping) {
-                    if (currentBottom > 0) {
-                        currentBottom -= gravity;
-                        myImg.style.bottom = currentBottom + "px";
-                    } else {
-                        // Character is on the ground
-                        myImg.style.bottom = "0px";
                     }
                 }
 
