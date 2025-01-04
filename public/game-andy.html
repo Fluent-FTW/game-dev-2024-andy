@@ -58,56 +58,25 @@ window.onload = () => {
 
     // Initialize character position if not explicitly defined
     const myImgStyle = window.getComputedStyle(myImg);
-    myImg.style.left = myImgStyle.left || '10px';
-    myImg.style.bottom = myImgStyle.bottom || '0px';
+    myImg.style.left = myImgStyle.left === 'auto' ? '10px' : myImgStyle.left;
+    myImg.style.bottom = myImgStyle.bottom === 'auto' ? '0px' : myImgStyle.bottom;
 
     function gameLoop() {
         let currentLeft = parseInt(myImg.style.left);
         let currentBottom = parseInt(myImg.style.bottom);
-        const containerWidth = gameContainer.offsetWidth;
-        const characterWidth = myImg.offsetWidth;
 
         // Horizontal movement
         if (keyState['d']) {
-            myImg.src = "MainCharacterRight.png";
-            if (currentLeft + characterWidth < containerWidth) {
+            if (currentLeft + myImg.offsetWidth < gameContainer.offsetWidth) {
                 currentLeft += characterSpeed;
                 myImg.style.left = currentLeft + 'px';
             }
         }
         if (keyState['a']) {
-            myImg.src = "MainCharacterLeft.png";
             if (currentLeft > 0) {
                 currentLeft -= characterSpeed;
                 myImg.style.left = currentLeft + 'px';
             }
-        }
-
-        // Gravity and platform collision
-        let isOnPlatform = false;
-
-        platformElements.forEach(platform => {
-            const platformRect = platform.getBoundingClientRect();
-            const characterRect = myImg.getBoundingClientRect();
-
-            // Convert bounding rects to consistent units
-            const platformTop = window.innerHeight - platformRect.top;
-            const characterBottom = window.innerHeight - characterRect.bottom;
-
-            if (
-                characterBottom <= platformTop &&
-                characterBottom + gravity >= platformTop &&
-                characterRect.right > platformRect.left &&
-                characterRect.left < platformRect.right
-            ) {
-                myImg.style.bottom = platformTop + 'px';
-                isOnPlatform = true;
-            }
-        });
-
-        if (!isOnPlatform && !isJumping) {
-            currentBottom = Math.max(currentBottom - gravity, 0);
-            myImg.style.bottom = currentBottom + 'px';
         }
 
         requestAnimationFrame(gameLoop);
@@ -119,25 +88,14 @@ window.onload = () => {
         isJumping = true;
         let jumpVelocity = jumpSpeed;
 
-        myImg.src = "MainCharacterJump.png";
-
         function handleJump() {
             let currentBottom = parseInt(myImg.style.bottom);
-
             if (jumpVelocity > 0) {
                 myImg.style.bottom = currentBottom + jumpVelocity + 'px';
-                jumpVelocity -= 1; 
+                jumpVelocity -= 1;
                 requestAnimationFrame(handleJump);
             } else {
-                const newBottom = Math.max(currentBottom - gravity, 0);
-                myImg.style.bottom = newBottom + 'px';
-
-                if (newBottom === 0) {
-                    isJumping = false;
-                    myImg.src = "MainCharacterRight.png";
-                } else {
-                    requestAnimationFrame(handleJump);
-                }
+                isJumping = false;
             }
         }
 
