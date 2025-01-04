@@ -56,35 +56,59 @@
             const gameContainer = document.getElementById("gameContainer");
 
             function gameLoop() {
-                let currentLeft = parseInt(myImg.style.left) || 10;
-                let currentBottom = parseInt(myImg.style.bottom) || 0;
-                const containerWidth = gameContainer.offsetWidth;
-                const characterWidth = myImg.offsetWidth;
+    let currentLeft = parseInt(myImg.style.left) || 10;
+    let currentBottom = parseInt(myImg.style.bottom) || 0;
+    const containerWidth = gameContainer.offsetWidth;
+    const characterWidth = myImg.offsetWidth;
+    const characterHeight = myImg.offsetHeight;
 
-                // Horizontal movement
-                if (keyState['d']) {
-                    myImg.src = "MainCharacterRight.png";
-                    if (currentLeft + characterWidth < containerWidth) {
-                        currentLeft += characterSpeed;
-                        myImg.style.left = currentLeft + 'px';
-                    }
-                }
-                if (keyState['a']) {
-                    myImg.src = "MainCharacterLeft.png";
-                    if (currentLeft > 0) {
-                        currentLeft -= characterSpeed;
-                        myImg.style.left = currentLeft + 'px';
-                    }
-                }
+    const platformElements = document.querySelectorAll('.platform');
 
-                // Apply gravity if not jumping
-                if (!isJumping) {
-                    currentBottom = Math.max(currentBottom - gravity, 0);
-                    myImg.style.bottom = currentBottom + 'px';
-                }
+    // Horizontal movement
+    if (keyState['d']) {
+        myImg.src = "MainCharacterRight.png";
+        if (currentLeft + characterWidth < containerWidth) {
+            currentLeft += characterSpeed;
+            myImg.style.left = currentLeft + 'px';
+        }
+    }
+    if (keyState['a']) {
+        myImg.src = "MainCharacterLeft.png";
+        if (currentLeft > 0) {
+            currentLeft -= characterSpeed;
+            myImg.style.left = currentLeft + 'px';
+        }
+    }
 
-                requestAnimationFrame(gameLoop);
-            }
+    // Gravity and platform collision
+    let isOnPlatform = false;
+
+    platformElements.forEach(platform => {
+        const platformRect = platform.getBoundingClientRect();
+        const characterRect = myImg.getBoundingClientRect();
+
+        // Check collision with this platform
+        if (
+            characterRect.bottom <= platformRect.top &&
+            characterRect.bottom + gravity >= platformRect.top &&
+            characterRect.right > platformRect.left &&
+            characterRect.left < platformRect.right
+        ) {
+            // The character is on this platform
+            myImg.style.bottom = (window.innerHeight - platformRect.top - characterHeight) + 'px';
+            isOnPlatform = true;
+        }
+    });
+
+    // Apply gravity if the character is not on any platform
+    if (!isOnPlatform && !isJumping) {
+        currentBottom = Math.max(currentBottom - gravity, 0);
+        myImg.style.bottom = currentBottom + 'px';
+    }
+
+    requestAnimationFrame(gameLoop);
+}
+
 
             function myJump() {
                 if (isJumping) return;
