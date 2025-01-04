@@ -15,7 +15,6 @@
             position: relative;
             width: 100vw;
             height: 100vh;
-            background-color: lightblue;
         }
 
         #myImg01 {
@@ -43,77 +42,74 @@
     </div>
 
     <script>
-        // Global variables
-      // Global variables
-let isJumping = false;
-let keyState = {};
-const characterSpeed = 3;
-const gravity = 2; // Slower gravity for smoother falling
-const jumpSpeed = 15; // Higher speed for higher jumps
+        let isJumping = false;
+        let keyState = {};
+        const characterSpeed = 3;
+        const gravity = 2;
+        const jumpSpeed = 15;
 
-window.onload = () => {
-    const myImg = document.getElementById("myImg01");
-    const platformElements = document.querySelectorAll('.platform');
-    const gameContainer = document.getElementById("gameContainer");
+        window.onload = () => {
+            const myImg = document.getElementById("myImg01");
+            const gameContainer = document.getElementById("gameContainer");
 
-    // Initialize character position if not explicitly defined
-    const myImgStyle = window.getComputedStyle(myImg);
-    myImg.style.left = myImgStyle.left === 'auto' ? '10px' : myImgStyle.left;
-    myImg.style.bottom = myImgStyle.bottom === 'auto' ? '0px' : myImgStyle.bottom;
+            // Initialize position
+            myImg.style.left = "10px";
+            myImg.style.bottom = "0px";
 
-    function gameLoop() {
-        let currentLeft = parseInt(myImg.style.left);
-        let currentBottom = parseInt(myImg.style.bottom);
+            function gameLoop() {
+                let currentLeft = parseFloat(myImg.style.left) || 0;
+                let currentBottom = parseFloat(myImg.style.bottom) || 0;
 
-        // Horizontal movement
-        if (keyState['d']) {
-            if (currentLeft + myImg.offsetWidth < gameContainer.offsetWidth) {
-                currentLeft += characterSpeed;
-                myImg.style.left = currentLeft + 'px';
+                // Horizontal movement
+                if (keyState['d']) {
+                    if (currentLeft + myImg.offsetWidth < gameContainer.offsetWidth) {
+                        currentLeft += characterSpeed;
+                        myImg.style.left = currentLeft + 'px';
+                    }
+                }
+                if (keyState['a']) {
+                    if (currentLeft > 0) {
+                        currentLeft -= characterSpeed;
+                        myImg.style.left = currentLeft + 'px';
+                    }
+                }
+
+                requestAnimationFrame(gameLoop);
             }
-        }
-        if (keyState['a']) {
-            if (currentLeft > 0) {
-                currentLeft -= characterSpeed;
-                myImg.style.left = currentLeft + 'px';
+
+            function myJump() {
+                if (isJumping) return;
+                isJumping = true;
+
+                let jumpVelocity = jumpSpeed;
+
+                function handleJump() {
+                    let currentBottom = parseFloat(myImg.style.bottom) || 0;
+
+                    if (jumpVelocity > 0) {
+                        currentBottom += jumpVelocity;
+                        jumpVelocity -= 1; // Decelerate
+                        myImg.style.bottom = currentBottom + "px";
+                        requestAnimationFrame(handleJump);
+                    } else {
+                        isJumping = false;
+                    }
+                }
+
+                handleJump();
             }
-        }
 
-        requestAnimationFrame(gameLoop);
-    }
+            document.addEventListener('keydown', (event) => {
+                keyState[event.key] = true;
+                if (event.key === 'w') myJump();
+            });
 
-    function myJump() {
-        if (isJumping) return;
+            document.addEventListener('keyup', (event) => {
+                keyState[event.key] = false;
+            });
 
-        isJumping = true;
-        let jumpVelocity = jumpSpeed;
-
-        function handleJump() {
-            let currentBottom = parseInt(myImg.style.bottom);
-            if (jumpVelocity > 0) {
-                myImg.style.bottom = currentBottom + jumpVelocity + 'px';
-                jumpVelocity -= 1;
-                requestAnimationFrame(handleJump);
-            } else {
-                isJumping = false;
-            }
-        }
-
-        handleJump();
-    }
-
-    function handleKeyDown(event) {
-        keyState[event.key] = true;
-        if (event.key === 'w') myJump();
-    }
-
-    function handleKeyUp(event) {
-        keyState[event.key] = false;
-    }
-
-    document.addEventListener('keydown', handleKeyDown);
-    document.addEventListener('keyup', handleKeyUp);
-
-    // Start the game loop
-    gameLoop();
-};
+            gameLoop();
+        };
+    </script>
+</body>
+</html>
