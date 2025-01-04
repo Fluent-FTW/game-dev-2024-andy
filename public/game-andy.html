@@ -56,6 +56,29 @@
             myImg.style.left = "10px";
             myImg.style.bottom = "0px";
 
+            function myJump() {
+                if (isJumping) return;
+
+                isJumping = true;
+                let jumpVelocity = jumpSpeed;
+
+                function handleJump() {
+                    let currentBottom = parseFloat(myImg.style.bottom) || 0;
+
+                    if (jumpVelocity > 0) {
+                        currentBottom += jumpVelocity;
+                        jumpVelocity -= 1; // Decelerate upward motion
+                        myImg.style.bottom = currentBottom + "px";
+                        requestAnimationFrame(handleJump);
+                    } else {
+                        // Start falling
+                        isJumping = false;
+                    }
+                }
+
+                handleJump();
+            }
+
             function gameLoop() {
                 let currentLeft = parseFloat(myImg.style.left) || 0;
                 let currentBottom = parseFloat(myImg.style.bottom) || 0;
@@ -74,29 +97,18 @@
                     }
                 }
 
-                requestAnimationFrame(gameLoop);
-            }
-
-            function myJump() {
-                if (isJumping) return;
-                isJumping = true;
-
-                let jumpVelocity = jumpSpeed;
-
-                function handleJump() {
-                    let currentBottom = parseFloat(myImg.style.bottom) || 0;
-
-                    if (jumpVelocity > 0) {
-                        currentBottom += jumpVelocity;
-                        jumpVelocity -= 1; // Decelerate
+                // Apply gravity when not jumping
+                if (!isJumping) {
+                    if (currentBottom > 0) {
+                        currentBottom -= gravity;
                         myImg.style.bottom = currentBottom + "px";
-                        requestAnimationFrame(handleJump);
                     } else {
-                        isJumping = false;
+                        // Character is on the ground
+                        myImg.style.bottom = "0px";
                     }
                 }
 
-                handleJump();
+                requestAnimationFrame(gameLoop);
             }
 
             document.addEventListener('keydown', (event) => {
