@@ -56,12 +56,16 @@ window.onload = () => {
     const platformElements = document.querySelectorAll('.platform');
     const gameContainer = document.getElementById("gameContainer");
 
+    // Initialize character position if not explicitly defined
+    const myImgStyle = window.getComputedStyle(myImg);
+    myImg.style.left = myImgStyle.left || '10px';
+    myImg.style.bottom = myImgStyle.bottom || '0px';
+
     function gameLoop() {
-        let currentLeft = parseInt(myImg.style.left) || 10;
-        let currentBottom = parseInt(myImg.style.bottom) || 0;
+        let currentLeft = parseInt(myImg.style.left);
+        let currentBottom = parseInt(myImg.style.bottom);
         const containerWidth = gameContainer.offsetWidth;
         const characterWidth = myImg.offsetWidth;
-        const characterHeight = myImg.offsetHeight;
 
         // Horizontal movement
         if (keyState['d']) {
@@ -79,7 +83,7 @@ window.onload = () => {
             }
         }
 
-        // Gravity and collision detection
+        // Gravity and platform collision
         let isOnPlatform = false;
 
         platformElements.forEach(platform => {
@@ -88,8 +92,6 @@ window.onload = () => {
 
             // Convert bounding rects to consistent units
             const platformTop = window.innerHeight - platformRect.top;
-            const platformBottom = window.innerHeight - platformRect.bottom;
-            const characterTop = window.innerHeight - characterRect.top;
             const characterBottom = window.innerHeight - characterRect.bottom;
 
             if (
@@ -98,13 +100,11 @@ window.onload = () => {
                 characterRect.right > platformRect.left &&
                 characterRect.left < platformRect.right
             ) {
-                // The character is on this platform
                 myImg.style.bottom = platformTop + 'px';
                 isOnPlatform = true;
             }
         });
 
-        // Apply gravity if not on a platform and not jumping
         if (!isOnPlatform && !isJumping) {
             currentBottom = Math.max(currentBottom - gravity, 0);
             myImg.style.bottom = currentBottom + 'px';
@@ -119,24 +119,22 @@ window.onload = () => {
         isJumping = true;
         let jumpVelocity = jumpSpeed;
 
-        myImg.src = "MainCharacterJump.png"; // Change sprite for jumping
+        myImg.src = "MainCharacterJump.png";
 
         function handleJump() {
-            const currentBottom = parseInt(myImg.style.bottom) || 0;
+            let currentBottom = parseInt(myImg.style.bottom);
 
             if (jumpVelocity > 0) {
-                // Going up
                 myImg.style.bottom = currentBottom + jumpVelocity + 'px';
-                jumpVelocity -= 1; // Gradual deceleration
+                jumpVelocity -= 1; 
                 requestAnimationFrame(handleJump);
-            } else if (currentBottom > 0) {
-                // Falling down
+            } else {
                 const newBottom = Math.max(currentBottom - gravity, 0);
                 myImg.style.bottom = newBottom + 'px';
+
                 if (newBottom === 0) {
-                    // Landed
                     isJumping = false;
-                    myImg.src = "MainCharacterRight.png"; // Reset sprite
+                    myImg.src = "MainCharacterRight.png";
                 } else {
                     requestAnimationFrame(handleJump);
                 }
@@ -146,7 +144,6 @@ window.onload = () => {
         handleJump();
     }
 
-    // Key controls
     function handleKeyDown(event) {
         keyState[event.key] = true;
         if (event.key === 'w') myJump();
@@ -162,4 +159,3 @@ window.onload = () => {
     // Start the game loop
     gameLoop();
 };
-
