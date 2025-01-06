@@ -1,143 +1,73 @@
-
-Version 0.0.1<br>
-
-
-<body id="myBody" style="background-repeat:repeat; background-size: 80%" background="myBackground01.jpg"     onkeydown="{
-
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Simple Game</title>
+</head>
+<body id="myBody" style="background-repeat:repeat; background-size:80%" background="myBackground01.jpg" onkeydown="handleKey(event)">
     <div id="myDiv01"></div>
-    <button onclick="startAutoMovement()">Auto Move</button>
-    <button onclick="stopAutoMovement()">Stop Auto Move</button>
-    <m>
-        <input type="button" id="myButton02" value="Image Left" onclick="{
-            document.getElementById('myImage01').style.left = parseInt(document.getElementById('myImage01').style.left) - 20 + 'px';
-        }">
-        <input type="button" id="myButton01" value="Image Right" onclick="{
-            document.getElementById('myImage01').style.left = parseInt(document.getElementById('myImage01').style.left) + 20 + 'px';
-        }">
-        <input type="button" id="myButton03" value="Image Down" onclick="{
-            document.getElementById('myImage01').style.top = parseInt(document.getElementById('myImage01').style.top) + 20 + 'px';
-        }">
-        <input type="button" id="myButton04" value="Image Up" onclick="{
-            document.getElementById('myImage01').style.top = parseInt(document.getElementById('myImage01').style.top) - 20 + 'px';
-        }">
-    </m>
-
-    <a>
-        <input type="button" value="Auto Move Left" onclick="{
-            clearInterval(myClock02);
-            myClock02 = setInterval(function() {
-                document.getElementById('myButton02').click();
-            }, 30);
-        }">
-        <input type="button" value="Auto Move Right" onclick="{
-            clearInterval(myClock02);
-            myClock02 = setInterval(function() {
-                document.getElementById('myButton01').click();
-            }, 30);
-        }">
-        <input type="button" value="Auto Move Down" onclick="{
-            clearInterval(myClock02);
-            myClock02 = setInterval(function() {
-                document.getElementById('myButton03').click();
-            }, 30);
-        }">
-        <input type="button" value="Auto Move Up" onclick="{
-            clearInterval(myClock02);
-            myClock02 = setInterval(function() {
-                document.getElementById('myButton04').click();
-            }, 30);
-        }">
-    </a>
 
     <script>
-        let myClock02;
+        // Initialize positions for myImg01
+        const img1 = document.getElementById("myImg01");
+        const img2 = document.getElementById("myImg02");
+        img1.style.left = "50px";
+        img1.style.top = "0px";
 
-        // Add event listener for W, A, S, D key movement
-        document.addEventListener("keydown", function(event) {
-            let key = event.key.toLowerCase();
-            if (key === 'a') {
-                // Move Left
-                document.getElementById('myButton02').click();
-            } else if (key === 'd') {
-                // Move Right
-                document.getElementById('myButton01').click();
-            } else if (key === 's') {
-                // Move Down
-                document.getElementById('myButton03').click();
-            } else if (key === 'w') {
-                // Move Up
-                document.getElementById('myButton04').click();
+        // Handle keypresses directly within onkeydown event handler
+        function handleKey(event) {
+            let myKey = event.key;
+            document.getElementById("myDiv01").innerHTML = myKey; // Display pressed key
+
+            // Movement for "d" (right)
+            if (myKey === "d") {
+                img1.style.left = parseInt(img1.style.left) + 7 + "px";
+                myCheckHit();
             }
-        });
+
+            // Movement for "a" (left)
+            if (myKey === "a") {
+                img1.style.left = parseInt(img1.style.left) - 7 + "px";
+                myCheckHit();
+            }
+
+            // Movement for "s" (down)
+            if (myKey === "s") {
+                img1.style.top = parseInt(img1.style.top) + 7 + "px";
+                myCheckHit();
+            }
+
+            // Movement for "w" (up)
+            if (myKey === "w") {
+                img1.style.top = parseInt(img1.style.top) - 7 + "px";
+                myCheckHit();
+            }
+        }
+
+        // Collision detection function
+        function myCheckHit() {
+            if (myHitOther("myImg01", "myImg02")) {
+                alert("You lose!");
+                img1.style.left = "50px"; // Reset position
+                img1.style.top = "0px"; // Reset position
+            }
+        }
+
+        // Collision logic between two elements
+        function myHitOther(my1, my2) {
+            const el1 = document.getElementById(my1).getBoundingClientRect();
+            const el2 = document.getElementById(my2).getBoundingClientRect();
+
+            return (
+                el1.right >= el2.left &&
+                el1.left <= el2.right &&
+                el1.bottom >= el2.top &&
+                el1.top <= el2.bottom
+            );
+        }
     </script>
 
-   
-
-<h1 align=center>t4a01-game-template-with-wasd-by-fred</h1>
-<br><br><br><br>
-
-<script>
-
-   // global variables here
-   let myGlobalX = 0
-   let myClock
-   let myInterval=0;
-
-   // global functions here
-function myHitOther(my1,my2){
-   left1   = parseInt(document.getElementById(my1).style.left)
-   right1  = left1 + parseInt(document.getElementById(my1).style.width)
-   top1    = parseInt(document.getElementById(my1).style.top)   
-   bottom1 = top1   + parseInt(document.getElementById(my1).style.height)
-   left2   = parseInt(document.getElementById(my2).style.left)
-   right2  = left2 + parseInt(document.getElementById(my2).style.width)
-   top2    = parseInt(document.getElementById(my2).style.top)   
-   bottom2 = top2   + parseInt(document.getElementById(my2).style.height)
-   if ((right1  >=  left2  ) &&      	   
-       (bottom1 >=  top2   ) &&
-       (left1   <=  right2 ) &&
-       (top1    <=  bottom2) ){
-       return true
-   }
-}
-
-
-function myCheckHit(){
-   if ( myHitOther('myImg01','myImg02') ){
-       alert('you lose')  
-       document.getElementById('myImg01').style.left = '20px'
-       location = 't2a13-keydown.html'  // go to your next level
-   }
-
-
-   // more if statements here like the above
-
-
-
-}  // end of myCheckHit()
-
-
-</script>
-
-<img id="myImg01" style="position:absolute; width:100px; height:80px; top:0px; left:50px;"  src="myImage01.jpg">
-<img id="myImg02" style="position:absolute; width:100px; height:80px; top:0px; left:250px;" src="myImage02.jpg">
-
-<input type=button value="Auto Background Left" onclick="{
-  clearInterval(myClock)
-  let myTemp = '100px 0px'
-  myClock = setInterval(function(){
-      myGlobalX -= 5
-      myTemp =  myGlobalX + 'px 0px'
-      document.getElementById('myBody').style.backgroundPosition = myTemp
-  }, 100)
-    
-}">
-
-
-<input type=button value="Image Right Fast Button" onTouchStart="{this.click(); event.preventDefault();}" onclick="{
-  document.getElementById('myImg01').style.left = parseInt(document.getElementById('myImg01').style.left) + 10 + 'px'
-  myCheckHit()     // checks for all collisions
-}"><br><br>
-
-
-<div id="myDiv01" style="color:yellow">..</div>
+    <!-- Images -->
+    <img id="myImg01" style="position:absolute; width:100px; height:80px;" src="myImage01.jpg">
+    <img id="myImg02" style="position:absolute; width:100px; height:80px; top:0px; left:250px;" src="myImage02.jpg">
+</body>
+</html>
