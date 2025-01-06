@@ -4,30 +4,66 @@ Version 0.0.1<br>
 
 <body id="myBody" style="background-repeat:repeat; background-size: 80%" background="myBackground01.jpg"     onkeydown="{
 
-   let myKey = event.key
-   //  let myKey = String.toLowerCase(event.key)
-   document.getElementById('myDiv01').innerHTML = myKey
-   if (myKey == 'd') {
+   <body>
+    <div id="myDiv01"></div>
+    <button onclick="startAutoMovement()">Auto Move</button>
+    <button onclick="stopAutoMovement()">Stop Auto Move</button>
 
+    <script>
+        let myDiv = document.getElementById('myDiv01');
+        let autoMoveInterval;
 
-     // either uncomment
-     // clearInterval(myInterval)
-     // myInterval = setInterval(function(){
-     //    document.getElementById('myImg01').style.left = parseInt(document.getElementById('myImg01').style.left) + 3
-     //    myCheckHit()
-     // } ,20)
+        // Move Right
+        function moveRight() {
+            let currentLeft = parseInt(myDiv.style.left) || 100;
+            myDiv.style.left = currentLeft + 7 + "px";
+        }
 
-     // or do the following
-      document.getElementById('myImg01').style.left = parseInt(document.getElementById('myImg01').style.left) + 7
-      myCheckHit()
-   }
+        // Move Left
+        function moveLeft() {
+            let currentLeft = parseInt(myDiv.style.left) || 100;
+            myDiv.style.left = currentLeft - 7 + "px";
+        }
 
+        // Move Up
+        function moveUp() {
+            let currentTop = parseInt(myDiv.style.top) || 100;
+            myDiv.style.top = currentTop - 7 + "px";
+        }
 
-   // put your other keydowns here.
+        // Move Down
+        function moveDown() {
+            let currentTop = parseInt(myDiv.style.top) || 100;
+            myDiv.style.top = currentTop + 7 + "px";
+        }
 
+        // Start Automatic Movement
+        function startAutoMovement() {
+            stopAutoMovement(); // Clear any existing intervals to avoid overlap
+            autoMoveInterval = setInterval(() => {
+                moveRight();
+            }, 100); // Adjust the interval time as needed
+        }
 
+        // Stop Automatic Movement
+        function stopAutoMovement() {
+            clearInterval(autoMoveInterval);
+        }
 
-}">
+        // Key press handling
+        document.addEventListener("keydown", function(event) {
+            let key = event.key.toLowerCase();
+            if (key === "d") {
+                moveRight();
+            } else if (key === "a") {
+                moveLeft();
+            } else if (key === "w") {
+                moveUp();
+            } else if (key === "s") {
+                moveDown();
+            }
+        });
+    </script>
 
 <h1 align=center>t4a01-game-template-with-wasd-by-fred</h1>
 <br><br><br><br>
