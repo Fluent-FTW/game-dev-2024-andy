@@ -10,22 +10,20 @@
         }
     </style>
 </head>
-<body id="myBody" style="background-repeat:repeat; background-size:80%" background="myBackground01.jpg" onkeydown="handleKey(event)">
+<body id="myBody" style="background-repeat:repeat; background-size:80%" background="myBackground01.jpg">
 
     <div id="myDiv01"></div>
 
     <script>
-        // Sets original starting positions for the guys
+        // Sets original starting positions for the images
         const img1 = document.getElementById("myImg01");
         const img2 = document.getElementById("myImg02");
         img1.style.left = "50px";
         img1.style.top = "0px";
 
-        // Handle keypresses directly with onkeydown function
+        // This function will be called on key press to move the image
         function handleKey(event) {
-            event.preventDefault();  // Prevents default actions like scrolling and stuff
-            let myKey = event.key;
-            document.getElementById("myDiv01").innerHTML = myKey; // Display pressed key
+            let myKey = event.key.toLowerCase();  // Convert to lowercase for consistency
 
             // Movement for "d" (right)
             if (myKey === "d") {
@@ -52,7 +50,7 @@
             }
         }
 
-        // Collision detection logic (Unchanged)
+        // Collision detection logic
         function myHitOther(my1, my2) {
             let left1 = parseInt(document.getElementById(my1).style.left);
             let right1 = left1 + parseInt(document.getElementById(my1).style.width);
@@ -82,10 +80,14 @@
                 img1.style.top = '0px'; // Reset position
             }
         }
+
+        // Attach the keydown event directly to the document
+        document.addEventListener("keydown", handleKey);
     </script>
 
     <!-- Images -->
     <img id="myImg01" style="position:absolute; width:100px; height:80px;" src="myImage01.jpg">
     <img id="myImg02" style="position:absolute; width:100px; height:80px; top:0px; left:250px;" src="myImage02.jpg">
+
 </body>
 </html>
