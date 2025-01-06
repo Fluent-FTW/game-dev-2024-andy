@@ -38,17 +38,13 @@
 <body>
     <div id="gameContainer">
         <img id="myImg01" src="MainCharacterRight.png" alt="Character">
-        <div class="platform"></div>
+        <div class="platform" id="platform1"></div>
     </div>
 
     <script>
         let isJumping = false;
         let isFalling = false;
-        const keyState = {
-            w: false,
-            a: false,
-            d: false
-        };
+        const keyState = { w: false, a: false, d: false };
         const characterSpeed = 4;
         const gravity = 3;
         const jumpSpeed = 15;
@@ -60,26 +56,51 @@
         myImg.style.left = "10px";
         myImg.style.bottom = "0px";
 
+        function myHitOther(my1, my2) {
+            const rect1 = document.getElementById(my1).getBoundingClientRect();
+            const rect2 = document.getElementById(my2).getBoundingClientRect();
+
+            return !(
+                rect1.right < rect2.left ||
+                rect1.left > rect2.right ||
+                rect1.bottom < rect2.top ||
+                rect1.top > rect2.bottom
+            );
+        }
+
         function moveCharacter() {
             let currentLeft = parseFloat(myImg.style.left) || 0;
 
-            if (keyState.d) {
-                if (!isJumping && !isFalling) {
-                    myImg.src = "MainCharacterRight.png";
-                }
-                if (currentLeft + myImg.offsetWidth < gameContainer.offsetWidth) {
-                    currentLeft += characterSpeed;
-                    myImg.style.left = currentLeft + "px";
+            // Check horizontal collisions
+            let horizontalBlock = false;
+            for (const platform of platforms) {
+                if (myHitOther("myImg01", platform.id)) {
+                    const platformRect = platform.getBoundingClientRect();
+                    const characterRect = myImg.getBoundingClientRect();
+
+                    // Colliding from the left
+                    if (characterRect.right >= platformRect.left && currentLeft + myImg.offsetWidth >= platformRect.left) {
+                        currentLeft = platformRect.left - myImg.offsetWidth;
+                        horizontalBlock = true;
+                    }
+                    // Colliding from the right
+                    else if (characterRect.left <= platformRect.right && currentLeft <= platformRect.right) {
+                        currentLeft = platformRect.right;
+                        horizontalBlock = true;
+                    }
                 }
             }
 
-            if (keyState.a) {
-                if (!isJumping && !isFalling) {
-                    myImg.src = "MainCharacterLeft.png";
+            if (!horizontalBlock) {
+                if (keyState.d && currentLeft + myImg.offsetWidth < gameContainer.offsetWidth) {
+                    currentLeft += characterSpeed;
+                    myImg.style.left = currentLeft + "px";
+                    myImg.src = "MainCharacterRight.png";
                 }
-                if (currentLeft > 0) {
+                if (keyState.a && currentLeft > 0) {
                     currentLeft -= characterSpeed;
                     myImg.style.left = currentLeft + "px";
+                    myImg.src = "MainCharacterLeft.png";
                 }
             }
         }
@@ -93,6 +114,23 @@
 
             function handleJump() {
                 let currentBottom = parseFloat(myImg.style.bottom) || 0;
+
+                // Check for collision above (underneath platform)
+                for (const platform of platforms) {
+                    if (myHitOther("myImg01", platform.id)) {
+                        const platformRect = platform.getBoundingClientRect();
+                        const characterRect = myImg.getBoundingClientRect();
+
+                        if (characterRect.bottom >= platformRect.top) {
+                            jumpVelocity = 0; // Stop upward motion
+                            isJumping = false;
+                            isFalling = true;
+                            myImg.src = "MainCharacterFall.png";
+                            handleFall();
+                            return;
+                        }
+                    }
+                }
 
                 if (jumpVelocity > 0) {
                     currentBottom += jumpVelocity;
@@ -112,44 +150,59 @@
 
         function handleFall() {
             let currentBottom = parseFloat(myImg.style.bottom) || 0;
-            let isOnPlatform = false;
 
-            for (let platform of platforms) {
-                const platformRect = platform.getBoundingClientRect();
-                const characterRect = myImg.getBoundingClientRect();
+            function checkLanding() {
+                for (const platform of platforms) {
+                    if (myHitOther("myImg01", platform.id)) {
+                        const platformRect = platform.getBoundingClientRect();
+                        const characterRect = myImg.getBoundingClientRect();
 
-                if (
-                    characterRect.right > platformRect.left &&
-                    characterRect.left < platformRect.right &&
-                    currentBottom <= gameContainer.offsetHeight - platformRect.top &&
-                    currentBottom >= gameContainer.offsetHeight - platformRect.top - 5
-                ) {
-                    isFalling = false;
-                    myImg.src = "MainCharacterRight.png";
-                    isOnPlatform = true;
-                    myImg.style.bottom =
-                        (gameContainer.offsetHeight - platformRect.top) + "px";
-                    break;
+                        if (characterRect.bottom >= platformRect.top) {
+                            isFalling = false;
+                            myImg.src = "MainCharacterRight.png";
+                            myImg.style.bottom = (gameContainer.offsetHeight - platformRect.top) + "px";
+                            return true;
+                        }
+                    }
                 }
+                return false;
             }
 
-            if (!isOnPlatform) {
-                if (currentBottom > 0) {
-                    currentBottom -= gravity;
-                    myImg.style.bottom = currentBottom + "px";
+            if (currentBottom > 0) {
+                currentBottom -= gravity;
+                myImg.style.bottom = currentBottom + "px";
+
+                if (!checkLanding()) {
                     requestAnimationFrame(handleFall);
-                } else {
-                    isFalling = false;
-                    myImg.src = "MainCharacterRight.png";
-                    myImg.style.bottom = "0px";
                 }
+            } else {
+                isFalling = false;
+                myImg.src = "MainCharacterRight.png";
+                myImg.style.bottom = "0px";
             }
         }
 
         function gameLoop() {
             moveCharacter();
 
-            if (keyState.w) jump();
+            if (keyState.w && !isJumping) {
+                jump();
+            }
+
+            // Check if character is walking off a platform
+            if (!isJumping && !isFalling) {
+                let onPlatform = false;
+                for (const platform of platforms) {
+                    if (myHitOther("myImg01", platform.id)) {
+                        onPlatform = true;
+                        break;
+                    }
+                }
+                if (!onPlatform) {
+                    isFalling = true;
+                    handleFall();
+                }
+            }
 
             requestAnimationFrame(gameLoop);
         }
