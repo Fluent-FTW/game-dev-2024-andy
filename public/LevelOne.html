@@ -24,6 +24,7 @@
         // This function will be called on key press to move the image
         function handleKey(event) {
             let myKey = event.key.toLowerCase();  // Convert to lowercase for consistency
+            document.getElementById("myDiv01").innerHTML = myKey; // Display pressed key
 
             // Movement for "d" (right)
             if (myKey === "d") {
