@@ -44,121 +44,126 @@
     <script>
         let isJumping = false;
         let isFalling = false;
-        let keyState = {};
+        const keyState = {
+            w: false,
+            a: false,
+            d: false
+        };
         const characterSpeed = 3;
         const gravity = 2;
         const jumpSpeed = 15;
 
-        window.onload = () => {
-            const myImg = document.getElementById("myImg01");
-            const gameContainer = document.getElementById("gameContainer");
-            const platforms = document.querySelectorAll(".platform");
+        const gameContainer = document.getElementById("gameContainer");
+        const myImg = document.getElementById("myImg01");
+        const platforms = document.querySelectorAll(".platform");
 
-            // Initialize position
-            myImg.style.left = "10px";
-            myImg.style.bottom = "0px";
+        myImg.style.left = "10px";
+        myImg.style.bottom = "0px";
 
-            function myJump() {
-                if (isJumping || isFalling) return;
+        function moveCharacter() {
+            let currentLeft = parseFloat(myImg.style.left) || 0;
 
-                isJumping = true;
-                let jumpVelocity = jumpSpeed;
-                myImg.src = "MainCharacterJump.png";
-
-                function handleJump() {
-                    let currentBottom = parseFloat(myImg.style.bottom) || 0;
-
-                    if (jumpVelocity > 0) {
-                        currentBottom += jumpVelocity;
-                        jumpVelocity -= 1; // Decelerate upward motion
-                        myImg.style.bottom = currentBottom + "px";
-                        requestAnimationFrame(handleJump);
-                    } else {
-                        isJumping = false;
-                        isFalling = true;
-                        myImg.src = "MainCharacterFall.png"; // Start falling animation
-                        handleFall();
-                    }
+            if (keyState.d) {
+                if (!isJumping && !isFalling) {
+                    myImg.src = "MainCharacterRight.png";
                 }
-
-                handleJump();
+                if (currentLeft + myImg.offsetWidth < gameContainer.offsetWidth) {
+                    currentLeft += characterSpeed;
+                    myImg.style.left = currentLeft + "px";
+                }
             }
 
-            function handleFall() {
+            if (keyState.a) {
+                if (!isJumping && !isFalling) {
+                    myImg.src = "MainCharacterLeft.png";
+                }
+                if (currentLeft > 0) {
+                    currentLeft -= characterSpeed;
+                    myImg.style.left = currentLeft + "px";
+                }
+            }
+        }
+
+        function jump() {
+            if (isJumping || isFalling) return;
+
+            isJumping = true;
+            let jumpVelocity = jumpSpeed;
+            myImg.src = "MainCharacterJump.png";
+
+            function handleJump() {
                 let currentBottom = parseFloat(myImg.style.bottom) || 0;
-                let isOnPlatform = false;
 
-                // Check for platform collisions
-                for (let platform of platforms) {
-                    const platformRect = platform.getBoundingClientRect();
-                    const characterRect = myImg.getBoundingClientRect();
-
-                    if (
-                        characterRect.right > platformRect.left &&
-                        characterRect.left < platformRect.right &&
-                        currentBottom <= gameContainer.offsetHeight - platformRect.top &&
-                        currentBottom >= gameContainer.offsetHeight - platformRect.top - 5
-                    ) {
-                        isFalling = false;
-                        myImg.src = "MainCharacterRight.png";
-                        isOnPlatform = true;
-                        myImg.style.bottom = 
-                            (gameContainer.offsetHeight - platformRect.top) + "px";
-                        break;
-                    }
-                }
-
-                if (!isOnPlatform) {
-                    if (currentBottom > 0) {
-                        currentBottom -= gravity;
-                        myImg.style.bottom = currentBottom + "px";
-                        requestAnimationFrame(handleFall);
-                    } else {
-                        isFalling = false;
-                        myImg.src = "MainCharacterRight.png";
-                        myImg.style.bottom = "0px";
-                    }
+                if (jumpVelocity > 0) {
+                    currentBottom += jumpVelocity;
+                    jumpVelocity -= 1;
+                    myImg.style.bottom = currentBottom + "px";
+                    requestAnimationFrame(handleJump);
+                } else {
+                    isJumping = false;
+                    isFalling = true;
+                    myImg.src = "MainCharacterFall.png";
+                    handleFall();
                 }
             }
 
-            function gameLoop() {
-                let currentLeft = parseFloat(myImg.style.left) || 0;
+            handleJump();
+        }
 
-                // Horizontal movement
-                if (keyState['d']) {
-                    if (!isJumping && !isFalling) {
-                        myImg.src = "MainCharacterRight.png";
-                    }
-                    if (currentLeft + myImg.offsetWidth < gameContainer.offsetWidth) {
-                        currentLeft += characterSpeed;
-                        myImg.style.left = currentLeft + 'px';
-                    }
+        function handleFall() {
+            let currentBottom = parseFloat(myImg.style.bottom) || 0;
+            let isOnPlatform = false;
+
+            for (let platform of platforms) {
+                const platformRect = platform.getBoundingClientRect();
+                const characterRect = myImg.getBoundingClientRect();
+
+                if (
+                    characterRect.right > platformRect.left &&
+                    characterRect.left < platformRect.right &&
+                    currentBottom <= gameContainer.offsetHeight - platformRect.top &&
+                    currentBottom >= gameContainer.offsetHeight - platformRect.top - 5
+                ) {
+                    isFalling = false;
+                    myImg.src = "MainCharacterRight.png";
+                    isOnPlatform = true;
+                    myImg.style.bottom =
+                        (gameContainer.offsetHeight - platformRect.top) + "px";
+                    break;
                 }
-
-                if (keyState['a']) {
-                    if (!isJumping && !isFalling) {
-                        myImg.src = "MainCharacterLeft.png";
-                    }
-                    if (currentLeft > 0) {
-                        currentLeft -= characterSpeed;
-                        myImg.style.left = currentLeft + 'px';
-                    }
-                }
-
-                requestAnimationFrame(gameLoop);
             }
 
-            document.addEventListener('keydown', (event) => {
-                keyState[event.key] = true;
-                if (event.key === 'w') myJump();
-            });
+            if (!isOnPlatform) {
+                if (currentBottom > 0) {
+                    currentBottom -= gravity;
+                    myImg.style.bottom = currentBottom + "px";
+                    requestAnimationFrame(handleFall);
+                } else {
+                    isFalling = false;
+                    myImg.src = "MainCharacterRight.png";
+                    myImg.style.bottom = "0px";
+                }
+            }
+        }
 
-            document.addEventListener('keyup', (event) => {
-                keyState[event.key] = false;
-            });
+        function gameLoop() {
+            moveCharacter();
 
-            gameLoop();
+            if (keyState.w) jump();
+
+            requestAnimationFrame(gameLoop);
+        }
+
+        // Inline key events
+        window.onkeydown = (event) => {
+            keyState[event.key] = true;
         };
+
+        window.onkeyup = (event) => {
+            keyState[event.key] = false;
+        };
+
+        gameLoop();
     </script>
 </body>
 </html>
