@@ -46,6 +46,14 @@
         let lastDirection = "right"; // Default shooting direction
         const keyState = {}; // Track keys
 
+        // Directions for movement and shooting
+        const directionMap = {
+            up: { x: 0, y: -1 },
+            down: { x: 0, y: 1 },
+            left: { x: -1, y: 0 },
+            right: { x: 1, y: 0 },
+        };
+
         // Track Key Presses
         document.onkeydown = function (event) {
             keyState[event.key] = true;
@@ -79,10 +87,8 @@
                 let top = parseInt(bullet.style.top);
 
                 // Update position based on direction
-                if (bullet.direction === "up") top -= bulletSpeed;
-                if (bullet.direction === "down") top += bulletSpeed;
-                if (bullet.direction === "left") left -= bulletSpeed;
-                if (bullet.direction === "right") left += bulletSpeed;
+                left += bullet.direction.x * bulletSpeed;
+                top += bullet.direction.y * bulletSpeed;
 
                 bullet.style.left = `${left}px`;
                 bullet.style.top = `${top}px`;
@@ -108,8 +114,8 @@
 
             // Move enemy bullets
             enemyBullets.forEach((bullet, index) => {
-                const left = parseInt(bullet.style.left) + bullet.direction.x * bulletSpeed;
-                const top = parseInt(bullet.style.top) + bullet.direction.y * bulletSpeed;
+                let left = parseInt(bullet.style.left) + bullet.direction.x * bulletSpeed;
+                let top = parseInt(bullet.style.top) + bullet.direction.y * bulletSpeed;
 
                 bullet.style.left = `${left}px`;
                 bullet.style.top = `${top}px`;
@@ -161,29 +167,30 @@
             let left = parseInt(player.style.left);
             let top = parseInt(player.style.top);
 
-            // Movement Logic
-            if (keyState["d"] || keyState["ArrowRight"]) left += speed; // Right
-            if (keyState["a"] || keyState["ArrowLeft"]) left -= speed; // Left
-            if (keyState["s"] || keyState["ArrowDown"]) top += speed; // Down
-            if (keyState["w"] || keyState["ArrowUp"]) top -= speed; // Up
+            // Movement Logic (WASD only)
+            if (keyState["d"]) left += speed; // Right
+            if (keyState["a"]) left -= speed; // Left
+            if (keyState["s"]) top += speed; // Down
+            if (keyState["w"]) top -= speed; // Up
 
             // Fire Player Bullet (Space)
             if (keyState[" "]) {
-                createBullet(
-                    left + 45, // Center horizontally
-                    top + 35, // Center vertically
-                    lastDirection
-                );
+                const direction = directionMap[lastDirection];
+                createBullet(left + 45, top + 35, direction); // Shoot from player center
                 keyState[" "] = false; // Prevent rapid firing
             }
 
-            // Periodic Enemy Firing
+            // Enemy Firing Logic
             if (Math.random() < 0.02) {
-                const playerLeft = parseInt(player.style.left);
-                const playerTop = parseInt(player.style.top);
-                const enemyLeft = parseInt(enemy.style.left);
-                const enemyTop = parseInt(enemy.style.top);
-                createBullet(enemyLeft, enemyTop + 35, { x: playerLeft - enemyLeft, y: playerTop - enemyTop }, false);
+                const playerLeft = parseInt(player.style.left) + 50; // Center player
+                const playerTop = parseInt(player.style.top) + 40;
+                const enemyLeft = parseInt(enemy.style.left) + 50; // Center enemy
+                const enemyTop = parseInt(enemy.style.top) + 40;
+                const diffX = playerLeft - enemyLeft;
+                const diffY = playerTop - enemyTop;
+                const magnitude = Math.sqrt(diffX ** 2 + diffY ** 2);
+                const unitVector = { x: diffX / magnitude, y: diffY / magnitude }; // Normalize
+                createBullet(enemyLeft, enemyTop, unitVector, false);
             }
 
             // Update Player Position
