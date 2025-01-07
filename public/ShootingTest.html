@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Basic Game with Shooting</title>
+    <title>Basic Game with Dynamic Enemy Shooting</title>
     <style>
         body {
             margin: 0;
@@ -52,19 +52,28 @@
         };
 
         // Create Bullet (Generic)
-        function createBullet(x, y, isPlayer = true) {
+        function createBullet(x, y, targetX = null, targetY = null, isPlayer = true) {
             const bullet = document.createElement("div");
             bullet.className = isPlayer ? "bullet" : "bullet enemy-bullet";
             bullet.style.left = `${x}px`;
             bullet.style.top = `${y}px`;
-            document.body.appendChild(bullet);
 
+            // Store direction vector for enemy bullets
+            if (!isPlayer) {
+                const dx = targetX - x;
+                const dy = targetY - y;
+                const magnitude = Math.sqrt(dx * dx + dy * dy);
+                bullet.direction = { x: dx / magnitude, y: dy / magnitude };
+            }
+
+            document.body.appendChild(bullet);
             if (isPlayer) bullets.push(bullet);
             else enemyBullets.push(bullet);
         }
 
         // Move Bullets
         function moveBullets() {
+            // Move player bullets
             bullets.forEach((bullet, index) => {
                 const left = parseInt(bullet.style.left) + bulletSpeed;
                 bullet.style.left = `${left}px`;
@@ -83,12 +92,21 @@
                 }
             });
 
+            // Move enemy bullets
             enemyBullets.forEach((bullet, index) => {
-                const left = parseInt(bullet.style.left) - bulletSpeed;
-                bullet.style.left = `${left}px`;
+                const left = parseInt(bullet.style.left);
+                const top = parseInt(bullet.style.top);
+
+                bullet.style.left = `${left + bullet.direction.x * bulletSpeed}px`;
+                bullet.style.top = `${top + bullet.direction.y * bulletSpeed}px`;
 
                 // Remove bullet if out of bounds
-                if (left < 0) {
+                if (
+                    left < 0 ||
+                    left > window.innerWidth ||
+                    top < 0 ||
+                    top > window.innerHeight
+                ) {
                     bullet.remove();
                     enemyBullets.splice(index, 1);
                 }
@@ -143,9 +161,11 @@
 
             // Periodic Enemy Firing
             if (Math.random() < 0.02) {
+                const playerLeft = parseInt(player.style.left);
+                const playerTop = parseInt(player.style.top);
                 const enemyLeft = parseInt(enemy.style.left);
                 const enemyTop = parseInt(enemy.style.top);
-                createBullet(enemyLeft, enemyTop + 35, false); // Spawn left of enemy
+                createBullet(enemyLeft, enemyTop + 35, playerLeft + 50, playerTop + 40, false);
             }
 
             // Update Player Position
