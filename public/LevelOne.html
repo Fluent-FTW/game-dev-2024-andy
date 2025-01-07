@@ -3,8 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <title>Basic Game</title>
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+            background-color: lightblue;
+            user-select: none; /* Disables text selection */
+        }
+
+        img {
+            user-select: none;
+            pointer-events: none; /* Prevent interaction for images */
+        }
+    </style>
 </head>
-<body style="margin: 0; overflow: hidden; background-color: lightblue;">
+<body>
 
     <!-- Game Elements -->
     <img id="myImg01" src="MainCharacterRight.png" style="width:100px; height:80px; position:absolute; left:50px; top:0px;">
@@ -17,26 +30,23 @@
         const speed = 3;
         const keyState = { w: false, a: false, s: false, d: false }; // Track key presses
 
-        // Track keydown/up events
-        document.onkeydown = (event) => {
-            const key = event.key.toLowerCase();
-            if (key in keyState) keyState[key] = true;
-        };
-
-        document.onkeyup = (event) => {
-            const key = event.key.toLowerCase();
-            if (key in keyState) keyState[key] = false;
-        };
-
-        // Collision Detection
+        // Custom Collision Detection
         function myHitOther(my1, my2) {
-            const char1 = my1.getBoundingClientRect();
-            const char2 = my2.getBoundingClientRect();
+            const left1 = parseInt(my1.style.left);
+            const top1 = parseInt(my1.style.top);
+            const right1 = left1 + parseInt(my1.style.width);
+            const bottom1 = top1 + parseInt(my1.style.height);
+
+            const left2 = parseInt(my2.style.left);
+            const top2 = parseInt(my2.style.top);
+            const right2 = left2 + parseInt(my2.style.width);
+            const bottom2 = top2 + parseInt(my2.style.height);
+
             return (
-                char1.right > char2.left &&
-                char1.left < char2.right &&
-                char1.bottom > char2.top &&
-                char1.top < char2.bottom
+                right1 >= left2 &&
+                bottom1 >= top2 &&
+                left1 <= right2 &&
+                top1 <= bottom2
             );
         }
 
