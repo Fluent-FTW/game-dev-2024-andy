@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Basic Game with Shooting</title>
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+            background-color: lightblue;
+            user-select: none; /* Disables text selection */
+        }
+
+        img {
+            user-select: none;
+            position: absolute;
+        }
+
+        .bullet {
+            width: 10px;
+            height: 10px;
+            background-color: green;
+            position: absolute;
+            border-radius: 50%;
+        }
+
+        .enemy-bullet {
+            background-color: red;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Game Elements -->
+    <img id="myImg01" src="MainCharacterRight.png" style="width:100px; height:80px; left:50px; top:200px;">
+    <img id="myImg02" src="Enemy.png" style="width:100px; height:80px; left:500px; top:200px;">
+
+    <script>
+        // Game Variables
+        const player = document.getElementById("myImg01");
+        const enemy = document.getElementById("myImg02");
+        const speed = 3; // Movement speed
+        const bulletSpeed = 5; // Speed of bullets
+        const bullets = [];
+        const enemyBullets = [];
+        const keyState = { w: false, a: false, s: false, d: false, space: false }; // Track keys
+
+        // Handle movement without direct event listeners
+        let activeKeys = {};
+        document.onkeydown = document.onkeyup = function (event) {
+            activeKeys[event.key] = event.type === "keydown";
+        };
+
+        // Create Bullet (Generic)
+        function createBullet(x, y, isPlayer = true) {
+            const bullet = document.createElement("div");
+            bullet.className = isPlayer ? "bullet" : "bullet enemy-bullet";
+            bullet.style.left = `${x}px`;
+            bullet.style.top = `${y}px`;
+            document.body.appendChild(bullet);
+
+            if (isPlayer) bullets.push(bullet);
+            else enemyBullets.push(bullet);
+        }
+
+        // Move Bullets
+        function moveBullets() {
+            bullets.forEach((bullet, index) => {
+                const left = parseInt(bullet.style.left) + bulletSpeed;
+                bullet.style.left = `${left}px`;
+
+                // Remove bullet if out of bounds
+                if (left > window.innerWidth) {
+                    bullet.remove();
+                    bullets.splice(index, 1);
+                }
+
+                // Collision with enemy
+                if (myHitOther(bullet, enemy)) {
+                    alert("Enemy hit!");
+                    bullet.remove();
+                    bullets.splice(index, 1);
+                }
+            });
+
+            enemyBullets.forEach((bullet, index) => {
+                const left = parseInt(bullet.style.left) - bulletSpeed;
+                bullet.style.left = `${left}px`;
+
+                // Remove bullet if out of bounds
+                if (left < 0) {
+                    bullet.remove();
+                    enemyBullets.splice(index, 1);
+                }
+
+                // Collision with player
+                if (myHitOther(bullet, player)) {
+                    alert("You got hit!");
+                    bullet.remove();
+                    enemyBullets.splice(index, 1);
+                    player.style.left = "50px"; // Reset position
+                    player.style.top = "200px";
+                }
+            });
+        }
+
+        // Custom Collision Detection
+        function myHitOther(my1, my2) {
+            const left1 = parseInt(my1.style.left);
+            const top1 = parseInt(my1.style.top);
+            const right1 = left1 + my1.offsetWidth;
+            const bottom1 = top1 + my1.offsetHeight;
+
+            const left2 = parseInt(my2.style.left);
+            const top2 = parseInt(my2.style.top);
+            const right2 = left2 + my2.offsetWidth;
+            const bottom2 = top2 + my2.offsetHeight;
+
+            return (
+                right1 >= left2 &&
+                bottom1 >= top2 &&
+                left1 <= right2 &&
+                top1 <= bottom2
+            );
+        }
+
+        // Main Game Loop
+        function moveCharacter() {
+            let left = parseInt(player.style.left);
+            let top = parseInt(player.style.top);
+
+            // Movement Logic
+            if (activeKeys["d"]) left += speed; // Right
+            if (activeKeys["a"]) left -= speed; // Left
+            if (activeKeys["s"]) top += speed;  // Down
+            if (activeKeys["w"]) top -= speed;  // Up
+
+            // Fire Player Bullet (Space)
+            if (activeKeys[" "]) {
+                createBullet(left + 100, top + 35); // Spawn in front of player
+                activeKeys[" "] = false; // Prevent rapid firing
+            }
+
+            // Periodic Enemy Firing
+            if (Math.random() < 0.02) {
+                const enemyLeft = parseInt(enemy.style.left);
+                const enemyTop = parseInt(enemy.style.top);
+                createBullet(enemyLeft, enemyTop + 35, false); // Spawn left of enemy
+            }
+
+            // Update Player Position
+            player.style.left = `${left}px`;
+            player.style.top = `${top}px`;
+
+            // Move Bullets
+            moveBullets();
+
+            // Loop Animation
+            setTimeout(moveCharacter, 16); // Approx. 60 FPS
+        }
+
+        // Start the Game Loop
+        moveCharacter();
+    </script>
+
+</body>
+</html>
