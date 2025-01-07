@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Basic Game with Dynamic Enemy Shooting</title>
+    <title>Directional Shooting Game</title>
     <style>
         body {
             margin: 0;
@@ -40,32 +40,32 @@
         const player = document.getElementById("myImg01");
         const enemy = document.getElementById("myImg02");
         const speed = 3; // Movement speed
-        const bulletSpeed = 5; // Speed of bullets
+        const bulletSpeed = 7; // Speed of bullets
         const bullets = [];
         const enemyBullets = [];
-        const keyState = { w: false, a: false, s: false, d: false, space: false }; // Track keys
+        let lastDirection = "right"; // Default shooting direction
+        const keyState = {}; // Track keys
 
-        // Handle movement without direct event listeners
-        let activeKeys = {};
-        document.onkeydown = document.onkeyup = function (event) {
-            activeKeys[event.key] = event.type === "keydown";
+        // Track Key Presses
+        document.onkeydown = function (event) {
+            keyState[event.key] = true;
+            if (event.key === "ArrowUp") lastDirection = "up";
+            if (event.key === "ArrowRight") lastDirection = "right";
+            if (event.key === "ArrowDown") lastDirection = "down";
+            if (event.key === "ArrowLeft") lastDirection = "left";
         };
 
-        // Create Bullet (Generic)
-        function createBullet(x, y, targetX = null, targetY = null, isPlayer = true) {
+        document.onkeyup = function (event) {
+            keyState[event.key] = false;
+        };
+
+        // Create Bullet with Direction
+        function createBullet(x, y, direction, isPlayer = true) {
             const bullet = document.createElement("div");
             bullet.className = isPlayer ? "bullet" : "bullet enemy-bullet";
             bullet.style.left = `${x}px`;
             bullet.style.top = `${y}px`;
-
-            // Store direction vector for enemy bullets
-            if (!isPlayer) {
-                const dx = targetX - x;
-                const dy = targetY - y;
-                const magnitude = Math.sqrt(dx * dx + dy * dy);
-                bullet.direction = { x: dx / magnitude, y: dy / magnitude };
-            }
-
+            bullet.direction = direction; // Add direction to bullet object
             document.body.appendChild(bullet);
             if (isPlayer) bullets.push(bullet);
             else enemyBullets.push(bullet);
@@ -75,11 +75,25 @@
         function moveBullets() {
             // Move player bullets
             bullets.forEach((bullet, index) => {
-                const left = parseInt(bullet.style.left) + bulletSpeed;
+                let left = parseInt(bullet.style.left);
+                let top = parseInt(bullet.style.top);
+
+                // Update position based on direction
+                if (bullet.direction === "up") top -= bulletSpeed;
+                if (bullet.direction === "down") top += bulletSpeed;
+                if (bullet.direction === "left") left -= bulletSpeed;
+                if (bullet.direction === "right") left += bulletSpeed;
+
                 bullet.style.left = `${left}px`;
+                bullet.style.top = `${top}px`;
 
                 // Remove bullet if out of bounds
-                if (left > window.innerWidth) {
+                if (
+                    left < 0 ||
+                    left > window.innerWidth ||
+                    top < 0 ||
+                    top > window.innerHeight
+                ) {
                     bullet.remove();
                     bullets.splice(index, 1);
                 }
@@ -94,11 +108,11 @@
 
             // Move enemy bullets
             enemyBullets.forEach((bullet, index) => {
-                const left = parseInt(bullet.style.left);
-                const top = parseInt(bullet.style.top);
+                const left = parseInt(bullet.style.left) + bullet.direction.x * bulletSpeed;
+                const top = parseInt(bullet.style.top) + bullet.direction.y * bulletSpeed;
 
-                bullet.style.left = `${left + bullet.direction.x * bulletSpeed}px`;
-                bullet.style.top = `${top + bullet.direction.y * bulletSpeed}px`;
+                bullet.style.left = `${left}px`;
+                bullet.style.top = `${top}px`;
 
                 // Remove bullet if out of bounds
                 if (
@@ -148,15 +162,19 @@
             let top = parseInt(player.style.top);
 
             // Movement Logic
-            if (activeKeys["d"]) left += speed; // Right
-            if (activeKeys["a"]) left -= speed; // Left
-            if (activeKeys["s"]) top += speed;  // Down
-            if (activeKeys["w"]) top -= speed;  // Up
+            if (keyState["d"] || keyState["ArrowRight"]) left += speed; // Right
+            if (keyState["a"] || keyState["ArrowLeft"]) left -= speed; // Left
+            if (keyState["s"] || keyState["ArrowDown"]) top += speed; // Down
+            if (keyState["w"] || keyState["ArrowUp"]) top -= speed; // Up
 
             // Fire Player Bullet (Space)
-            if (activeKeys[" "]) {
-                createBullet(left + 100, top + 35); // Spawn in front of player
-                activeKeys[" "] = false; // Prevent rapid firing
+            if (keyState[" "]) {
+                createBullet(
+                    left + 45, // Center horizontally
+                    top + 35, // Center vertically
+                    lastDirection
+                );
+                keyState[" "] = false; // Prevent rapid firing
             }
 
             // Periodic Enemy Firing
@@ -165,7 +183,7 @@
                 const playerTop = parseInt(player.style.top);
                 const enemyLeft = parseInt(enemy.style.left);
                 const enemyTop = parseInt(enemy.style.top);
-                createBullet(enemyLeft, enemyTop + 35, playerLeft + 50, playerTop + 40, false);
+                createBullet(enemyLeft, enemyTop + 35, { x: playerLeft - enemyLeft, y: playerTop - enemyTop }, false);
             }
 
             // Update Player Position
