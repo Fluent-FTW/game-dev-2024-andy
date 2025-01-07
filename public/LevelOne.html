@@ -13,15 +13,15 @@
 
         img {
             user-select: none;
-            pointer-events: none; /* Prevent interaction for images */
+            position: absolute;
         }
     </style>
 </head>
 <body>
 
     <!-- Game Elements -->
-    <img id="myImg01" src="MainCharacterRight.png" style="width:100px; height:80px; position:absolute; left:50px; top:0px;">
-    <img id="myImg02" src="myImage02.jpg" style="width:100px; height:80px; position:absolute; left:250px; top:100px;">
+    <img id="myImg01" src="MainCharacterRight.png" style="width:100px; height:80px; left:50px; top:0px;">
+    <img id="myImg02" src="myImage02.jpg" style="width:100px; height:80px; left:250px; top:100px;">
 
     <script>
         // Game Variables
@@ -30,17 +30,28 @@
         const speed = 3;
         const keyState = { w: false, a: false, s: false, d: false }; // Track key presses
 
+        // Track keydown/up events
+        document.addEventListener("keydown", (event) => {
+            const key = event.key.toLowerCase();
+            if (key in keyState) keyState[key] = true;
+        });
+
+        document.addEventListener("keyup", (event) => {
+            const key = event.key.toLowerCase();
+            if (key in keyState) keyState[key] = false;
+        });
+
         // Custom Collision Detection
         function myHitOther(my1, my2) {
             const left1 = parseInt(my1.style.left);
             const top1 = parseInt(my1.style.top);
-            const right1 = left1 + parseInt(my1.style.width);
-            const bottom1 = top1 + parseInt(my1.style.height);
+            const right1 = left1 + my1.offsetWidth; // Use offsetWidth for actual rendered width
+            const bottom1 = top1 + my1.offsetHeight; // Use offsetHeight for actual rendered height
 
             const left2 = parseInt(my2.style.left);
             const top2 = parseInt(my2.style.top);
-            const right2 = left2 + parseInt(my2.style.width);
-            const bottom2 = top2 + parseInt(my2.style.height);
+            const right2 = left2 + my2.offsetWidth;
+            const bottom2 = top2 + my2.offsetHeight;
 
             return (
                 right1 >= left2 &&
@@ -55,6 +66,7 @@
             let left = parseInt(img1.style.left);
             let top = parseInt(img1.style.top);
 
+            // Movement logic
             if (keyState.d) left += speed; // Move right
             if (keyState.a) left -= speed; // Move left
             if (keyState.s) top += speed;  // Move down
