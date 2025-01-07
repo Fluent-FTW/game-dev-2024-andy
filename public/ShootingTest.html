@@ -33,13 +33,14 @@
 
     <!-- Game Elements -->
     <img id="myImg01" src="MainCharacterRight.png" style="width:100px; height:80px; left:50px; top:200px;">
-    <img id="myImg02" src="Enemy.png" style="width:100px; height:80px; left:500px; top:200px;">
-    <img id="myImg03" src="WinFlag.png" style="width:100px; height:50px; left:300px; top:150px;">
+    <img id="myImg02" src="Enemy.png" style="width:100px; height:80px; left:calc(50% - 50px); top:10px;">
+    <img id="myImg03" src="WinFlag.png" style="width:100px; height:50px; left:calc(100% - 110px); top:200px;">
 
     <script>
         // Game Variables
         const player = document.getElementById("myImg01");
         const enemy = document.getElementById("myImg02");
+        const flag = document.getElementById("myImg03");
         const speed = 3; // Movement speed
         const bulletSpeed = 7; // Speed of bullets
         const bullets = [];
@@ -192,6 +193,12 @@
                 const magnitude = Math.sqrt(diffX ** 2 + diffY ** 2);
                 const unitVector = { x: diffX / magnitude, y: diffY / magnitude }; // Normalize
                 createBullet(enemyLeft, enemyTop, unitVector, false);
+            }
+
+            // Check Collision with Flag
+            if (myHitOther(player, flag)) {
+                alert("You Win!");
+                return; // End the game
             }
 
             // Update Player Position
