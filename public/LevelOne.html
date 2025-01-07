@@ -2,102 +2,72 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Simple Game</title>
-    <style>
-        body {
-            margin: 0;
-            overflow: hidden;
-        }
-    </style>
+    <title>Basic Game</title>
 </head>
-<body id="myBody" style="background-repeat:repeat; background-size:80%" background="myBackground01.jpg">
+<body style="margin: 0; overflow: hidden; background-color: lightblue;">
 
-    <div id="myDiv01"></div>
+    <!-- Game Elements -->
+    <img id="myImg01" src="mainCharacterRight.png" style="width:100px; height:80px; position:absolute; left:50px; top:0px;">
+    <img id="myImg02" src="myImage02.jpg" style="width:100px; height:80px; position:absolute; left:250px; top:100px;">
 
     <script>
-        window.onload = function() {
-            // Sets original starting positions for the images
-            const img1 = document.getElementById("myImg01");
-            const img2 = document.getElementById("myImg02");
+        // Game Variables
+        const img1 = document.getElementById("myImg01");
+        const img2 = document.getElementById("myImg02");
+        const speed = 3;
+        const keyState = { w: false, a: false, s: false, d: false }; // Track key presses
 
-            // Ensure elements are accessible
-            img1.style.position = "absolute";
-            img2.style.position = "absolute";
+        // Track keydown/up events
+        document.onkeydown = (event) => {
+            const key = event.key.toLowerCase();
+            if (key in keyState) keyState[key] = true;
+        };
 
-            img1.style.left = "50px";  // Initial position for img1
-            img1.style.top = "0px";    // Initial position for img1
-            img2.style.left = "250px"; // Initial position for img2
-            img2.style.top = "0px";   // Initial position for img2
+        document.onkeyup = (event) => {
+            const key = event.key.toLowerCase();
+            if (key in keyState) keyState[key] = false;
+        };
 
-            // This function will be called on key press to move the image
-            function handleKey(event) {
-                let myKey = event.key.toLowerCase();  // Convert to lowercase for consistency
-                document.getElementById("myDiv01").innerHTML = myKey; // Display pressed key
-
-                // Movement for "d" (right)
-                if (myKey === "d") {
-                    img1.style.left = parseInt(img1.style.left) + 4 + "px";
-                    myCheckHit();
-                }
-
-                // Movement for "a" (left)
-                if (myKey === "a") {
-                    img1.style.left = parseInt(img1.style.left) - 4 + "px";
-                    myCheckHit();
-                }
-
-                // Movement for "s" (down)
-                if (myKey === "s") {
-                    img1.style.top = parseInt(img1.style.top) + 4 + "px";
-                    myCheckHit();
-                }
-
-                // Movement for "w" (up)
-                if (myKey === "w") {
-                    img1.style.top = parseInt(img1.style.top) - 4 + "px";
-                    myCheckHit();
-                }
-            }
-
-            // Collision detection logic
-            function myHitOther(my1, my2) {
-                let left1 = parseInt(document.getElementById(my1).style.left);
-                let right1 = left1 + parseInt(document.getElementById(my1).style.width);
-                let top1 = parseInt(document.getElementById(my1).style.top);
-                let bottom1 = top1 + parseInt(document.getElementById(my1).style.height);
-
-                let left2 = parseInt(document.getElementById(my2).style.left);
-                let right2 = left2 + parseInt(document.getElementById(my2).style.width);
-                let top2 = parseInt(document.getElementById(my2).style.top);
-                let bottom2 = top2 + parseInt(document.getElementById(my2).style.height);
-
-                // Check if the elements overlap
-                if ((right1 >= left2) &&
-                    (bottom1 >= top2) &&
-                    (left1 <= right2) &&
-                    (top1 <= bottom2)) {
-                    return true;
-                }
-                return false;
-            }
-
-            // Check for collisions after every move
-            function myCheckHit() {
-                if (myHitOther('myImg01', 'myImg02')) {
-                    alert('You lose!');
-                    img1.style.left = '50px'; // Reset position
-                    img1.style.top = '0px'; // Reset position
-                }
-            }
-
-            // Attach the keydown event directly to the document
-            document.addEventListener("keydown", handleKey);
+        // Collision Detection
+        function myHitOther(my1, my2) {
+            const char1 = my1.getBoundingClientRect();
+            const char2 = my2.getBoundingClientRect();
+            return (
+                char1.right > char2.left &&
+                char1.left < char2.right &&
+                char1.bottom > char2.top &&
+                char1.top < char2.bottom
+            );
         }
-    </script>
 
-    <!-- Images -->
-    <img id="myImg01" style="width:100px; height:80px;" src="mainCharacterRight.png">
-    <img id="myImg02" style="width:100px; height:80px;" src="myImage02.jpg">
+        // Main Game Loop
+        function moveCharacter() {
+            let left = parseInt(img1.style.left);
+            let top = parseInt(img1.style.top);
+
+            if (keyState.d) left += speed; // Move right
+            if (keyState.a) left -= speed; // Move left
+            if (keyState.s) top += speed;  // Move down
+            if (keyState.w) top -= speed;  // Move up
+
+            // Update position
+            img1.style.left = left + "px";
+            img1.style.top = top + "px";
+
+            // Check for collisions
+            if (myHitOther(img1, img2)) {
+                alert("You lose!");
+                img1.style.left = "50px"; // Reset position
+                img1.style.top = "0px";
+            }
+
+            // Loop animation
+            setTimeout(moveCharacter, 16); // Approx. 60 FPS
+        }
+
+        // Start the Game
+        moveCharacter();
+    </script>
 
 </body>
 </html>
