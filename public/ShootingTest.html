@@ -138,13 +138,15 @@
 
         function startEnemyFiring() {
     setInterval(() => {
-        // Get the player's current position
-        const playerLeft = parseInt(player.style.left) + player.offsetWidth / 2;
-        const playerTop = parseInt(player.style.top) + player.offsetHeight / 2;
+        // Get the enemy's current position from the bounding rectangle
+        const enemyRect = enemy.getBoundingClientRect();
+        const enemyLeft = enemyRect.left + enemyRect.width / 2;
+        const enemyTop = enemyRect.top + enemyRect.height / 2;
 
-        // Get the enemy's current position
-        const enemyLeft = parseInt(enemy.style.left) + enemy.offsetWidth / 2;
-        const enemyTop = parseInt(enemy.style.top) + enemy.offsetHeight / 2;
+        // Get the player's current position from the bounding rectangle
+        const playerRect = player.getBoundingClientRect();
+        const playerLeft = playerRect.left + playerRect.width / 2;
+        const playerTop = playerRect.top + playerRect.height / 2;
 
         // Calculate the direction vector from the enemy to the player
         const diffX = playerLeft - enemyLeft;
@@ -160,7 +162,6 @@
         createBullet(enemyLeft, enemyTop, unitVector, false);
     }, 1000); // Fire every second
 }
-
 
         function moveCharacter() {
             const left = parseInt(player.style.left);
