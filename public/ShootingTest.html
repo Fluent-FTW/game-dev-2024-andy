@@ -8,7 +8,7 @@
             margin: 0;
             overflow: hidden;
             background-color: lightblue;
-            user-select: none; /* Disables text selection */
+            user-select: none;
         }
 
         img {
@@ -41,12 +41,12 @@
         const player = document.getElementById("myImg01");
         const enemy = document.getElementById("myImg02");
         const flag = document.getElementById("myImg03");
-        const speed = 3; // Movement speed
-        const bulletSpeed = 7; // Speed of bullets
+        const speed = 3;
+        const bulletSpeed = 7;
         const bullets = [];
         const enemyBullets = [];
-        let lastDirection = "right"; // Default shooting direction
-        const keyState = {}; // Track keys
+        let lastDirection = "right";
+        const keyState = {};
 
         // Directions for movement and shooting
         const directionMap = {
@@ -75,7 +75,7 @@
             bullet.className = isPlayer ? "bullet" : "bullet enemy-bullet";
             bullet.style.left = `${x}px`;
             bullet.style.top = `${y}px`;
-            bullet.direction = direction; // Add direction to bullet object
+            bullet.direction = direction;
             document.body.appendChild(bullet);
             if (isPlayer) bullets.push(bullet);
             else enemyBullets.push(bullet);
@@ -88,14 +88,12 @@
                 let left = parseInt(bullet.style.left);
                 let top = parseInt(bullet.style.top);
 
-                // Update position based on direction
                 left += bullet.direction.x * bulletSpeed;
                 top += bullet.direction.y * bulletSpeed;
 
                 bullet.style.left = `${left}px`;
                 bullet.style.top = `${top}px`;
 
-                // Remove bullet if out of bounds
                 if (
                     left < 0 ||
                     left > window.innerWidth ||
@@ -106,7 +104,6 @@
                     bullets.splice(index, 1);
                 }
 
-                // Collision with enemy
                 if (myHitOther(bullet, enemy)) {
                     alert("Enemy hit!");
                     bullet.remove();
@@ -122,7 +119,6 @@
                 bullet.style.left = `${left}px`;
                 bullet.style.top = `${top}px`;
 
-                // Remove bullet if out of bounds
                 if (
                     left < 0 ||
                     left > window.innerWidth ||
@@ -133,34 +129,26 @@
                     enemyBullets.splice(index, 1);
                 }
 
-                // Collision with player
                 if (myHitOther(bullet, player)) {
                     alert("You got hit!");
                     bullet.remove();
                     enemyBullets.splice(index, 1);
-                    player.style.left = "50px"; // Reset position
+                    player.style.left = "50px";
                     player.style.top = "200px";
                 }
             });
         }
 
-        // Custom Collision Detection
+        // Improved Collision Detection
         function myHitOther(my1, my2) {
-            const left1 = parseInt(my1.style.left);
-            const top1 = parseInt(my1.style.top);
-            const right1 = left1 + my1.offsetWidth;
-            const bottom1 = top1 + my1.offsetHeight;
+            const rect1 = my1.getBoundingClientRect();
+            const rect2 = my2.getBoundingClientRect();
 
-            const left2 = parseInt(my2.style.left);
-            const top2 = parseInt(my2.style.top);
-            const right2 = left2 + my2.offsetWidth;
-            const bottom2 = top2 + my2.offsetHeight;
-
-            return (
-                right1 >= left2 &&
-                bottom1 >= top2 &&
-                left1 <= right2 &&
-                top1 <= bottom2
+            return !(
+                rect1.right < rect2.left ||
+                rect1.left > rect2.right ||
+                rect1.bottom < rect2.top ||
+                rect1.top > rect2.bottom
             );
         }
 
@@ -169,50 +157,41 @@
             let left = parseInt(player.style.left);
             let top = parseInt(player.style.top);
 
-            // Movement Logic (WASD only)
-            if (keyState["d"]) left += speed; // Right
-            if (keyState["a"]) left -= speed; // Left
-            if (keyState["s"]) top += speed; // Down
-            if (keyState["w"]) top -= speed; // Up
+            if (keyState["d"]) left += speed;
+            if (keyState["a"]) left -= speed;
+            if (keyState["s"]) top += speed;
+            if (keyState["w"]) top -= speed;
 
-            // Fire Player Bullet (Space)
             if (keyState[" "]) {
                 const direction = directionMap[lastDirection];
-                createBullet(left + 45, top + 35, direction); // Shoot from player center
-                keyState[" "] = false; // Prevent rapid firing
+                createBullet(left + 45, top + 35, direction);
+                keyState[" "] = false;
             }
 
-            // Enemy Firing Logic
             if (Math.random() < 0.02) {
-                const playerLeft = parseInt(player.style.left) + 50; // Center player
+                const playerLeft = parseInt(player.style.left) + 50;
                 const playerTop = parseInt(player.style.top) + 40;
-                const enemyLeft = parseInt(enemy.style.left) + 50; // Center enemy
+                const enemyLeft = parseInt(enemy.style.left) + 50;
                 const enemyTop = parseInt(enemy.style.top) + 40;
                 const diffX = playerLeft - enemyLeft;
                 const diffY = playerTop - enemyTop;
                 const magnitude = Math.sqrt(diffX ** 2 + diffY ** 2);
-                const unitVector = { x: diffX / magnitude, y: diffY / magnitude }; // Normalize
+                const unitVector = { x: diffX / magnitude, y: diffY / magnitude };
                 createBullet(enemyLeft, enemyTop, unitVector, false);
             }
 
-            // Check Collision with Flag
             if (myHitOther(player, flag)) {
                 alert("You Win!");
-                return; // End the game
+                return;
             }
 
-            // Update Player Position
             player.style.left = `${left}px`;
             player.style.top = `${top}px`;
 
-            // Move Bullets
             moveBullets();
-
-            // Loop Animation
-            setTimeout(moveCharacter, 16); // Approx. 60 FPS
+            setTimeout(moveCharacter, 16);
         }
 
-        // Start the Game Loop
         moveCharacter();
     </script>
 
