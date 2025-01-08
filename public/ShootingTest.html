@@ -167,18 +167,26 @@
                 createBullet(left + 45, top + 35, direction);
                 keyState[" "] = false;
             }
+    // Start Enemy Firing
+    function startEnemyFiring() {
+        setInterval(() => {
+            const playerLeft = parseInt(player.style.left) + 50;
+            const playerTop = parseInt(player.style.top) + 40;
+            const enemyLeft = parseInt(enemy.style.left) + 50;
+            const enemyTop = parseInt(enemy.style.top) + 40;
+    
+            const diffX = playerLeft - enemyLeft;
+            const diffY = playerTop - enemyTop;
+            const magnitude = Math.sqrt(diffX ** 2 + diffY ** 2);
+            const unitVector = { x: diffX / magnitude, y: diffY / magnitude };
 
-            if (Math.random() < 0.02) {
-                const playerLeft = parseInt(player.style.left) + 50;
-                const playerTop = parseInt(player.style.top) + 40;
-                const enemyLeft = parseInt(enemy.style.left) + 50;
-                const enemyTop = parseInt(enemy.style.top) + 40;
-                const diffX = playerLeft - enemyLeft;
-                const diffY = playerTop - enemyTop;
-                const magnitude = Math.sqrt(diffX ** 2 + diffY ** 2);
-                const unitVector = { x: diffX / magnitude, y: diffY / magnitude };
-                createBullet(enemyLeft, enemyTop, unitVector, false);
-            }
+        createBullet(enemyLeft, enemyTop, unitVector, false);
+    }, 1000); // Fire every second
+}
+
+moveCharacter();
+startEnemyFiring();
+
 
             if (myHitOther(player, flag)) {
                 alert("You Win!");
