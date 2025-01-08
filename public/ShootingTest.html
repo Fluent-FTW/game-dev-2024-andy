@@ -137,20 +137,30 @@
         }
 
         function startEnemyFiring() {
-            setInterval(() => {
-                const playerLeft = parseInt(player.style.left) + 50;
-                const playerTop = parseInt(player.style.top) + 40;
-                const enemyLeft = parseInt(enemy.style.left) + 50;
-                const enemyTop = parseInt(enemy.style.top) + 40;
+    setInterval(() => {
+        // Get the player's current position
+        const playerLeft = parseInt(player.style.left) + player.offsetWidth / 2;
+        const playerTop = parseInt(player.style.top) + player.offsetHeight / 2;
 
-                const diffX = playerLeft - enemyLeft;
-                const diffY = playerTop - enemyTop;
-                const magnitude = Math.sqrt(diffX ** 2 + diffY ** 2);
-                const unitVector = { x: diffX / magnitude, y: diffY / magnitude };
+        // Get the enemy's current position
+        const enemyLeft = parseInt(enemy.style.left) + enemy.offsetWidth / 2;
+        const enemyTop = parseInt(enemy.style.top) + enemy.offsetHeight / 2;
 
-                createBullet(enemyLeft, enemyTop, unitVector, false);
-            }, 1000);
-        }
+        // Calculate the direction vector from the enemy to the player
+        const diffX = playerLeft - enemyLeft;
+        const diffY = playerTop - enemyTop;
+        const magnitude = Math.sqrt(diffX ** 2 + diffY ** 2);
+
+        // Avoid division by zero
+        if (magnitude === 0) return;
+
+        const unitVector = { x: diffX / magnitude, y: diffY / magnitude };
+
+        // Create and shoot the bullet
+        createBullet(enemyLeft, enemyTop, unitVector, false);
+    }, 1000); // Fire every second
+}
+
 
         function moveCharacter() {
             const left = parseInt(player.style.left);
