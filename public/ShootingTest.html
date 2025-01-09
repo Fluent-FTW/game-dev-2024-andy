@@ -137,50 +137,72 @@
         }
 
         function startEnemyFiring() {
-    setInterval(() => {
-        // Get the enemy's current position from the bounding rectangle
-        const enemyRect = enemy.getBoundingClientRect();
-        const enemyLeft = enemyRect.left + enemyRect.width / 2;
-        const enemyTop = enemyRect.top + enemyRect.height / 2;
+            setInterval(() => {
+                const enemyRect = enemy.getBoundingClientRect();
+                const enemyLeft = enemyRect.left + enemyRect.width / 2;
+                const enemyTop = enemyRect.top + enemyRect.height / 2;
 
-        // Get the player's current position from the bounding rectangle
-        const playerRect = player.getBoundingClientRect();
-        const playerLeft = playerRect.left + playerRect.width / 2;
-        const playerTop = playerRect.top + playerRect.height / 2;
+                const playerRect = player.getBoundingClientRect();
+                const playerLeft = playerRect.left + playerRect.width / 2;
+                const playerTop = playerRect.top + playerRect.height / 2;
 
-        // Calculate the direction vector from the enemy to the player
-        const diffX = playerLeft - enemyLeft;
-        const diffY = playerTop - enemyTop;
-        const magnitude = Math.sqrt(diffX ** 2 + diffY ** 2);
+                const diffX = playerLeft - enemyLeft;
+                const diffY = playerTop - enemyTop;
+                const magnitude = Math.sqrt(diffX ** 2 + diffY ** 2);
 
-        // Avoid division by zero
-        if (magnitude === 0) return;
+                if (magnitude === 0) return;
 
-        const unitVector = { x: diffX / magnitude, y: diffY / magnitude };
+                const unitVector = { x: diffX / magnitude, y: diffY / magnitude };
 
-        // Create and shoot the bullet
-        createBullet(enemyLeft, enemyTop, unitVector, false);
-    }, 1000); // Fire every second
-}
+                createBullet(enemyLeft, enemyTop, unitVector, false);
+            }, 1000);
+        }
+
+        // Movement functions for each direction
+        function moveUp() {
+            const top = parseInt(player.style.top);
+            if (top > 0) {
+                player.style.top = `${top - speed}px`;
+                player.src = "MainCharacterUp.png"; // Replace with the upward movement image
+            }
+        }
+
+        function moveDown() {
+            const top = parseInt(player.style.top);
+            if (top + player.offsetHeight < window.innerHeight) {
+                player.style.top = `${top + speed}px`;
+                player.src = "MainCharacterDown.png"; // Replace with the downward movement image
+            }
+        }
+
+        function moveLeft() {
+            const left = parseInt(player.style.left);
+            if (left > 0) {
+                player.style.left = `${left - speed}px`;
+                player.src = "MainCharacterLeft.png"; // Replace with the left movement image
+            }
+        }
+
+        function moveRight() {
+            const left = parseInt(player.style.left);
+            if (left + player.offsetWidth < window.innerWidth) {
+                player.style.left = `${left + speed}px`;
+                player.src = "MainCharacterRight.png"; // Replace with the right movement image
+            }
+        }
 
         function moveCharacter() {
-            const left = parseInt(player.style.left);
-            const top = parseInt(player.style.top);
-
-            const newX = left + (keyState["d"] ? speed : 0) - (keyState["a"] ? speed : 0);
-            const newY = top + (keyState["s"] ? speed : 0) - (keyState["w"] ? speed : 0);
-
-            if (newX >= 0 && newX + player.offsetWidth <= window.innerWidth) {
-                player.style.left = `${newX}px`;
-            }
-
-            if (newY >= 0 && newY + player.offsetHeight <= window.innerHeight) {
-                player.style.top = `${newY}px`;
-            }
+            if (keyState["w"]) moveUp();
+            if (keyState["s"]) moveDown();
+            if (keyState["a"]) moveLeft();
+            if (keyState["d"]) moveRight();
 
             if (keyState[" "]) {
+                const playerRect = player.getBoundingClientRect();
+                const bulletX = playerRect.left + playerRect.width / 2;
+                const bulletY = playerRect.top + playerRect.height / 2;
                 const direction = directionMap[lastDirection];
-                createBullet(newX + 45, newY + 35, direction);
+                createBullet(bulletX, bulletY, direction);
                 keyState[" "] = false;
             }
         }
