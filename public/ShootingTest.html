@@ -163,7 +163,7 @@
             const top = parseInt(player.style.top);
             if (top > 0) {
                 player.style.top = `${top - speed}px`;
-                player.src = "MainCharacterUp.png"; // Replace with the upward movement image
+                player.src = "MainCharacterJump.png"; // Replace with the upward movement image
             }
         }
 
@@ -171,7 +171,7 @@
             const top = parseInt(player.style.top);
             if (top + player.offsetHeight < window.innerHeight) {
                 player.style.top = `${top + speed}px`;
-                player.src = "MainCharacterDown.png"; // Replace with the downward movement image
+                player.src = "MainCharacterFall.png"; // Replace with the downward movement image
             }
         }
 
