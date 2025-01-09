@@ -30,7 +30,6 @@
     </style>
 </head>
 <body>
-
     <!-- Game Elements -->
     <img id="myImg01" src="MainCharacterRight.png" style="width:100px; height:80px; left:50px; top:200px;">
     <img id="myImg02" src="EllisMouth.png" style="width:100px; height:80px; left:calc(50% - 50px); top:10px;">
@@ -47,6 +46,7 @@
         const enemyBullets = [];
         let lastDirection = "right";
         const keyState = {};
+        let enemyCanShoot = true; // Flag to control enemy shooting
 
         const directionMap = {
             up: { x: 0, y: -1 },
@@ -103,7 +103,7 @@
         function checkCollisions() {
             bullets.forEach((bullet, i) => {
                 if (myHitOther(bullet, enemy)) {
-                    alert("Enemy hit!");
+                    enemyCanShoot = false; // Stop enemy shooting
                     bullet.remove();
                     bullets.splice(i, 1);
                 }
@@ -111,11 +111,11 @@
 
             enemyBullets.forEach((bullet, i) => {
                 if (myHitOther(bullet, player)) {
-                    alert("You got hit!");
                     bullet.remove();
                     enemyBullets.splice(i, 1);
                     player.style.left = "50px";
                     player.style.top = "200px";
+                    location.reload();
                 }
             });
 
@@ -138,6 +138,8 @@
 
         function startEnemyFiring() {
             setInterval(() => {
+                if (!enemyCanShoot) return; // Prevent enemy from shooting
+
                 const enemyRect = enemy.getBoundingClientRect();
                 const enemyLeft = enemyRect.left + enemyRect.width / 2;
                 const enemyTop = enemyRect.top + enemyRect.height / 2;
@@ -156,39 +158,6 @@
 
                 createBullet(enemyLeft, enemyTop, unitVector, false);
             }, 1000);
-        }
-
-        // Movement functions for each direction
-        function moveUp() {
-            const top = parseInt(player.style.top);
-            if (top > 0) {
-                player.style.top = `${top - speed}px`;
-                player.src = "MainCharacterJump.png"; // Replace with the upward movement image
-            }
-        }
-
-        function moveDown() {
-            const top = parseInt(player.style.top);
-            if (top + player.offsetHeight < window.innerHeight) {
-                player.style.top = `${top + speed}px`;
-                player.src = "MainCharacterFall.png"; // Replace with the downward movement image
-            }
-        }
-
-        function moveLeft() {
-            const left = parseInt(player.style.left);
-            if (left > 0) {
-                player.style.left = `${left - speed}px`;
-                player.src = "MainCharacterLeft.png"; // Replace with the left movement image
-            }
-        }
-
-        function moveRight() {
-            const left = parseInt(player.style.left);
-            if (left + player.offsetWidth < window.innerWidth) {
-                player.style.left = `${left + speed}px`;
-                player.src = "MainCharacterRight.png"; // Replace with the right movement image
-            }
         }
 
         function moveCharacter() {
