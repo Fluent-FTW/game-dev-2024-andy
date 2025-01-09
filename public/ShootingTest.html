@@ -55,6 +55,39 @@
             right: { x: 1, y: 0 },
         };
 
+        // Movement functions
+        function moveUp() {
+            const top = parseInt(player.style.top);
+            if (top > 0) {
+                player.style.top = `${top - speed}px`;
+                player.src = "MainCharacterJump.png"; // Adjust to match upward movement image
+            }
+        }
+
+        function moveDown() {
+            const top = parseInt(player.style.top);
+            if (top + player.offsetHeight < window.innerHeight) {
+                player.style.top = `${top + speed}px`;
+                player.src = "MainCharacterFall.png"; // Adjust to match downward movement image
+            }
+        }
+
+        function moveLeft() {
+            const left = parseInt(player.style.left);
+            if (left > 0) {
+                player.style.left = `${left - speed}px`;
+                player.src = "MainCharacterLeft.png"; // Adjust to match left movement image
+            }
+        }
+
+        function moveRight() {
+            const left = parseInt(player.style.left);
+            if (left + player.offsetWidth < window.innerWidth) {
+                player.style.left = `${left + speed}px`;
+                player.src = "MainCharacterRight.png"; // Adjust to match right movement image
+            }
+        }
+
         document.onkeydown = function (event) {
             keyState[event.key] = true;
             if (["ArrowUp", "ArrowRight", "ArrowDown", "ArrowLeft"].includes(event.key)) {
