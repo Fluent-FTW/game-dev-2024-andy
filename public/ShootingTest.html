@@ -133,30 +133,45 @@
             removeOffscreenBullets(enemyBullets);
         }
 
-        function checkCollisions() {
-            bullets.forEach((bullet, i) => {
-                if (myHitOther(bullet, enemy)) {
-                    enemyCanShoot = false; // Stop enemy shooting
-                    bullet.remove();
-                    bullets.splice(i, 1);
-                }
-            });
+      function checkCollisions() {
+    bullets.forEach((bullet, i) => {
+        if (myHitOther(bullet, enemy)) {
+            // Stop enemy shooting
+            enemyCanShoot = false;
 
-            enemyBullets.forEach((bullet, i) => {
-                if (myHitOther(bullet, player)) {
-                    bullet.remove();
-                    enemyBullets.splice(i, 1);
-                    player.style.left = "50px";
-                    player.style.top = "200px";
-                    location.reload();
-                }
-            });
+            // Remove the bullet
+            bullet.remove();
+            bullets.splice(i, 1);
 
-            if (myHitOther(player, flag)) {
-                alert("You win!");
-                location.reload();
-            }
+            // Display "Enemy Killed" text
+            const message = document.createElement("div");
+            message.textContent = "Enemy Killed";
+            message.style.position = "absolute";
+            message.style.color = "red";
+            message.style.fontSize = "20px";
+            message.style.left = `${enemy.offsetLeft}px`;
+            message.style.top = `${enemy.offsetTop + enemy.offsetHeight}px`;
+            document.body.appendChild(message);
+
+           
         }
+    });
+
+    enemyBullets.forEach((bullet, i) => {
+        if (myHitOther(bullet, player)) {
+            bullet.remove();
+            enemyBullets.splice(i, 1);
+            player.style.left = "50px";
+            player.style.top = "200px";
+            location.reload();
+        }
+    });
+
+    if (myHitOther(player, flag)) {
+        alert("You win!");
+        location.reload();
+    }
+}
 
         function myHitOther(my1, my2) {
             const rect1 = my1.getBoundingClientRect();
