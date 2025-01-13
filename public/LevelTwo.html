@@ -1,1 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Directional Shooting Game</title>
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+            background-color: lightblue;
+            user-select: none;
+        }
 
+        img {
+            user-select: none;
+            position: absolute;
+        }
+
+        .bullet {
+            width: 10px;
+            height: 10px;
+            background-color: green;
+            position: absolute;
+            border-radius: 50%;
+        }
+
+        .enemy-bullet {
+            background-color: red;
+        }
+    </style>
+</head>
+<body>
+    <!-- Game Elements -->
+    <img id="myImg01" src="MainCharacterRight.png" style="width:100px; height:80px; left:50px; top:200px;">
+    <img id="myImg02" src="EllisMouth.png" style="width:100px; height:80px; left:calc(50% - 50px); top:10px;">
+    <img id="myImg03" src="WinFlag.png" style="width:100px; height:50px; left:calc(100% - 110px); top:200px;">
+
+    <script>
+        const player = document.getElementById("myImg01");
+        const enemy = document.getElementById("myImg02");
+        const flag = document.getElementById("myImg03");
+
+        const speed = 3;
+        const bulletSpeed = 7;
+        const bullets = [];
+        const enemyBullets = [];
+        let lastDirection = "right";
+        const keyState = {};
+        let enemyCanShoot = true; // Flag to control enemy shooting
+
+        const directionMap = {
+            up: { x: 0, y: -1 },
+            down: { x: 0, y: 1 },
+            left: { x: -1, y: 0 },
+            right: { x: 1, y: 0 },
+        };
+
+        // Movement functions
+        function moveUp() {
+            const top = parseInt(player.style.top);
+            if (top > 0) {
+                player.style.top = `${top - speed}px`;
+                player.src = "MainCharacterJump.png"; // Adjust to match upward movement image
+            }
+        }
+
+        function moveDown() {
+            const top = parseInt(player.style.top);
+            if (top + player.offsetHeight < window.innerHeight) {
+                player.style.top = `${top + speed}px`;
+                player.src = "MainCharacterFall.png"; // Adjust to match downward movement image
+            }
+        }
+
+        function moveLeft() {
+            const left = parseInt(player.style.left);
+            if (left > 0) {
+                player.style.left = `${left - speed}px`;
+                player.src = "MainCharacterLeft.png"; // Adjust to match left movement image
+            }
+        }
+
+        function moveRight() {
+            const left = parseInt(player.style.left);
+            if (left + player.offsetWidth < window.innerWidth) {
+                player.style.left = `${left + speed}px`;
+                player.src = "MainCharacterRight.png"; // Adjust to match right movement image
+            }
+        }
+
+        document.onkeydown = function (event) {
+            keyState[event.key] = true;
+            if (["ArrowUp", "ArrowRight", "ArrowDown", "ArrowLeft"].includes(event.key)) {
+                lastDirection = event.key.replace("Arrow", "").toLowerCase();
+            }
+        };
+
+        document.onkeyup = function (event) {
+            keyState[event.key] = false;
+        };
+
+        function createBullet(x, y, direction, isPlayer = true) {
+            const bullet = document.createElement("div");
+            bullet.className = isPlayer ? "bullet" : "bullet enemy-bullet";
+            bullet.style.left = `${x}px`;
+            bullet.style.top = `${y}px`;
+            bullet.direction = direction;
+            document.body.appendChild(bullet);
+            (isPlayer ? bullets : enemyBullets).push(bullet);
+        }
+
+        function moveBullets() {
+            const removeOffscreenBullets = (bulletArray) => {
+                for (let i = bulletArray.length - 1; i >= 0; i--) {
+                    const bullet = bulletArray[i];
+                    const left = parseInt(bullet.style.left) + bullet.direction.x * bulletSpeed;
+                    const top = parseInt(bullet.style.top) + bullet.direction.y * bulletSpeed;
+
+                    bullet.style.left = `${left}px`;
+                    bullet.style.top = `${top}px`;
+
+                    if (
+                        left < 0 || left > window.innerWidth ||
+                        top < 0 || top > window.innerHeight
+                    ) {
+                        bullet.remove();
+                        bulletArray.splice(i, 1);
+                    }
+                }
+            };
+
+            removeOffscreenBullets(bullets);
+            removeOffscreenBullets(enemyBullets);
+        }
+
+      function checkCollisions() {
+    bullets.forEach((bullet, i) => {
+        if (myHitOther(bullet, enemy)) {
+            // Stop enemy shooting
+            enemyCanShoot = false;
+
+            // Remove the bullet
+            bullet.remove();
+            bullets.splice(i, 1);
+
+            // Display "Enemy Killed" text
+            const message = document.createElement("div");
+            message.textContent = "Enemy Killed";
+            message.style.position = "absolute";
+            message.style.color = "red";
+            message.style.fontSize = "20px";
+            message.style.left = `${enemy.offsetLeft}px`;
+            message.style.top = `${enemy.offsetTop + enemy.offsetHeight}px`;
+            document.body.appendChild(message);
+
+           
+        }
+    });
+
+    enemyBullets.forEach((bullet, i) => {
+        if (myHitOther(bullet, player)) {
+            bullet.remove();
+            enemyBullets.splice(i, 1);
+            player.style.left = "50px";
+            player.style.top = "200px";
+            location.reload();
+        }
+    });
+
+    if (myHitOther(player, flag)) {
+        alert("You win!");
+        location.reload();
+    }
+}
+
+        function myHitOther(my1, my2) {
+            const rect1 = my1.getBoundingClientRect();
+            const rect2 = my2.getBoundingClientRect();
+            return !(
+                rect1.right < rect2.left ||
+                rect1.left > rect2.right ||
+                rect1.bottom < rect2.top ||
+                rect1.top > rect2.bottom
+            );
+        }
+
+        function startEnemyFiring() {
+            setInterval(() => {
+                if (!enemyCanShoot) return; // Prevent enemy from shooting
+
+                const enemyRect = enemy.getBoundingClientRect();
+                const enemyLeft = enemyRect.left + enemyRect.width / 2;
+                const enemyTop = enemyRect.top + enemyRect.height / 2;
+
+                const playerRect = player.getBoundingClientRect();
+                const playerLeft = playerRect.left + playerRect.width / 2;
+                const playerTop = playerRect.top + playerRect.height / 2;
+
+                const diffX = playerLeft - enemyLeft;
+                const diffY = playerTop - enemyTop;
+                const magnitude = Math.sqrt(diffX ** 2 + diffY ** 2);
+
+                if (magnitude === 0) return;
+
+                const unitVector = { x: diffX / magnitude, y: diffY / magnitude };
+
+                createBullet(enemyLeft, enemyTop, unitVector, false);
+            }, 1000);
+        }
+
+        function moveCharacter() {
+            if (keyState["w"]) moveUp();
+            if (keyState["s"]) moveDown();
+            if (keyState["a"]) moveLeft();
+            if (keyState["d"]) moveRight();
+
+            if (keyState[" "]) {
+                const playerRect = player.getBoundingClientRect();
+                const bulletX = playerRect.left + playerRect.width / 2;
+                const bulletY = playerRect.top + playerRect.height / 2;
+                const direction = directionMap[lastDirection];
+                createBullet(bulletX, bulletY, direction);
+                keyState[" "] = false;
+            }
+        }
+
+        function gameLoop() {
+            moveCharacter();
+            moveBullets();
+            checkCollisions();
+            requestAnimationFrame(gameLoop);
+        }
+
+        startEnemyFiring();
+        gameLoop();
+    </script>
+</body>
+</html>
