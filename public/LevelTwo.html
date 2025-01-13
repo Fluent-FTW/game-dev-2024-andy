@@ -27,6 +27,12 @@
         .enemy-bullet {
             background-color: red;
         }
+
+        .enemy-killed-text {
+            position: absolute;
+            font-size: 16px;
+            color: red;
+        }
     </style>
 </head>
 <body>
@@ -42,7 +48,7 @@
         const bulletSpeed = 7;
         const bullets = [];
         const enemyBullets = [];
-        const enemies = []; // List of all enemies
+        const enemies = [];
         const keyState = {};
         let lastDirection = "right";
 
@@ -53,24 +59,35 @@
             right: { x: 1, y: 0 },
         };
 
-        // Add an enemy dynamically
         function addEnemy(x, y, imageSrc = "EllisMouth.png") {
-            const enemy = document.createElement("img");
-            enemy.src = imageSrc;
-            enemy.style.width = "100px";
-            enemy.style.height = "80px";
-            enemy.style.position = "absolute";
-            enemy.style.left = `${x}px`;
-            enemy.style.top = `${y}px`;
-            enemy.canShoot = true;
-            document.body.appendChild(enemy);
+            const enemyContainer = document.createElement("div");
+            enemyContainer.style.position = "absolute";
+            enemyContainer.style.left = `${x}px`;
+            enemyContainer.style.top = `${y}px`;
+
+            const enemyImage = document.createElement("img");
+            enemyImage.src = imageSrc;
+            enemyImage.style.width = "100px";
+            enemyImage.style.height = "80px";
+            enemyContainer.appendChild(enemyImage);
+
+            const enemyKilledText = document.createElement("div");
+            enemyKilledText.textContent = "Enemy Killed";
+            enemyKilledText.className = "enemy-killed-text";
+            enemyKilledText.style.display = "none"; // Hidden initially
+            enemyKilledText.style.left = "0";
+            enemyKilledText.style.top = "80px"; // Position under the enemy
+            enemyContainer.appendChild(enemyKilledText);
+
+            document.body.appendChild(enemyContainer);
+            const enemy = { container: enemyContainer, image: enemyImage, text: enemyKilledText, canShoot: true };
             enemies.push(enemy);
 
             // Enemy shooting interval
             setInterval(() => {
                 if (!enemy.canShoot) return;
 
-                const enemyRect = enemy.getBoundingClientRect();
+                const enemyRect = enemy.image.getBoundingClientRect();
                 const enemyLeft = enemyRect.left + enemyRect.width / 2;
                 const enemyTop = enemyRect.top + enemyRect.height / 2;
 
@@ -88,50 +105,6 @@
                 createBullet(enemyLeft, enemyTop, unitVector, false);
             }, 1000);
         }
-
-        // Movement functions
-        function moveUp() {
-            const top = parseInt(player.style.top);
-            if (top > 0) {
-                player.style.top = `${top - speed}px`;
-                player.src = "MainCharacterJump.png";
-            }
-        }
-
-        function moveDown() {
-            const top = parseInt(player.style.top);
-            if (top + player.offsetHeight < window.innerHeight) {
-                player.style.top = `${top + speed}px`;
-                player.src = "MainCharacterFall.png";
-            }
-        }
-
-        function moveLeft() {
-            const left = parseInt(player.style.left);
-            if (left > 0) {
-                player.style.left = `${left - speed}px`;
-                player.src = "MainCharacterLeft.png";
-            }
-        }
-
-        function moveRight() {
-            const left = parseInt(player.style.left);
-            if (left + player.offsetWidth < window.innerWidth) {
-                player.style.left = `${left + speed}px`;
-                player.src = "MainCharacterRight.png";
-            }
-        }
-
-        document.onkeydown = function (event) {
-            keyState[event.key] = true;
-            if (["ArrowUp", "ArrowRight", "ArrowDown", "ArrowLeft"].includes(event.key)) {
-                lastDirection = event.key.replace("Arrow", "").toLowerCase();
-            }
-        };
-
-        document.onkeyup = function (event) {
-            keyState[event.key] = false;
-        };
 
         function createBullet(x, y, direction, isPlayer = true) {
             const bullet = document.createElement("div");
@@ -170,12 +143,14 @@
         function checkCollisions() {
             bullets.forEach((bullet, i) => {
                 enemies.forEach((enemy, j) => {
-                    if (myHitOther(bullet, enemy)) {
+                    if (myHitOther(bullet, enemy.container)) {
+                        // Show "Enemy Killed" text and stop enemy actions
+                        enemy.text.style.display = "block";
                         enemy.canShoot = false;
+
+                        // Remove the bullet
                         bullet.remove();
                         bullets.splice(i, 1);
-                        enemy.remove();
-                        enemies.splice(j, 1);
                     }
                 });
             });
@@ -223,6 +198,41 @@
             }
         }
 
+        function moveUp() {
+            const top = parseInt(player.style.top);
+            if (top > 0) {
+                player.style.top = `${top - speed}px`;
+                player.src = "MainCharacterJump.png";
+            }
+        }
+
+        function moveDown() {
+            const top = parseInt(player.style.top);
+            if (top + player.offsetHeight < window.innerHeight) {
+                player.style.top = `${top + speed}px`;
+                player.src = "MainCharacterFall.png";
+            }
+        }
+
+        function moveLeft() {
+            const left = parseInt(player.style.left);
+            if (left > 0) {
+                player.style.left = `${left - speed}px`;
+                player.src = "MainCharacterLeft.png";
+            }
+        }
+
+        function moveRight() {
+            const left = parseInt(player.style.left);
+            if (left + player.offsetWidth < window.innerWidth) {
+                player.style.left = `${left + speed}px`;
+                player.src = "MainCharacterRight.png";
+            }
+        }
+
+        document.onkeydown = (event) => keyState[event.key] = true;
+        document.onkeyup = (event) => keyState[event.key] = false;
+
         function gameLoop() {
             moveCharacter();
             moveBullets();
@@ -230,9 +240,10 @@
             requestAnimationFrame(gameLoop);
         }
 
-        // Add enemies here
+        // Add enemies dynamically
         addEnemy(400, 100);
-        addEnemy(1200, 450, "EnemyType2.png");
+        addEnemy(800, 300);
+        addEnemy(1200, 450, "AndyViolin.png");
 
         gameLoop();
     </script>
