@@ -59,6 +59,7 @@
             right: { x: 1, y: 0 },
         };
 
+        // Helper function to create an enemy
         function addEnemy(x, y, imageSrc = "EllisMouth.png") {
             const enemyContainer = document.createElement("div");
             enemyContainer.style.position = "absolute";
@@ -83,29 +84,29 @@
             const enemy = { container: enemyContainer, image: enemyImage, text: enemyKilledText, canShoot: true };
             enemies.push(enemy);
 
-            // Enemy shooting interval
+            // Enemy shooting logic
             setInterval(() => {
                 if (!enemy.canShoot) return;
-
                 const enemyRect = enemy.image.getBoundingClientRect();
-                const enemyLeft = enemyRect.left + enemyRect.width / 2;
-                const enemyTop = enemyRect.top + enemyRect.height / 2;
+                const enemyCenterX = enemyRect.left + enemyRect.width / 2;
+                const enemyCenterY = enemyRect.top + enemyRect.height / 2;
 
                 const playerRect = player.getBoundingClientRect();
-                const playerLeft = playerRect.left + playerRect.width / 2;
-                const playerTop = playerRect.top + playerRect.height / 2;
+                const playerCenterX = playerRect.left + playerRect.width / 2;
+                const playerCenterY = playerRect.top + playerRect.height / 2;
 
-                const diffX = playerLeft - enemyLeft;
-                const diffY = playerTop - enemyTop;
+                const diffX = playerCenterX - enemyCenterX;
+                const diffY = playerCenterY - enemyCenterY;
                 const magnitude = Math.sqrt(diffX ** 2 + diffY ** 2);
 
                 if (magnitude === 0) return;
 
                 const unitVector = { x: diffX / magnitude, y: diffY / magnitude };
-                createBullet(enemyLeft, enemyTop, unitVector, false);
+                createBullet(enemyCenterX, enemyCenterY, unitVector, false);
             }, 1000);
         }
 
+        // Function to create bullets
         function createBullet(x, y, direction, isPlayer = true) {
             const bullet = document.createElement("div");
             bullet.className = isPlayer ? "bullet" : "bullet enemy-bullet";
@@ -116,6 +117,7 @@
             (isPlayer ? bullets : enemyBullets).push(bullet);
         }
 
+        // Function to move bullets
         function moveBullets() {
             const removeOffscreenBullets = (bulletArray) => {
                 for (let i = bulletArray.length - 1; i >= 0; i--) {
@@ -140,15 +142,16 @@
             removeOffscreenBullets(enemyBullets);
         }
 
+        // Function to check collisions
         function checkCollisions() {
             bullets.forEach((bullet, i) => {
                 enemies.forEach((enemy, j) => {
                     if (myHitOther(bullet, enemy.container)) {
-                        // Show "Enemy Killed" text and stop enemy actions
+                        // Display "Enemy Killed" text and stop actions
                         enemy.text.style.display = "block";
                         enemy.canShoot = false;
 
-                        // Remove the bullet
+                        // Remove bullet
                         bullet.remove();
                         bullets.splice(i, 1);
                     }
@@ -171,6 +174,7 @@
             }
         }
 
+        // Helper function for collision detection
         function myHitOther(my1, my2) {
             const rect1 = my1.getBoundingClientRect();
             const rect2 = my2.getBoundingClientRect();
@@ -182,6 +186,7 @@
             );
         }
 
+        // Function to move the player
         function moveCharacter() {
             if (keyState["w"]) moveUp();
             if (keyState["s"]) moveDown();
@@ -194,45 +199,36 @@
                 const bulletY = playerRect.top + playerRect.height / 2;
                 const direction = directionMap[lastDirection];
                 createBullet(bulletX, bulletY, direction);
-                keyState[" "] = false;
+                keyState[" "] = false; // Prevent holding space from rapid firing
             }
         }
 
+        // Individual move functions
         function moveUp() {
-            const top = parseInt(player.style.top);
-            if (top > 0) {
-                player.style.top = `${top - speed}px`;
-                player.src = "MainCharacterJump.png";
-            }
+            player.style.top = `${parseInt(player.style.top) - speed}px`;
+            lastDirection = "up";
         }
 
         function moveDown() {
-            const top = parseInt(player.style.top);
-            if (top + player.offsetHeight < window.innerHeight) {
-                player.style.top = `${top + speed}px`;
-                player.src = "MainCharacterFall.png";
-            }
+            player.style.top = `${parseInt(player.style.top) + speed}px`;
+            lastDirection = "down";
         }
 
         function moveLeft() {
-            const left = parseInt(player.style.left);
-            if (left > 0) {
-                player.style.left = `${left - speed}px`;
-                player.src = "MainCharacterLeft.png";
-            }
+            player.style.left = `${parseInt(player.style.left) - speed}px`;
+            lastDirection = "left";
         }
 
         function moveRight() {
-            const left = parseInt(player.style.left);
-            if (left + player.offsetWidth < window.innerWidth) {
-                player.style.left = `${left + speed}px`;
-                player.src = "MainCharacterRight.png";
-            }
+            player.style.left = `${parseInt(player.style.left) + speed}px`;
+            lastDirection = "right";
         }
 
-        document.onkeydown = (event) => keyState[event.key] = true;
-        document.onkeyup = (event) => keyState[event.key] = false;
+        // Key handling
+        document.onkeydown = (event) => (keyState[event.key] = true);
+        document.onkeyup = (event) => (keyState[event.key] = false);
 
+        // Game loop
         function gameLoop() {
             moveCharacter();
             moveBullets();
