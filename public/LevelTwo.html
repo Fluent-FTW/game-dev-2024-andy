@@ -32,21 +32,19 @@
 <body>
     <!-- Game Elements -->
     <img id="myImg01" src="MainCharacterRight.png" style="width:100px; height:80px; left:50px; top:200px;">
-    <img id="myImg02" src="EllisMouth.png" style="width:100px; height:80px; left:calc(50% - 50px); top:10px;">
     <img id="myImg03" src="WinFlag.png" style="width:100px; height:50px; left:calc(100% - 110px); top:200px;">
 
     <script>
         const player = document.getElementById("myImg01");
-        const enemy = document.getElementById("myImg02");
         const flag = document.getElementById("myImg03");
 
         const speed = 3;
         const bulletSpeed = 7;
         const bullets = [];
         const enemyBullets = [];
-        let lastDirection = "right";
+        const enemies = []; // List of all enemies
         const keyState = {};
-        let enemyCanShoot = true; // Flag to control enemy shooting
+        let lastDirection = "right";
 
         const directionMap = {
             up: { x: 0, y: -1 },
@@ -55,12 +53,48 @@
             right: { x: 1, y: 0 },
         };
 
+        // Add an enemy dynamically
+        function addEnemy(x, y, imageSrc = "EllisMouth.png") {
+            const enemy = document.createElement("img");
+            enemy.src = imageSrc;
+            enemy.style.width = "100px";
+            enemy.style.height = "80px";
+            enemy.style.position = "absolute";
+            enemy.style.left = `${x}px`;
+            enemy.style.top = `${y}px`;
+            enemy.canShoot = true;
+            document.body.appendChild(enemy);
+            enemies.push(enemy);
+
+            // Enemy shooting interval
+            setInterval(() => {
+                if (!enemy.canShoot) return;
+
+                const enemyRect = enemy.getBoundingClientRect();
+                const enemyLeft = enemyRect.left + enemyRect.width / 2;
+                const enemyTop = enemyRect.top + enemyRect.height / 2;
+
+                const playerRect = player.getBoundingClientRect();
+                const playerLeft = playerRect.left + playerRect.width / 2;
+                const playerTop = playerRect.top + playerRect.height / 2;
+
+                const diffX = playerLeft - enemyLeft;
+                const diffY = playerTop - enemyTop;
+                const magnitude = Math.sqrt(diffX ** 2 + diffY ** 2);
+
+                if (magnitude === 0) return;
+
+                const unitVector = { x: diffX / magnitude, y: diffY / magnitude };
+                createBullet(enemyLeft, enemyTop, unitVector, false);
+            }, 1000);
+        }
+
         // Movement functions
         function moveUp() {
             const top = parseInt(player.style.top);
             if (top > 0) {
                 player.style.top = `${top - speed}px`;
-                player.src = "MainCharacterJump.png"; // Adjust to match upward movement image
+                player.src = "MainCharacterJump.png";
             }
         }
 
@@ -68,7 +102,7 @@
             const top = parseInt(player.style.top);
             if (top + player.offsetHeight < window.innerHeight) {
                 player.style.top = `${top + speed}px`;
-                player.src = "MainCharacterFall.png"; // Adjust to match downward movement image
+                player.src = "MainCharacterFall.png";
             }
         }
 
@@ -76,7 +110,7 @@
             const left = parseInt(player.style.left);
             if (left > 0) {
                 player.style.left = `${left - speed}px`;
-                player.src = "MainCharacterLeft.png"; // Adjust to match left movement image
+                player.src = "MainCharacterLeft.png";
             }
         }
 
@@ -84,7 +118,7 @@
             const left = parseInt(player.style.left);
             if (left + player.offsetWidth < window.innerWidth) {
                 player.style.left = `${left + speed}px`;
-                player.src = "MainCharacterRight.png"; // Adjust to match right movement image
+                player.src = "MainCharacterRight.png";
             }
         }
 
@@ -133,45 +167,34 @@
             removeOffscreenBullets(enemyBullets);
         }
 
-      function checkCollisions() {
-    bullets.forEach((bullet, i) => {
-        if (myHitOther(bullet, enemy)) {
-            // Stop enemy shooting
-            enemyCanShoot = false;
+        function checkCollisions() {
+            bullets.forEach((bullet, i) => {
+                enemies.forEach((enemy, j) => {
+                    if (myHitOther(bullet, enemy)) {
+                        enemy.canShoot = false;
+                        bullet.remove();
+                        bullets.splice(i, 1);
+                        enemy.remove();
+                        enemies.splice(j, 1);
+                    }
+                });
+            });
 
-            // Remove the bullet
-            bullet.remove();
-            bullets.splice(i, 1);
+            enemyBullets.forEach((bullet, i) => {
+                if (myHitOther(bullet, player)) {
+                    bullet.remove();
+                    enemyBullets.splice(i, 1);
+                    player.style.left = "50px";
+                    player.style.top = "200px";
+                    location.reload();
+                }
+            });
 
-            // Display "Enemy Killed" text
-            const message = document.createElement("div");
-            message.textContent = "Enemy Killed";
-            message.style.position = "absolute";
-            message.style.color = "red";
-            message.style.fontSize = "20px";
-            message.style.left = `${enemy.offsetLeft}px`;
-            message.style.top = `${enemy.offsetTop + enemy.offsetHeight}px`;
-            document.body.appendChild(message);
-
-           
+            if (myHitOther(player, flag)) {
+                alert("You win!");
+                location.reload();
+            }
         }
-    });
-
-    enemyBullets.forEach((bullet, i) => {
-        if (myHitOther(bullet, player)) {
-            bullet.remove();
-            enemyBullets.splice(i, 1);
-            player.style.left = "50px";
-            player.style.top = "200px";
-            location.reload();
-        }
-    });
-
-    if (myHitOther(player, flag)) {
-        alert("You win!");
-        location.reload();
-    }
-}
 
         function myHitOther(my1, my2) {
             const rect1 = my1.getBoundingClientRect();
@@ -182,30 +205,6 @@
                 rect1.bottom < rect2.top ||
                 rect1.top > rect2.bottom
             );
-        }
-
-        function startEnemyFiring() {
-            setInterval(() => {
-                if (!enemyCanShoot) return; // Prevent enemy from shooting
-
-                const enemyRect = enemy.getBoundingClientRect();
-                const enemyLeft = enemyRect.left + enemyRect.width / 2;
-                const enemyTop = enemyRect.top + enemyRect.height / 2;
-
-                const playerRect = player.getBoundingClientRect();
-                const playerLeft = playerRect.left + playerRect.width / 2;
-                const playerTop = playerRect.top + playerRect.height / 2;
-
-                const diffX = playerLeft - enemyLeft;
-                const diffY = playerTop - enemyTop;
-                const magnitude = Math.sqrt(diffX ** 2 + diffY ** 2);
-
-                if (magnitude === 0) return;
-
-                const unitVector = { x: diffX / magnitude, y: diffY / magnitude };
-
-                createBullet(enemyLeft, enemyTop, unitVector, false);
-            }, 1000);
         }
 
         function moveCharacter() {
@@ -231,7 +230,10 @@
             requestAnimationFrame(gameLoop);
         }
 
-        startEnemyFiring();
+        // Add enemies here
+        addEnemy(400, 100);
+        addEnemy(800, 300, "EnemyType2.png");
+
         gameLoop();
     </script>
 </body>
