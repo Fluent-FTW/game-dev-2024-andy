@@ -26,15 +26,9 @@ JSON is a data format similar to JavaScript objects. However, JSON is text-based
         const img = document.createElement('img');
         img.src = imgUrl;
         img.alt = "Image from JSON";
-        img.style.maxWidth = "300px"; // Optional: Limit size
-        img.style.marginTop = "10px"; // Optional spacing
         displayDiv.appendChild(img);
       }
-    } catch (error) {
-      document.getElementById('myDiv01').innerText = `Error: ${error.message}`;
     }
-  }
-
   function myShowJSON(url) {
     document.getElementById('myText1').value = url; // Update URL in input field
     fetchData(url); // Fetch and display data
