@@ -16,8 +16,6 @@
       const img = document.createElement('img');
       img.src = data.image || ""; // Assume "image" holds the image URL if present
       img.alt = "Image from JSON";
-      img.style.maxWidth = "300px"; // Optional: Limit size
-      img.style.marginTop = "10px"; // Optional spacing
       if (img.src) displayDiv.appendChild(img); // Append only if image exists
     } catch (error) {
       document.getElementById('myDiv01').innerText = `Error: ${error.message}`;
