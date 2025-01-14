@@ -8,27 +8,29 @@ JSON is a data format similar to JavaScript objects. However, JSON is text-based
 <br><br>
 <script>
   async function fetchData(url) {
-    try {
-      const response = await fetch(url);
-      const data = await response.json();
+    const response = await fetch(url);
+    const data = await response.json();
 
-      const displayDiv = document.getElementById('myDiv01');
-      displayDiv.innerHTML = ""; // Clear previous results
+    const displayDiv = document.getElementById('myDiv01');
+    displayDiv.innerHTML = ""; // Clear previous results
 
-      // Display the raw JSON string
-      displayDiv.innerText = JSON.stringify(data, null, 2);
+    // Display the raw JSON string
+    displayDiv.innerText = JSON.stringify(data, null, 2);
 
-      // Extract the image URL (works for both APIs)
-      const imgUrl = data.image || data.message; // Use the appropriate key
+    // Extract the image URL (works for both APIs)
+    const imgUrl = data.image || data.message; // Use the appropriate key
 
-      // Display the image if an URL is found
-      if (imgUrl) {
-        const img = document.createElement('img');
-        img.src = imgUrl;
-        img.alt = "Image from JSON";
-        displayDiv.appendChild(img);
-      }
+    // Display the image if an URL is found
+    if (imgUrl) {
+      const img = document.createElement('img');
+      img.src = imgUrl;
+      img.alt = "Image from JSON";
+      img.style.maxWidth = "300px"; // Optional: Limit size
+      img.style.marginTop = "10px"; // Optional spacing
+      displayDiv.appendChild(img);
     }
+  }
+
   function myShowJSON(url) {
     document.getElementById('myText1').value = url; // Update URL in input field
     fetchData(url); // Fetch and display data
