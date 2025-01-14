@@ -1,6 +1,13 @@
 <h1 align="center">Display JSON Data</h1>
-
+<textarea cols="70" rows="5">
+JSON is a data format similar to JavaScript objects. However, JSON is text-based and follows strict syntax rules:
+- Properties and values are wrapped in double quotes ("").
+- Objects are delimited with curly brackets ({}) and arrays with square brackets ([]).
+- It is typically used for data exchange between systems.
+</textarea>
+<br><br>
 <script>
+  
   async function fetchData(url) {
     try {
       const response = await fetch(url);
@@ -12,11 +19,19 @@
       // Display the raw JSON string
       displayDiv.innerText = JSON.stringify(data, null, 2);
 
-      // Display an image if there's one in the response
-      const img = document.createElement('img');
-      img.src = data.image || ""; // Assume "image" holds the image URL if present
-      img.alt = "Image from JSON";
-      if (img.src) displayDiv.appendChild(img); // Append only if image exists
+      // Check for an image URL in possible keys
+      const imageKeys = ["image", "message"]; // Add more keys as needed
+      const imgUrl = imageKeys.find(key => key in data) ? data[imageKeys.find(key => key in data)] : null;
+
+      // Display the image if an URL is found
+      if (imgUrl) {
+        const img = document.createElement('img');
+        img.src = imgUrl;
+        img.alt = "Image from JSON";
+        img.style.maxWidth = "300px"; // Optional: Limit size
+        img.style.marginTop = "10px"; // Optional spacing
+        displayDiv.appendChild(img);
+      }
     } catch (error) {
       document.getElementById('myDiv01').innerText = `Error: ${error.message}`;
     }
