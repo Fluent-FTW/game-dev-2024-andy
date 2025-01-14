@@ -1,34 +1,34 @@
 <h1 align="center">Display JSON Data</h1>
 
 <script>
-  // Function to get JSON data and display it in the div
   async function fetchData(url) {
     try {
       const response = await fetch(url);
-      if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
       const data = await response.json();
-      // Displays the JSON data that was gotten in the div
-      document.getElementById('myDiv01').innerText = JSON.stringify(data, null, 2); // Pretty-printed JSON
+
+      const displayDiv = document.getElementById('myDiv01');
+      displayDiv.innerHTML = ""; // Clear previous results
+
+      // Display the raw JSON string
+      displayDiv.innerText = JSON.stringify(data, null, 2);
+
+      // Display an image if there's one in the response
+      const img = document.createElement('img');
+      img.src = data.image || ""; // Assume "image" holds the image URL if present
+      img.alt = "Image from JSON";
+      img.style.maxWidth = "300px"; // Optional: Limit size
+      img.style.marginTop = "10px"; // Optional spacing
+      if (img.src) displayDiv.appendChild(img); // Append only if image exists
     } catch (error) {
       document.getElementById('myDiv01').innerText = `Error: ${error.message}`;
     }
   }
 
-  // Function to show JSON stuff when button is clicked
   function myShowJSON(url) {
-    // Update the text input to display the correct JSON
-    document.getElementById('myText1').value = url;
-    fetchData(url); // Call fetchData with the selected URL
+    document.getElementById('myText1').value = url; // Update URL in input field
+    fetchData(url); // Fetch and display data
   }
 </script>
-
-<textarea cols="70" rows="5">
-JSON is a data format similar to JavaScript objects. However, JSON is text-based and follows strict syntax rules:
-- Properties and values are wrapped in double quotes ("").
-- Objects are delimited with curly brackets ({}) and arrays with square brackets ([]).
-- It is typically used for data exchange between systems.
-</textarea>
-<br><br>
 
 <label for="myText1">Enter a JSON-returning URL:</label>
 <input type="text" id="myText1" value="https://randomfox.ca/floof/">
