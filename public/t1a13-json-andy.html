@@ -7,7 +7,6 @@ JSON is a data format similar to JavaScript objects. However, JSON is text-based
 </textarea>
 <br><br>
 <script>
-  
   async function fetchData(url) {
     try {
       const response = await fetch(url);
@@ -19,9 +18,8 @@ JSON is a data format similar to JavaScript objects. However, JSON is text-based
       // Display the raw JSON string
       displayDiv.innerText = JSON.stringify(data, null, 2);
 
-      // Check for an image URL in possible keys
-      const imageKeys = ["image", "message"]; // Add more keys as needed
-      const imgUrl = imageKeys.find(key => key in data) ? data[imageKeys.find(key => key in data)] : null;
+      // Extract the image URL (works for both APIs)
+      const imgUrl = data.image || data.message; // Use the appropriate key
 
       // Display the image if an URL is found
       if (imgUrl) {
