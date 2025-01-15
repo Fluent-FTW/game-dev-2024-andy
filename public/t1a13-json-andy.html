@@ -23,7 +23,8 @@ JSON is a data format similar to JavaScript objects. However, JSON is text-based
     // Display the image if an URL is found
     if (imgUrl) {
       const img = document.createElement('img');
-    
+    img.src = img.Url;
+    img.alt = "Image from JSON";
       displayDiv.appendChild(img);
     }
   }
