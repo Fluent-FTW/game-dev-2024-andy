@@ -12,11 +12,26 @@
             color: #333;
             padding: 20px;
         }
+        .color-box {
+            width: 30px;
+            height: 30px;
+            margin: 5px;
+            cursor: pointer;
+        }
     </style>
 </head>
 <body>
     <h1 align="center">t1a21-canvas-Andy</h1>
     You use loops and variables to make fast fancy drawings<br><br>
+
+    <!-- Color selection boxes -->
+    <div>
+        <div class="color-box" style="background-color: red;" onclick="selectColor('red')"></div>
+        <div class="color-box" style="background-color: green;" onclick="selectColor('green')"></div>
+        <div class="color-box" style="background-color: blue;" onclick="selectColor('blue')"></div>
+        <div class="color-box" style="background-color: yellow;" onclick="selectColor('yellow')"></div>
+        <div class="color-box" style="background-color: black;" onclick="selectColor('black')"></div>
+    </div><br>
 
     <input type="button" value=".lineTo(30,200)" onclick="{
         myContext.beginPath();
@@ -98,7 +113,17 @@
         // Set up global variables
         let myCanvas = document.getElementById('myCoolTag');
         let myContext = myCanvas.getContext('2d');
-        
+
+        // Default color
+        let currentColor = 'black';
+
+        // Function to update the selected color
+        function selectColor(color) {
+            currentColor = color;
+            myContext.strokeStyle = currentColor;
+            myContext.fillStyle = currentColor; // Update fill color as well
+        }
+
         // Variables for freehand drawing
         let drawing = false;
 
@@ -125,4 +150,3 @@
     </script>
 </body>
 </html>
-
