@@ -1,42 +1,50 @@
-<h1 align=center>t1a16-multi-d-array-Andy</h1>
+<h1 align="center">t1a16-multi-d-array-Andy</h1>
 
 <script>
-  //set global variables
-  let myMax = 3
-  let myArrayManual = new Array(myMax)
-  let MyArrayAuto = new Array(myMax)
-</script>
+  // Set global variables
+  let myMax = 3;
+  let myArrayManual = new Array(myMax);
+  let myArrayAuto = new Array(myMax);
 
-Input:<input type=text id="myFirstName" value="Andy"><br>
+  // Function to set the manual array
+  function setManualArray() {
+    myArrayManual = [[3,4,2], [1,2,3], [5,6,7]];
+    document.getElementById('myDiv01').innerHTML = 'You set the manual array.';
+  }
 
-<input type=button value="Set Manual Array" onclick="{
-  myArrayManual = [ [3,4,2], [1,2,3], [5,6,7] ]
+  // Function to show the manual array
+  function showManualArray() {
+    document.getElementById('myDiv01').innerHTML = '';
+    console.log(myArrayManual);
 
-  document.getElementById('myDiv01').innerHTML = 'You set the array'
-}">
-
-<input type=button value="Show Manual Array" onclick="{
-  document.getElementById('myDiv01').innerHTML = ''
-  console.log(MyArrayManual)
-
-  for (myLoop1=0;  myLoop0 < myMax;  myLoop0++){
-
-    for (myLoop1=0;  myLoop1 < myMax;  myLoop1++){
-
-      document.getElementById('myDiv01').innerHTML +=
-      'myArrayManual[${myLoop0},${myLoop1}] =
-  ${myArrayManual[myLoop0][myLoop1]}<br>'
+    for (let myLoop0 = 0; myLoop0 < myMax; myLoop0++) {
+      for (let myLoop1 = 0; myLoop1 < myMax; myLoop1++) {
+        document.getElementById('myDiv01').innerHTML +=
+        `myArrayManual[${myLoop0},${myLoop1}] = ${myArrayManual[myLoop0][myLoop1]}<br>`;
+      }
     }
   }
-}">
 
-<input type=button value="Set Auto Array" onclick="{
-  myArrayAuto[0,0] = Math.floor(Math.random() * 100)
-  document.getElementById('myDiv01').innerHTML = myArrayAuto[0,0]
-}">
+  // Function to set the auto array
+  function setAutoArray() {
+    // Initialize the array with random values
+    myArrayAuto = [[Math.floor(Math.random() * 100)], [Math.floor(Math.random() * 100)], [Math.floor(Math.random() * 100)]];
+    document.getElementById('myDiv01').innerHTML = `Random number for auto array: ${myArrayAuto[0][0]}`;
+  }
 
-<input type=button value="Show Auto Array" onclick="{
-  document.getElementById('myDiv01').innerHTML += 'You print it out'
-}"><br>
+  // Function to show the auto array
+  function showAutoArray() {
+    document.getElementById('myDiv01').innerHTML += 'You printed the auto array.<br>';
+  }
+</script>
 
-  <div id="myDiv01">...</div>
+<!-- Input Elements -->
+Input: <input type="text" id="myFirstName" value="Andy"><br>
+
+<input type="button" value="Set Manual Array" onclick="setManualArray()">
+<input type="button" value="Show Manual Array" onclick="showManualArray()">
+
+<input type="button" value="Set Auto Array" onclick="setAutoArray()">
+<input type="button" value="Show Auto Array" onclick="showAutoArray()"><br>
+
+<div id="myDiv01">...</div>
