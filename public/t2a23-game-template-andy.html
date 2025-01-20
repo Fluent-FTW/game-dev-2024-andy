@@ -16,7 +16,6 @@
         // Handles keydown events
         function handleKeydown(event) {
             let myKey = event.key.toLowerCase();
-            document.getElementById('myDiv01').innerHTML = myKey;
 
             let img01 = document.getElementById('myImg01');
             let step = 7; // Movement speed
@@ -47,7 +46,7 @@
            let right2  = left2 + parseInt(document.getElementById(my2).style.width);
            let top2    = parseInt(document.getElementById(my2).style.top);   
            let bottom2 = top2   + parseInt(document.getElementById(my2).style.height);
-           if ((right1  >=  left2  ) &&       	   
+           if ((right1  >=  left2  ) &&        	   
                (bottom1 >=  top2   ) &&
                (left1   <=  right2 ) &&
                (top1    <=  bottom2) ){
@@ -60,13 +59,13 @@
             if (myHitOther('myImg01', 'myImg02')) {
                 alert('You lose');
                 document.getElementById('myImg01').style.left = '20px';
-                location = 'https://fluent-ftw.github.io/game-dev-2024-andy/public/t2a23-game-template-andy.html'; // Reload the level or go to next level
+                location = 't2a13-keydown.html'; // Reload the level or go to next level
             }
         }
     </script>
 
-    <img id="myImg01" style="position:absolute; width:100px; height:80px; top:0px; left:50px;" src="AndyViolin.png">
-    <img id="myImg02" style="position:absolute; width:100px; height:80px; top:0px; left:250px;" src="EllisMouth.png">
+    <img id="myImg01" style="position:absolute; width:100px; height:80px; top:0px; left:50px;" src="myImage01.jpg">
+    <img id="myImg02" style="position:absolute; width:100px; height:80px; top:0px; left:250px;" src="myImage02.jpg">
 
     <input type=button value="Auto Background Left" onclick="{
       clearInterval(myClock);
@@ -83,8 +82,6 @@
       img01.style.left = parseInt(img01.style.left) + 10 + 'px';
       myCheckHit(); // checks for all collisions
     }"><br><br>
-
-    <div id="myDiv01" style="color:yellow">..</div>
 
 </body>
 </html>
